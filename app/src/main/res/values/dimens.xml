@@ -1,5 +1,6 @@
 <resources>
     <dimen name="standard">16dp</dimen>
     <dimen name="tiny">5dp</dimen>
+    <dimen name="small">10dp</dimen>
 
 </resources>

@@ -1,5 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="android:Theme.Material.Light">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/secondary</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="colorControlNormal">#757575</item>
+        <item name="colorControlActivated">#0D47A1</item>
+        <item name="colorControlHighlight">#009688</item>
+        <!-- colorAccent is used as the default value for colorControlActivated,
+         which is used to tint widgets -->
+        <item name="colorAccent">@color/secondary</item>
     </style>
+
+    <!-- Vitamins and Minerals -->
+    <style name="VitaminsAndMinerals" parent="AppTheme">
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="VitaminName" parent="VitaminsAndMinerals">
+        <item name="android:layout_gravity">start</item>
+    </style>
+
+    <style name="VitaminValue" parent="VitaminsAndMinerals">
+        <item name="android:text">0</item>
+        <item name="android:layout_gravity">end</item>
+    </style>
+
+    <!-- User Interface -->
+    <style name="inputText" parent="AppTheme">
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="label" parent="AppTheme">
+        <item name="android:textColor">@color/disabled_text</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="hr" parent="AppTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/disabled_text</item>
+    </style>
+
+    <style name="horizontal_display" parent="AppTheme">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="editText" parent="AppTheme">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="buttonBar" parent="@android:style/Holo.Light.ButtonBar">
+        <item name="android:background">@color/primary_text</item>
+        <item name="android:divider">@android:drawable/divider_horizontal_dark</item>
+    </style>
+
+    <style name="buttonBarButton" parent="@android:style/Holo.Light.ButtonBar">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="hr_vertical" parent="AppTheme">
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_marginTop">@dimen/small</item>
+        <item name="android:layout_marginBottom">@dimen/small</item>
+    </style>
+
+    <style name="error_message">
+        <item name="android:textColor">@color/danger</item>
+    </style>
+
 </resources>
