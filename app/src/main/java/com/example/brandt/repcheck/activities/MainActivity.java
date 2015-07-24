@@ -13,6 +13,8 @@ import com.example.brandt.repcheck.util.AdMobHelper;
 
 public class MainActivity extends ActionBarActivity {
 
+    MaxRepFragment maxRepFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +28,10 @@ public class MainActivity extends ActionBarActivity {
 
         AdMobHelper.CreateAdRequest(this);
 
+        maxRepFragment = new MaxRepFragment();
+
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content, new MaxRepFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.content, maxRepFragment).commit();
     }
 
     @Override
@@ -38,12 +42,13 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            Intent settingsIntent = new Intent(this, SettingsActivity.class);
-            startActivity(settingsIntent);
-        }
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                break;
+       }
 
         return super.onOptionsItemSelected(item);
     }

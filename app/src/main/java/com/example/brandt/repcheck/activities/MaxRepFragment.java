@@ -7,6 +7,9 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -43,7 +46,7 @@ public class MaxRepFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
 
         // TODO select most recent entries.
 
@@ -169,6 +172,27 @@ public class MaxRepFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        MenuItem item = menu.add(Menu.NONE, R.id.action_history, 10, R.string.action_history);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.action_history:
+                HistoryDialog historyDialog =
+                        HistoryDialog.newInstance(new HistoryUpdateHandler(this));
+                historyDialog.show(getFragmentManager(), getTag());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void updateCalculations() {
         weightListAdapter.updateData(formulaWrapper.getWeightForRepRangeAsWeightHolderArray(MAX_REPS));
     }
@@ -191,6 +215,20 @@ public class MaxRepFragment extends Fragment {
             super.handleMessage(msg);
             MaxRepFragment maxRepFragment = mActivity.get();
             maxRepFragment.updateIncrement(msg.arg1);
+        }
+    }
+
+    public static class HistoryUpdateHandler extends Handler {
+        private final WeakReference<MaxRepFragment> mActivity;
+
+        public HistoryUpdateHandler(MaxRepFragment maxRepFragment) {
+            mActivity = new WeakReference<MaxRepFragment>(maxRepFragment);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            // TODO load new set
         }
     }
 
