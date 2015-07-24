@@ -53,6 +53,8 @@
             android:layout_height="wrap_content" />
 
         <Spinner
+            android:layout_marginStart="@dimen/standard"
+            android:layout_marginEnd="@dimen/standard"
             android:layout_gravity="end"
             android:id="@+id/rep_spinner"
             android:layout_width="100dp"

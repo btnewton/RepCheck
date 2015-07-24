@@ -1,8 +1,10 @@
 package com.example.brandt.repcheck.activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,8 @@ import com.example.brandt.repcheck.models.increments.IncrementSet;
 import com.example.brandt.repcheck.models.increments.IronIncrementSet;
 import com.example.brandt.repcheck.util.adapters.WeightListAdapter;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Created by brandt on 7/22/15.
  */
@@ -33,12 +37,16 @@ public class MaxRepFragment extends Fragment {
     private Button addButton;
     private double incrementValue;
     private WeightListAdapter weightListAdapter;
+    private Unit unit;
+    private SharedPreferences.OnSharedPreferenceChangeListener listener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         // TODO select most recent entries.
+
         int reps = 10;
         double weight = 135;
         incrementValue = 5;
@@ -47,6 +55,30 @@ public class MaxRepFragment extends Fragment {
         formulaWrapper.setShouldFormat(true);
         formulaWrapper.setBaseWeight(0);
         formulaWrapper.setIsHalfWeight(false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
+
+                unit = Unit.newUnitByString(unitType, getActivity());
+                formulaWrapper.setUnit(unit);
+                updateCalculations();
+                updateButtons();
+            }
+        };
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sharedPreferences.registerOnSharedPreferenceChangeListener(listener);
+
+        if (unit == null) {
+            listener.onSharedPreferenceChanged(sharedPreferences, null);
+        }
     }
 
     @Override
@@ -106,7 +138,7 @@ public class MaxRepFragment extends Fragment {
         for (int i = 0; i < MAX_REPS; i++) {
             items[i] = i + 1;
         }
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(getActivity(), android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(getActivity(), R.layout.big_spinner_item, items);
         Spinner repsSpinner = (Spinner) view.findViewById(R.id.rep_spinner);
         repsSpinner.setAdapter(adapter);
         repsSpinner.setSelection(formulaWrapper.getReps() - 1);
@@ -115,7 +147,7 @@ public class MaxRepFragment extends Fragment {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                formulaWrapper.setReps(getResources().getIntArray(R.array.reps)[position]);
+                formulaWrapper.setReps(position + 1);
                 updateCalculations();
             }
 
@@ -143,23 +175,33 @@ public class MaxRepFragment extends Fragment {
 
     private void showIncrementList() {
         ChangeIncrementDialog changeIncrementDialog =
-                ChangeIncrementDialog.newInstance(new IncrementUpdateHandler());
+                ChangeIncrementDialog.newInstance(new IncrementUpdateHandler(this));
         changeIncrementDialog.show(getFragmentManager(), getTag());
     }
 
-    public class IncrementUpdateHandler extends Handler {
+    public static class IncrementUpdateHandler extends Handler {
+        private final WeakReference<MaxRepFragment> mActivity;
+
+        public IncrementUpdateHandler(MaxRepFragment maxRepFragment) {
+            mActivity = new WeakReference<MaxRepFragment>(maxRepFragment);
+        }
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            updateIncrement(msg.arg1);
+            MaxRepFragment maxRepFragment = mActivity.get();
+            maxRepFragment.updateIncrement(msg.arg1);
         }
     }
 
-    private void updateIncrement(int index) {
-        // TODO get increment set from prefernces
-        IncrementSet incrementSet = new IronIncrementSet(Unit.ImperialUnit());
+    public void updateIncrement(int index) {
+        IncrementSet incrementSet = new IronIncrementSet(unit);
         incrementValue = incrementSet.getIncrements()[index];
-        String incrementText = incrementSet.getIncrementsAsStringArray().get(index) + ((incrementValue != 1)? "s" : "");
+        updateButtons();
+    }
+
+    private void updateButtons() {
+        String incrementText = incrementValue + " " + unit.getUnit() + ((incrementValue != 1)? "s" : "");
         subtractButton.setText("-" + incrementText);
         addButton.setText("+" + incrementText);
     }

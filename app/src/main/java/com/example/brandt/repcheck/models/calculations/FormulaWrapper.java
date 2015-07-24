@@ -1,5 +1,6 @@
 package com.example.brandt.repcheck.models.calculations;
 
+import com.example.brandt.repcheck.models.Unit;
 import com.example.brandt.repcheck.util.adapters.WeightHolder;
 
 import java.text.DecimalFormat;
@@ -15,6 +16,7 @@ public class FormulaWrapper {
     private boolean isHalfWeight;
     private double baseWeight;
     private boolean shouldFormat;
+    private Unit unit;
 
     public FormulaWrapper(int reps, double weight) {
         this.reps = reps;
@@ -22,6 +24,7 @@ public class FormulaWrapper {
         isHalfWeight = false;
         baseWeight = 0;
         shouldFormat = false;
+        unit = Unit.ImperialUnit();
     }
 
     public void setIsHalfWeight(boolean isHalfWeight) {
@@ -81,7 +84,8 @@ public class FormulaWrapper {
 
         for (int i = 0; i < size; i++) {
             int reps = i + 1;
-            weightHolders[i] = new WeightHolder(reps, formatter.format(brzycki.getWeightForReps(reps)));
+            double weight = brzycki.getWeightForReps(reps);
+            weightHolders[i] = new WeightHolder(reps, formatter.format(weight) + " " + unit.getUnit() + ((weight != 1)? "s" : ""));
         }
 
         return weightHolders;
@@ -113,5 +117,9 @@ public class FormulaWrapper {
 
     public void setReps(int reps) {
         this.reps = reps;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
     }
 }
