@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/secondary</item>
         <item name="android:windowBackground">@color/background</item>
         <item name="android:textColor">@color/primary_text</item>
-        <item name="colorControlNormal">#757575</item>
+        <item name="colorControlNormal">@color/primary_text</item>
         <item name="colorControlActivated">#0D47A1</item>
         <item name="colorControlHighlight">#009688</item>
         <!-- colorAccent is used as the default value for colorControlActivated,

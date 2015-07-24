@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.brandt.repcheck.R;
+import com.example.brandt.repcheck.util.AdMobHelper;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -22,6 +23,8 @@ public class MainActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
 
         toolbar.setLogo(R.mipmap.ic_launcher);
+
+        AdMobHelper.CreateAdRequest(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content, new MaxRepFragment()).commit();
