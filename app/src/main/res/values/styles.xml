@@ -8,8 +8,9 @@
         <item name="android:windowBackground">@color/background</item>
         <item name="android:textColor">@color/primary_text</item>
         <item name="colorControlNormal">@color/primary_text</item>
-        <item name="colorControlActivated">#0D47A1</item>
+        <item name="colorControlActivated">@color/primary</item>
         <item name="colorControlHighlight">#009688</item>
+        <item name="android:textColorSecondary">@color/abc_secondary_text_material_light</item>
         <!-- colorAccent is used as the default value for colorControlActivated,
          which is used to tint widgets -->
         <item name="colorAccent">@color/secondary</item>
@@ -31,10 +32,31 @@
         <item name="android:layout_gravity">end</item>
     </style>
 
+    <style name="ToolbarStyle" parent="Theme.AppCompat.NoActionBar">
+        <!-- android:textColorPrimary is the  color of the title text
+             in the Toolbar, in the Theme.AppCompat theme:  -->
+        <item name="android:textColorPrimary">@color/abc_primary_text_material_light</item>
+        <item name="android:background">@color/primary</item>
+
+        <!-- android:actionMenuTextColor is the color of the text of
+              action (menu) items in the Toolbar, at least in the
+              Theme.AppCompat theme.
+              For some reason, they already get the textColorPrimary
+              when running on API 21, but not on older versions of
+              Android, so this is only necessary to support older
+              Android versions.-->
+        <item name="actionMenuTextColor">@color/abc_primary_text_material_light</item>
+        <!-- android:textColorSecondary is the color of the menu
+             overflow icon (three vertical dots) -->
+        <item name="android:textColorSecondary">@color/abc_secondary_text_material_light</item>
+    </style>
+
+
     <!-- User Interface -->
     <style name="inputText" parent="AppTheme">
         <item name="android:layout_height">wrap_content</item>
     </style>
+
 
     <style name="label" parent="AppTheme">
         <item name="android:textColor">@color/disabled_text</item>

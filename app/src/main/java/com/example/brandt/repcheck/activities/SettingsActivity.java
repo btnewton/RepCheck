@@ -44,8 +44,8 @@ public class SettingsActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.basic_layout);
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(getResources().getString(R.string.action_settings));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

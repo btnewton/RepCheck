@@ -4,4 +4,6 @@
         tools:context="com.example.brandt.dietron.FoodSearchActivity">
         <item android:id="@+id/action_history" android:title="@string/action_history"
             android:orderInCategory="100" app:showAsAction="always|withText" />
+        <item android:id="@+id/action_save" android:title="@string/action_history"
+            android:orderInCategory="101" app:showAsAction="never" />
 </menu>

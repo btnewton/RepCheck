@@ -177,6 +177,7 @@ public class MaxRepFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         MenuItem item = menu.add(Menu.NONE, R.id.action_history, 10, R.string.action_history);
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        menu.add(Menu.NONE, R.id.action_save, 10, R.string.action_save);
     }
 
     @Override
@@ -187,6 +188,9 @@ public class MaxRepFragment extends Fragment {
                 HistoryDialog historyDialog =
                         HistoryDialog.newInstance(new HistoryUpdateHandler(this));
                 historyDialog.show(getFragmentManager(), getTag());
+                return true;
+            case R.id.action_save:
+                // TODO insert new set
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
