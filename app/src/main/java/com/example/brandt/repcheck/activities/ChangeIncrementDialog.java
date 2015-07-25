@@ -34,7 +34,7 @@ public class ChangeIncrementDialog extends DialogFragment {
                 new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new IronIncrementSet(Unit.ImperialUnit()).getIncrementsAsStringArray());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Set Interval")
+        builder.setTitle("Set Slot Interval")
                 .setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Message msg = new Message();

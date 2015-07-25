@@ -2,8 +2,9 @@ package com.example.brandt.repcheck.util.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 
-import com.example.brandt.repcheck.database.schemas.HistoryTable;
+import com.example.brandt.repcheck.util.database.QueryParams.QueryParams;
 
 /**
  * Created by Brandt on 7/24/2015.
@@ -11,13 +12,19 @@ import com.example.brandt.repcheck.database.schemas.HistoryTable;
 public abstract class DataObject {
     protected int id;
     private boolean isNewRecord;
-    private Class<Schema> table;
-    private String tableName;
+    private static Schema table;
     private static int lastInesertID;
 
-    protected DataObject(Class<?> table, boolean isNewRecord) {
-        if (table.isAssignableFrom(Schema.class))
-            this.table = (Class<Schema>) table;
+    protected DataObject(Class<?> tableType, boolean isNewRecord) {
+        if (table == null) {
+            try {
+                table = (Schema) tableType.newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
 
         this.isNewRecord = isNewRecord;
     }
@@ -45,6 +52,23 @@ public abstract class DataObject {
         }
     }
 
+    public Object find(Context context, int id) {
+        Cursor cursor = DBHandler.getReadable(context).query(getTableName(),
+                getColumns(),
+                "id=?",
+                new String[] {Integer.toString(id)},
+                null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            Object object = bindCursor(cursor);
+            cursor.close();
+            return object;
+        } else {
+            cursor.close();
+            return null;
+        }
+    }
+
     public static int getLastInesertID() {
         return lastInesertID;
     }
@@ -52,26 +76,42 @@ public abstract class DataObject {
     protected abstract ContentValues getContentValues();
 
     public boolean delete(Context context) {
-        String whereClause = HistoryTable.ID + "=?";
+        String whereClause = "id=?";
         String[] whereArgs = { Integer.toString(id) };
         return DBHandler.getWritable(context)
                 .delete(getTableName(), whereClause, whereArgs) > 0;
     }
 
-    private String getTableName() {
+    protected abstract Object bindCursor(Cursor cursor);
 
-        if (tableName != null) {
-            return tableName;
+    public Object[] selectAll(Context context) {
+        return selectAll(context, new QueryParams());
+    }
+
+    public Object[] selectAll(Context context, QueryParams queryParams) {
+        Cursor cursor = DBHandler.getReadable(context).query(table.getTableName(),
+                table.getColumns(),
+                null, null, queryParams.groupBy, null, queryParams.orderBy, queryParams.limit);
+
+        if (cursor.moveToFirst()) {
+            Object[] objects = new Object[cursor.getCount()];
+
+            do {
+                objects[cursor.getPosition()] = bindCursor(cursor);
+            } while (cursor.moveToNext());
+
+            return objects;
+        } else {
+            cursor.close();
+            return null;
         }
+    }
 
-        try {
-            tableName = table.newInstance().getTableName();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+    protected String[] getColumns() {
+        return table.getColumns();
+    }
 
-        return tableName;
+    protected String getTableName() {
+        return table.getTableName();
     }
 }

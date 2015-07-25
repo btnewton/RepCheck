@@ -1,25 +1,30 @@
 package com.example.brandt.repcheck.activities;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.brandt.repcheck.R;
+import com.example.brandt.repcheck.models.SetSlot;
 import com.example.brandt.repcheck.models.Unit;
 import com.example.brandt.repcheck.models.calculations.FormulaWrapper;
 import com.example.brandt.repcheck.models.increments.IncrementSet;
@@ -48,13 +53,16 @@ public class MaxRepFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        // TODO select most recent entries.
+        SetSlot setSlot = SetSlot.firstByDate(getActivity());
 
-        int reps = 10;
-        double weight = 135;
+        if (setSlot == null) {
+            // There are no saved sets
+            setSlot = SetSlot.defaultSet("Default");
+        }
+
         incrementValue = 5;
 
-        formulaWrapper = new FormulaWrapper(reps, weight);
+        formulaWrapper = new FormulaWrapper(setSlot);
         formulaWrapper.setShouldFormat(true);
         formulaWrapper.setBaseWeight(0);
         formulaWrapper.setIsHalfWeight(false);
@@ -100,6 +108,26 @@ public class MaxRepFragment extends Fragment {
                     formulaWrapper.setWeight(Double.parseDouble(weightEditText.getText().toString()));
                     updateCalculations();
                 }
+            }
+        });
+        weightEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                    // NOTE: In the author's example, he uses an identifier
+                    // called searchBar. If setting this code on your EditText
+                    // then use v.getWindowToken() as a reference to your
+                    // EditText is passed into this callback as a TextView
+
+                    in.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                            InputMethodManager.HIDE_NOT_ALWAYS);
+                    // Must return true here to consume event
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -185,12 +213,12 @@ public class MaxRepFragment extends Fragment {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.action_history:
-                HistoryDialog historyDialog =
-                        HistoryDialog.newInstance(new HistoryUpdateHandler(this));
-                historyDialog.show(getFragmentManager(), getTag());
+                SavedSetsDialog savedSetsDialog =
+                        SavedSetsDialog.newInstance(new HistoryUpdateHandler(this));
+                savedSetsDialog.show(getFragmentManager(), getTag());
                 return true;
             case R.id.action_save:
-                // TODO insert new set
+                // TODO launch slot selection dialog (reuse load dialog)
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

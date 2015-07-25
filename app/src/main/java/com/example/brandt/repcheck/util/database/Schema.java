@@ -23,4 +23,6 @@ public abstract class Schema {
     public abstract String getTableName();
 
     public abstract String tableSQL();
+
+    public abstract String[] getColumns();
 }

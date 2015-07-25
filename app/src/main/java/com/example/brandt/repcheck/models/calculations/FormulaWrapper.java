@@ -1,5 +1,6 @@
 package com.example.brandt.repcheck.models.calculations;
 
+import com.example.brandt.repcheck.models.SetSlot;
 import com.example.brandt.repcheck.models.Unit;
 import com.example.brandt.repcheck.util.adapters.WeightHolder;
 
@@ -18,9 +19,9 @@ public class FormulaWrapper {
     private boolean shouldFormat;
     private Unit unit;
 
-    public FormulaWrapper(int reps, double weight) {
-        this.reps = reps;
-        this.weight = weight;
+    public FormulaWrapper(SetSlot setSlot) {
+        this.reps = setSlot.getReps();
+        this.weight = setSlot.getWeight();
         isHalfWeight = false;
         baseWeight = 0;
         shouldFormat = false;

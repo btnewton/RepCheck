@@ -5,14 +5,23 @@ import com.example.brandt.repcheck.util.database.Schema;
 /**
 * Created by brandt on 7/22/15.
 */
-public class HistoryTable extends Schema {
+public class SetSlotTable extends Schema {
 
-    public static final String TABLE_NAME = "history";
+    public static final String TABLE_NAME = "SetSlots";
     public static final String ID = "id";
+    public static final String NAME = "name";
     public static final String REPS = "reps";
     public static final String WEIGHT = "weight";
-    public static final String PINNED = "pinned";
     public static final String LAST_USED = "time_consumed";
+
+    public static final String[] columns = new String[]{
+            SetSlotTable.ID,
+            SetSlotTable.NAME,
+            SetSlotTable.REPS,
+            SetSlotTable.WEIGHT,
+            SetSlotTable.LAST_USED,
+    };
+
 
     @Override
     public String getTableName() {
@@ -25,10 +34,15 @@ public class HistoryTable extends Schema {
                 "CREATE TABLE "
                         + TABLE_NAME + "("
                         + ID          + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        + NAME          + " TEXT NOT NULL UNIQUE, "
                         + REPS     + " INTEGER NOT NULL, "
                         + WEIGHT + " DOUBLE NOT NULL, "
-                        + PINNED        + " BOOLEAN DEFAULT 0, "
-                        + LAST_USED + " TEXT NOT NULL, "             // SQLite Timestamp
+                        + LAST_USED + " TEXT NOT NULL "             // SQLite Timestamp
                         + ")";
+    }
+
+    @Override
+    public String[] getColumns() {
+        return columns;
     }
 }

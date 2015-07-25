@@ -5,6 +5,7 @@
     android:minHeight="?attr/actionBarSize"
     android:background="@color/primary"
     android:theme="@style/ToolbarStyle"
+    android:elevation="7dp"
     app:popupTheme="@style/Theme.AppCompat.NoActionBar"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" />

@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.brandt.repcheck.database.schemas.HistoryTable;
+import com.example.brandt.repcheck.database.schemas.SetSlotTable;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -30,7 +30,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static DBHandler mTestInstance = null;
 
     private Schema[] tables = new Schema[] {
-            new HistoryTable(),
+            new SetSlotTable(),
             // ADD NEW TABLES HERE!
     };
 

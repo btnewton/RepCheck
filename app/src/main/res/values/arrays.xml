@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="units">
-        <item name="metric">@string/pref_units_metric</item>
-        <item name="imperial">@string/pref_units_imperial</item>
+        <item>@string/pref_units_metric</item>
+        <item>@string/pref_units_imperial</item>
     </string-array>
 
+    <string-array name="weight_input_styles">
+        <item>@string/pref_weight_input_style_single_side</item>
+        <item>@string/pref_weight_input_style_both_sides</item>
+    </string-array>
 
+    <string-array name="plate_styles">
+        <item>@string/pref_plate_style_classic</item>
+        <item>@string/pref_plate_style_olympic</item>
+    </string-array>
 </resources>
