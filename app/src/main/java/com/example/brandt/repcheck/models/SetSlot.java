@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.example.brandt.repcheck.database.schemas.SetSlotTable;
-import com.example.brandt.repcheck.util.adapters.StandardRowItem;
 import com.example.brandt.repcheck.util.database.DBHandler;
 import com.example.brandt.repcheck.util.database.DataObject;
 import com.example.brandt.repcheck.util.database.QueryParams.QueryParams;
@@ -18,7 +17,7 @@ import java.util.List;
 /**
  * Created by Brandt on 7/24/2015.
  */
-public class SetSlot extends DataObject implements StandardRowItem{
+public class SetSlot extends DataObject {
 
     private String name;
     private int reps;
@@ -37,8 +36,8 @@ public class SetSlot extends DataObject implements StandardRowItem{
 
     public SetSlot(int reps, double weight) {
         this();
-        this.reps = reps;
-        this.weight = weight;
+        setReps(reps);
+        setWeight(weight);
     }
 
     public SetSlot(int reps, double weight, Date lastUsed) {
@@ -73,12 +72,30 @@ public class SetSlot extends DataObject implements StandardRowItem{
         return(SetSlot) new SetSlot().selectAll(context, queryParams)[0];
     }
 
+    public static SetSlot findById(Context context, int id) {
+        return (SetSlot) new SetSlot().find(context, id);
+    }
+
     public int getReps() {
         return reps;
     }
 
+    public void setReps(int reps) {
+        if (reps <= 0) {
+            return;
+        }
+        this.reps = reps;
+    }
+
     public double getWeight() {
         return weight;
+    }
+
+    public void setWeight(double weight) {
+        if (weight <= 0) {
+            return;
+        }
+        this.weight = weight;
     }
 
     public Date getLastUsed() {
@@ -106,21 +123,5 @@ public class SetSlot extends DataObject implements StandardRowItem{
         );
         set.setName(cursor.getString(1));
         return set;
-    }
-
-    @Override
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public String getTitle() {
-        return title;
-    }
-
-    @Override
-    public String getText() {
-        return
-                ;
     }
 }

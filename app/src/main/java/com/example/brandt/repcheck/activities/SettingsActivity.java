@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.example.brandt.repcheck.R;
+import com.example.brandt.repcheck.database.seeders.SetSeeder;
 import com.example.brandt.repcheck.util.database.DBHandler;
 
 import java.util.List;
@@ -104,29 +105,11 @@ public class SettingsActivity extends PreferenceActivity {
         bindPreferenceSummaryToValue(findPreference("sync_frequency"));
 
 
-        Preference populateConsumptionButton = (Preference)findPreference(getString(R.string.populate_consumption_button));
+        Preference populateConsumptionButton = (Preference)findPreference(getString(R.string.populate_sets_button));
         populateConsumptionButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                populateConsumption();
-                return true;
-            }
-        });
-
-        Preference populateDietsButton = (Preference)findPreference(getString(R.string.populate_diets_button));
-        populateDietsButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                populateDiets();
-                return true;
-            }
-        });
-
-        Preference populateMealsButton = (Preference)findPreference(getString(R.string.populate_meals_button));
-        populateMealsButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                populateMeals();
+                populateSets();
                 return true;
             }
         });
@@ -136,9 +119,7 @@ public class SettingsActivity extends PreferenceActivity {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 truncateTables();
-                populateConsumption();
-                populateMeals();
-                populateDiets();
+                populateSets();
                 return true;
             }
         });
@@ -158,13 +139,8 @@ public class SettingsActivity extends PreferenceActivity {
         dbHandler.truncateAll();
     }
 
-    public void populateConsumption(){
-    }
-
-    public void populateDiets() {
-    }
-
-    public void populateMeals() {
+    public void populateSets(){
+        new SetSeeder().seed(this);
     }
 
     /**

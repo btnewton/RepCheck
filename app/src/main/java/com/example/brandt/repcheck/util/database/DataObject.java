@@ -33,6 +33,10 @@ public abstract class DataObject {
         this.id = id;
     }
 
+    public int getId() {
+        return id;
+    }
+
     protected void setIsNewRecord(boolean isNewRecord) {
         this.isNewRecord = isNewRecord;
     }
@@ -78,8 +82,14 @@ public abstract class DataObject {
     public boolean delete(Context context) {
         String whereClause = "id=?";
         String[] whereArgs = { Integer.toString(id) };
-        return DBHandler.getWritable(context)
-                .delete(getTableName(), whereClause, whereArgs) > 0;
+        if (DBHandler.getWritable(context)
+                .delete(getTableName(), whereClause, whereArgs) > 0) {
+            isNewRecord = true;
+            id = -1;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     protected abstract Object bindCursor(Cursor cursor);

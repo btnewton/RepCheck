@@ -3,17 +3,20 @@ package com.example.brandt.repcheck.activities;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.widget.ArrayAdapter;
 
+import com.example.brandt.repcheck.R;
 import com.example.brandt.repcheck.models.SetSlot;
 import com.example.brandt.repcheck.models.Unit;
-import com.example.brandt.repcheck.models.increments.IronIncrementSet;
-import com.example.brandt.repcheck.util.adapters.ImageOptionListAdapter;
+import com.example.brandt.repcheck.util.adapters.StandardRowItem;
+import com.example.brandt.repcheck.util.adapters.StandardRowItemAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -24,20 +27,20 @@ import java.util.Observer;
 public abstract class SavedSetsDialog extends DialogFragment implements Observer, DialogInterface.OnClickListener {
 
     protected static Handler updateHandler;
-    private ImageOptionListAdapter adapter;
-    protected List<SetSlot> setSlots;
+    protected StandardRowItemAdapter adapter;
+    protected List<StandardRowItem> rowItems;
     private Handler asyncHandler;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // TODO get unit and increment type from preferences
-        ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new IronIncrementSet(Unit.ImperialUnit()).getIncrementsAsStringArray());
+
+        asyncHandler = new Handler();
+        adapter = new StandardRowItemAdapter(getActivity(), getActivity().getLayoutInflater(), null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("SetSlot Interval")
-                .setAdapter(arrayAdapter, this);
+                .setAdapter(adapter, this);
 
         return builder.create();
     }
@@ -54,7 +57,16 @@ public abstract class SavedSetsDialog extends DialogFragment implements Observer
         @Override
         public void run() {
 
-            setSlots = SetSlot.selectAllByDate(getActivity());
+            List<SetSlot> setSlots = SetSlot.selectAllByDate(getActivity());
+            rowItems = new ArrayList<>(setSlots.size());
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String unitType = sharedPreferences.getString(getActivity().getString(R.string.pref_units_key), getActivity().getString(R.string.pref_units_imperial));
+            Unit unit = Unit.newUnitByString(unitType, getActivity());
+
+            for (SetSlot setSlot : setSlots) {
+                rowItems.add(new StandardRowItem(setSlot.getId(), setSlot.getName(), setSlot.getReps() + " rep" + ((setSlot.getReps() != 1)? "s" : "")+" at " + setSlot.getWeight() + unit.getUnit() + "s"));
+            }
 
             asyncHandler.post(new Runnable() {
                 @Override

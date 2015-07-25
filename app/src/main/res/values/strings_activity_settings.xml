@@ -62,12 +62,8 @@
 
     <!-- Developer Settings -->
     <string name="pref_header_developer">Developer</string>
-    <string name="pref_title_populate_consumption">Populate Consumption</string>
-    <string name="populate_consumption_button">populate_consumption</string>
-    <string name="pref_title_populate_diets">Populate Diets</string>
-    <string name="populate_diets_button">populate_diets</string>
-    <string name="pref_title__populate_meals">Populate Meals</string>
-    <string name="populate_meals_button">populate_meals</string>
+    <string name="pref_title_populate_sets">Populate Sets</string>
+    <string name="populate_sets_button">populate_sets</string>
     <string name="pref_title_populate_all">Populate All</string>
     <string name="populate_all_button">populate_all</string>
     <string name="pref_title_truncate_all">Truncate All</string>

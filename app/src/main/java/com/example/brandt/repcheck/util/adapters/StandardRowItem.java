@@ -3,11 +3,27 @@ package com.example.brandt.repcheck.util.adapters;
 /**
  * Created by Brandt on 7/25/2015.
  */
-public interface StandardRowItem {
+public class StandardRowItem {
 
-    int getId();
+    private int id;
+    private String title;
+    private String text;
 
-    String getTitle();
+    public StandardRowItem(int id, String title, String text) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+    }
 
-    String getText();
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getText() {
+        return text;
+    }
 }

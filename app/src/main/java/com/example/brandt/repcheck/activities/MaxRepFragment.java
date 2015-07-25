@@ -53,7 +53,7 @@ public class MaxRepFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        SetSlot setSlot = SetSlot.firstByDate(getActivity());
+        SetSlot setSlot = SetSlot.first(getActivity());
 
         if (setSlot == null) {
             // There are no saved sets
@@ -213,8 +213,8 @@ public class MaxRepFragment extends Fragment {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.action_history:
-                SavedSetsDialog savedSetsDialog =
-                        SavedSetsDialog.newInstance(new HistoryUpdateHandler(this));
+                SaveSetDialog savedSetsDialog =
+                        SaveSetDialog.newInstance(new HistoryUpdateHandler(this), formulaWrapper.getReps(), formulaWrapper.getWeight());
                 savedSetsDialog.show(getFragmentManager(), getTag());
                 return true;
             case R.id.action_save:

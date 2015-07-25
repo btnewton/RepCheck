@@ -5,38 +5,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.brandt.repcheck.R;
 
+import java.util.List;
+
 /**
  * Created by Brandt on 7/25/2015.
  */
-public class ImageOptionListAdapter extends BaseAdapter {
+public class StandardRowItemAdapter extends BaseAdapter {
 
     Context mContext;
     LayoutInflater mInflater;
-    String[] optionNameList;
-    int[] optionImageIDs;
+    List<StandardRowItem> standardRowItems;
 
-    public ImageOptionListAdapter(Context context, LayoutInflater inflater, int[] optionImageIDs,
-                                  String[] optionNameList) {
+    public StandardRowItemAdapter(Context context, LayoutInflater inflater, List<StandardRowItem> standardRowItems) {
         mContext = context;
         mInflater = inflater;
-
-        this.optionImageIDs = optionImageIDs;
-        this.optionNameList = optionNameList;
+        this.standardRowItems = standardRowItems;
     }
 
     @Override
     public int getCount() {
-        return optionNameList.length;
+        return (standardRowItems == null) ? 0 : standardRowItems.size();
     }
 
     @Override
-    public String getItem(int position) {
-        return optionNameList[position];
+    public StandardRowItem getItem(int position) {
+        return standardRowItems.get(position);
     }
 
     @Override
@@ -54,14 +51,13 @@ public class ImageOptionListAdapter extends BaseAdapter {
         if (convertView == null) {
 
             // Inflate the custom row layout from your XML.
-            convertView = mInflater.inflate(R.layout.row_image, null);
+            convertView = mInflater.inflate(R.layout.row_standard, null);
 
             // create a new "Holder" with subviews
             holder = new ViewHolder();
-            holder.optionImage = (ImageView) convertView.findViewById(R.id.option_image);
-            holder.optionName = (TextView) convertView.findViewById(R.id.option_name);
+            holder.title = (TextView) convertView.findViewById(R.id.title);
+            holder.text = (TextView) convertView.findViewById(R.id.text);
 
-            // hang onto this holder for future recyclage
             convertView.setTag(holder);
         } else {
 
@@ -71,31 +67,26 @@ public class ImageOptionListAdapter extends BaseAdapter {
         }
 
         // Get the current book's data in JSON form
-        String optionName = getItem(position);
-        int imageID = optionImageIDs[position];
-
+        StandardRowItem standardRowItemHolder = getItem(position);
+        String title = standardRowItemHolder.getTitle();
+        String text = standardRowItemHolder.getText();
 
         // Send these Strings to the TextViews for display
-        if (imageID != 0) {
-            holder.optionImage.setImageDrawable(mContext.getResources().getDrawable(imageID));
-            holder.optionImage.setVisibility(View.VISIBLE);
-        } else {
-            holder.optionImage.setVisibility(View.INVISIBLE);
-        }
-        holder.optionName.setText(optionName);
+        holder.title.setText(title);
+        holder.text.setText(text);
 
         return convertView;
     }
 
-    public void updateOptions(int[] optionImageIDs, String[] optionNameList) {
-        this.optionImageIDs = optionImageIDs;
-        this.optionNameList = optionNameList;
-
+    public void updateData(List<StandardRowItem> standardRowItems) {
+        // update the adapter's data set
+        this.standardRowItems = standardRowItems;
         notifyDataSetChanged();
     }
 
     private static class ViewHolder {
-        public ImageView optionImage;
-        public TextView optionName;
+        public TextView title;
+        public TextView text;
     }
 }
+

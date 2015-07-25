@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference android:title="@string/pref_title_populate_consumption"
-        android:key="@string/populate_consumption_button"
+        android:key="@string/populate_sets_button"
         android:summary="Add random consumption to log."/>
 
     <Preference android:title="@string/pref_title_populate_diets"
