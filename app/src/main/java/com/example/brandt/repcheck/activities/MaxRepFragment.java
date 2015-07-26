@@ -41,6 +41,7 @@ public class MaxRepFragment extends Fragment {
     final int MAX_REPS = 20;
     FormulaWrapper formulaWrapper;
     private EditText weightEditText;
+    private Spinner repsSpinner;
     private Button subtractButton;
     private Button addButton;
     private double incrementValue;
@@ -170,7 +171,7 @@ public class MaxRepFragment extends Fragment {
             items[i] = i + 1;
         }
         ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(getActivity(), R.layout.big_spinner_item, items);
-        Spinner repsSpinner = (Spinner) view.findViewById(R.id.rep_spinner);
+        repsSpinner = (Spinner) view.findViewById(R.id.rep_spinner);
         repsSpinner.setAdapter(adapter);
         repsSpinner.setSelection(formulaWrapper.getReps() - 1);
 
@@ -203,7 +204,7 @@ public class MaxRepFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuItem item = menu.add(Menu.NONE, R.id.action_history, 10, R.string.action_history);
+        MenuItem item = menu.add(Menu.NONE, R.id.action_load, 10, R.string.action_load);
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         menu.add(Menu.NONE, R.id.action_save, 10, R.string.action_save);
     }
@@ -212,13 +213,15 @@ public class MaxRepFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
-            case R.id.action_history:
-                SaveSetDialog savedSetsDialog =
-                        SaveSetDialog.newInstance(new HistoryUpdateHandler(this), formulaWrapper.getReps(), formulaWrapper.getWeight());
+            case R.id.action_load:
+                SavedSetsDialog savedSetsDialog =
+                        SavedSetsDialog.newInstance(new LoadUpdateHandler(this));
                 savedSetsDialog.show(getFragmentManager(), getTag());
                 return true;
             case R.id.action_save:
-                // TODO launch slot selection dialog (reuse load dialog)
+                SaveSetDialog saveSetDialog =
+                        SaveSetDialog.newInstance(new LoadUpdateHandler(this), formulaWrapper.getReps(), formulaWrapper.getWeight());
+                saveSetDialog.show(getFragmentManager(), getTag());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -250,18 +253,30 @@ public class MaxRepFragment extends Fragment {
         }
     }
 
-    public static class HistoryUpdateHandler extends Handler {
+    public static class LoadUpdateHandler extends Handler {
         private final WeakReference<MaxRepFragment> mActivity;
 
-        public HistoryUpdateHandler(MaxRepFragment maxRepFragment) {
+        public LoadUpdateHandler(MaxRepFragment maxRepFragment) {
             mActivity = new WeakReference<MaxRepFragment>(maxRepFragment);
         }
 
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            // TODO load new set
+            MaxRepFragment maxRepFragment = mActivity.get();
+            maxRepFragment.updateSet(msg.arg1);
         }
+    }
+
+    public void updateSet(int id) {
+        formulaWrapper.update(SetSlot.findById(getActivity(), id));
+        updateInput();
+        updateCalculations();
+    }
+
+    public void updateInput() {
+        repsSpinner.setSelection(formulaWrapper.getReps() - 1);
+        weightEditText.setText(Double.toString(formulaWrapper.getWeight()));
     }
 
     public void updateIncrement(int index) {

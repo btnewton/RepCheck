@@ -1,80 +1,30 @@
 package com.example.brandt.repcheck.activities;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-
-import com.example.brandt.repcheck.R;
-import com.example.brandt.repcheck.models.SetSlot;
-import com.example.brandt.repcheck.models.Unit;
-import com.example.brandt.repcheck.util.adapters.StandardRowItem;
-import com.example.brandt.repcheck.util.adapters.StandardRowItemAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
+import android.os.Message;
 
 /**
- * Created by Brandt on 7/23/2015.
+ * Created by brandt on 7/25/15.
  */
-public abstract class SavedSetsDialog extends DialogFragment implements Observer, DialogInterface.OnClickListener {
+public class SavedSetsDialog extends SetsListDialog {
 
-    protected static Handler updateHandler;
-    protected StandardRowItemAdapter adapter;
-    protected List<StandardRowItem> rowItems;
-    private Handler asyncHandler;
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-        asyncHandler = new Handler();
-        adapter = new StandardRowItemAdapter(getActivity(), getActivity().getLayoutInflater(), null);
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("SetSlot Interval")
-                .setAdapter(adapter, this);
-
-        return builder.create();
+    public static SavedSetsDialog newInstance(Handler updateHandler) {
+        SavedSetsDialog fragment = new SavedSetsDialog();
+        SavedSetsDialog.updateHandler = updateHandler;
+        return fragment;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        AsyncSelect asyncSelect = new AsyncSelect();
-        asyncSelect.addObserver(this);
-        new Thread(asyncSelect).start();
+    public void onClick(DialogInterface dialogInterface, int i) {
+        Message msg = new Message();
+        msg.arg1 = rowItems.get(i).getId();
+        updateHandler.sendMessage(msg);
+        dismiss();
     }
 
-    private class AsyncSelect extends Observable implements Runnable {
-        @Override
-        public void run() {
-
-            List<SetSlot> setSlots = SetSlot.selectAllByDate(getActivity());
-            rowItems = new ArrayList<>(setSlots.size());
-
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String unitType = sharedPreferences.getString(getActivity().getString(R.string.pref_units_key), getActivity().getString(R.string.pref_units_imperial));
-            Unit unit = Unit.newUnitByString(unitType, getActivity());
-
-            for (SetSlot setSlot : setSlots) {
-                rowItems.add(new StandardRowItem(setSlot.getId(), setSlot.getName(), setSlot.getReps() + " rep" + ((setSlot.getReps() != 1)? "s" : "")+" at " + setSlot.getWeight() + unit.getUnit() + "s"));
-            }
-
-            asyncHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    setChanged();
-                    notifyObservers();
-                }
-            });
-        }
+    @Override
+    public String getTitle() {
+        return "Saved Sets";
     }
 }

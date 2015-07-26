@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Preference android:title="@string/pref_title_populate_consumption"
+    <Preference android:title="@string/pref_title_populate_sets"
         android:key="@string/populate_sets_button"
-        android:summary="Add random consumption to log."/>
-
-    <Preference android:title="@string/pref_title_populate_diets"
-        android:key="@string/populate_diets_button"
-        android:summary="Truncate and add Diets."/>
-
-    <Preference android:title="Popualate Meals"
-        android:key="@string/populate_meals_button"
-        android:summary="Truncate and add meals."/>
+        android:summary="Populate sets table."/>
 
     <Preference android:title="@string/pref_title_populate_all"
         android:key="@string/populate_all_button"

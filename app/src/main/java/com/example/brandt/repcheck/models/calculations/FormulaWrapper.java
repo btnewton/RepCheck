@@ -28,6 +28,11 @@ public class FormulaWrapper {
         unit = Unit.ImperialUnit();
     }
 
+    public void update(SetSlot setSlot) {
+        reps = setSlot.getReps();
+        weight = setSlot.getWeight();
+    }
+
     public void setIsHalfWeight(boolean isHalfWeight) {
         this.isHalfWeight = isHalfWeight;
     }

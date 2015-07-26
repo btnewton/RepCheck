@@ -31,7 +31,9 @@
             android:hint="Weight"
             android:nextFocusUp="@id/weight"
             android:nextFocusLeft="@id/weight"
-            android:inputType="number"
+            android:digits="0123456789"
+            android:gravity="center"
+            android:inputType="numberSigned"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content" />

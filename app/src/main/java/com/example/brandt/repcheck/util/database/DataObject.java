@@ -6,6 +6,8 @@ import android.database.Cursor;
 
 import com.example.brandt.repcheck.util.database.QueryParams.QueryParams;
 
+import java.lang.reflect.Array;
+
 /**
  * Created by Brandt on 7/24/2015.
  */
@@ -13,12 +15,12 @@ public abstract class DataObject {
     protected int id;
     private boolean isNewRecord;
     private static Schema table;
-    private static int lastInesertID;
+    private static int lastInsertID;
 
-    protected DataObject(Class<?> tableType, boolean isNewRecord) {
+    protected <T extends Schema> DataObject(Class<T> tableType, boolean isNewRecord) {
         if (table == null) {
             try {
-                table = (Schema) tableType.newInstance();
+                table = tableType.newInstance();
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -44,9 +46,13 @@ public abstract class DataObject {
 
     public boolean saveChanges(Context context) {
         if (isNewRecord) {
-            lastInesertID = (int) (long) DBHandler.getWritable(context).
-                    insert(getTableName(), null, getContentValues());
-            return lastInesertID != -1;
+            ContentValues contentValues = getContentValues();
+            if (contentValues.containsKey("id")) {
+                contentValues.remove("id");
+            }
+            lastInsertID = (int) (long) DBHandler.getWritable(context).
+                    insert(getTableName(), null, contentValues);
+            return lastInsertID != -1;
         } else {
             String whereClause = "id=?";
             String[] whereArgs = new String[]{ Integer.toString(id) };
@@ -56,7 +62,7 @@ public abstract class DataObject {
         }
     }
 
-    public Object find(Context context, int id) {
+    public <T extends DataObject> T find(Context context, int id, T returnType) {
         Cursor cursor = DBHandler.getReadable(context).query(getTableName(),
                 getColumns(),
                 "id=?",
@@ -64,7 +70,7 @@ public abstract class DataObject {
                 null, null, null, null);
 
         if (cursor.moveToFirst()) {
-            Object object = bindCursor(cursor);
+            T object = (T) bindCursor(cursor);
             cursor.close();
             return object;
         } else {
@@ -73,8 +79,8 @@ public abstract class DataObject {
         }
     }
 
-    public static int getLastInesertID() {
-        return lastInesertID;
+    public static int getLastInsertID() {
+        return lastInsertID;
     }
 
     protected abstract ContentValues getContentValues();
@@ -92,22 +98,22 @@ public abstract class DataObject {
         }
     }
 
-    protected abstract Object bindCursor(Cursor cursor);
+    protected abstract DataObject bindCursor(Cursor cursor);
 
     public Object[] selectAll(Context context) {
-        return selectAll(context, new QueryParams());
+        return selectAll(context, new QueryParams(), this.getClass());
     }
 
-    public Object[] selectAll(Context context, QueryParams queryParams) {
+    public <T extends DataObject> T[] selectAll(Context context, QueryParams queryParams, Class<T> c) {
         Cursor cursor = DBHandler.getReadable(context).query(table.getTableName(),
                 table.getColumns(),
                 null, null, queryParams.groupBy, null, queryParams.orderBy, queryParams.limit);
 
         if (cursor.moveToFirst()) {
-            Object[] objects = new Object[cursor.getCount()];
+            final T[] objects = (T[]) Array.newInstance(c, cursor.getCount());
 
             do {
-                objects[cursor.getPosition()] = bindCursor(cursor);
+                objects[cursor.getPosition()] = (T) bindCursor(cursor);
             } while (cursor.moveToNext());
 
             return objects;

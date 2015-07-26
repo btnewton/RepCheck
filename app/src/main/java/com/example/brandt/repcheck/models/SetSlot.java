@@ -62,18 +62,26 @@ public class SetSlot extends DataObject {
     public static List<SetSlot> selectAllByDate(Context context) {
         QueryParams queryParams = new QueryParams();
         queryParams.orderBy = SetSlotTable.LAST_USED + " DESC";
-        return Arrays.asList((SetSlot[]) new SetSlot().selectAll(context, queryParams));
+        SetSlot setSlot = new SetSlot();
+        return Arrays.asList((SetSlot[])setSlot.selectAll(context, queryParams, setSlot.getClass()));
     }
 
     public static SetSlot first(Context context) {
         QueryParams queryParams = new QueryParams();
         queryParams.orderBy = SetSlotTable.LAST_USED + " DESC";
         queryParams.limit = "1";
-        return(SetSlot) new SetSlot().selectAll(context, queryParams)[0];
+        SetSlot setSlot = new SetSlot();
+        SetSlot[] objects = setSlot.selectAll(context, queryParams, setSlot.getClass());
+        if (objects != null) {
+            return (SetSlot) objects[0];
+        } else {
+            return null;
+        }
     }
 
     public static SetSlot findById(Context context, int id) {
-        return (SetSlot) new SetSlot().find(context, id);
+        SetSlot setSlot = new SetSlot();
+        return setSlot.find(context, id, setSlot);
     }
 
     public int getReps() {
@@ -114,7 +122,7 @@ public class SetSlot extends DataObject {
     }
 
     @Override
-    protected Object bindCursor(Cursor cursor) {
+    protected DataObject bindCursor(Cursor cursor) {
         SetSlot set = new SetSlot(
                 cursor.getInt(0),
                 cursor.getInt(2),
