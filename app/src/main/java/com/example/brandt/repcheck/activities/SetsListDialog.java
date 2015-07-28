@@ -38,7 +38,7 @@ public abstract class SetsListDialog extends DialogFragment implements Observer,
 
         asyncHandler = new Handler();
         adapter = new StandardRowItemAdapter(getActivity(), getActivity().getLayoutInflater(), null);
-
+        rowItems = new ArrayList<>();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getTitle())
                 .setAdapter(adapter, this);
@@ -72,14 +72,21 @@ public abstract class SetsListDialog extends DialogFragment implements Observer,
         public void run() {
 
             List<SetSlot> setSlots = SetSlot.selectAllByDate(getActivity());
-            rowItems = new ArrayList<>(setSlots.size());
 
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String unitType = sharedPreferences.getString(getActivity().getString(R.string.pref_units_key), getActivity().getString(R.string.pref_units_imperial));
-            Unit unit = Unit.newUnitByString(unitType, getActivity());
+            if (setSlots != null) {
+                rowItems.clear();
 
-            for (SetSlot setSlot : setSlots) {
-                rowItems.add(new StandardRowItem(setSlot.getId(), setSlot.getName(), setSlot.getReps() + " rep" + ((setSlot.getReps() != 1)? "s" : "")+" at " + setSlot.getWeight() + unit.getUnit() + "s"));
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                String unitType = sharedPreferences.getString(getActivity().getString(R.string.pref_units_key), getActivity().getString(R.string.pref_units_imperial));
+                Unit unit = Unit.newUnitByString(unitType, getActivity());
+
+                for (SetSlot setSlot : setSlots) {
+                    rowItems.add(new StandardRowItem(setSlot.getId(), setSlot.getName(), setSlot.getReps() + " rep" + ((setSlot.getReps() != 1) ? "s" : "") + " at " + setSlot.getWeight() + unit.getUnit() + "s"));
+                }
+
+
+            } else {
+                rowItems = null;
             }
 
             asyncHandler.post(new Runnable() {

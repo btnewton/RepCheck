@@ -5,11 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
-    <LinearLayout
-        android:focusable="true" android:focusableInTouchMode="true"
-        android:layout_width="0px" android:layout_height="0px"/>
-
     <LinearLayout
         android:layout_margin="@dimen/standard"
         android:id="@+id/weight_input_wrapper"
@@ -28,12 +23,8 @@
             android:layout_marginStart="@dimen/standard"
             android:layout_marginEnd="@dimen/standard"
             android:selectAllOnFocus="true"
-            android:hint="Weight"
-            android:nextFocusUp="@id/weight"
-            android:nextFocusLeft="@id/weight"
-            android:digits="0123456789"
             android:gravity="center"
-            android:inputType="numberSigned"
+            android:inputType="numberDecimal"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content" />

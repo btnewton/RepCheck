@@ -63,7 +63,28 @@ public class SetSlot extends DataObject {
         QueryParams queryParams = new QueryParams();
         queryParams.orderBy = SetSlotTable.LAST_USED + " DESC";
         SetSlot setSlot = new SetSlot();
-        return Arrays.asList((SetSlot[])setSlot.selectAll(context, queryParams, setSlot.getClass()));
+        SetSlot[] results = setSlot.select(context, queryParams, setSlot.getClass());
+        if (results != null) {
+            return Arrays.asList(results);
+        } else {
+            return null;
+        }
+    }
+
+    public static SetSlot findByName(Context context, String name) {
+        QueryParams queryParams = new QueryParams();
+        queryParams.selection = SetSlotTable.NAME + " LIKE ?";
+        queryParams.selectionArgs = new String[] {name};
+        SetSlot setSlot = new SetSlot();
+        return setSlot.select(context, queryParams, setSlot.getClass())[0];
+    }
+
+    public boolean nameUnique(Context context) {
+        QueryParams queryParams = new QueryParams();
+        queryParams.selection = SetSlotTable.NAME + " LIKE ?";
+        queryParams.selectionArgs = new String[] {name};
+        SetSlot setSlot = new SetSlot();
+        return setSlot.select(context, queryParams, setSlot.getClass()) == null;
     }
 
     public static SetSlot first(Context context) {
@@ -71,9 +92,9 @@ public class SetSlot extends DataObject {
         queryParams.orderBy = SetSlotTable.LAST_USED + " DESC";
         queryParams.limit = "1";
         SetSlot setSlot = new SetSlot();
-        SetSlot[] objects = setSlot.selectAll(context, queryParams, setSlot.getClass());
+        SetSlot[] objects = setSlot.select(context, queryParams, setSlot.getClass());
         if (objects != null) {
-            return (SetSlot) objects[0];
+            return objects[0];
         } else {
             return null;
         }

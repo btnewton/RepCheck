@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -102,12 +104,42 @@ public class MaxRepFragment extends Fragment {
         // Weight input
         weightEditText = (EditText) view.findViewById(R.id.weight);
         weightEditText.setText(Double.toString(formulaWrapper.getTotalWeight()));
+        weightEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                double weight;
+                try {
+                    weight = Double.parseDouble(weightEditText.getText().toString());
+                } catch (Exception e) {
+                    //
+                    weight = -1;
+                }
+
+                if (weight >= 0) {
+                    formulaWrapper.setWeight(weight);
+                    updateCalculations();
+                } else {
+                    weightEditText.setText("0");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         weightEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
+            public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
-                    formulaWrapper.setWeight(Double.parseDouble(weightEditText.getText().toString()));
-                    updateCalculations();
+                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
             }
         });

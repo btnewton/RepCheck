@@ -100,14 +100,10 @@ public abstract class DataObject {
 
     protected abstract DataObject bindCursor(Cursor cursor);
 
-    public Object[] selectAll(Context context) {
-        return selectAll(context, new QueryParams(), this.getClass());
-    }
-
-    public <T extends DataObject> T[] selectAll(Context context, QueryParams queryParams, Class<T> c) {
+    public <T extends DataObject> T[] select(Context context, QueryParams queryParams, Class<T> c) {
         Cursor cursor = DBHandler.getReadable(context).query(table.getTableName(),
                 table.getColumns(),
-                null, null, queryParams.groupBy, null, queryParams.orderBy, queryParams.limit);
+                queryParams.selection, queryParams.selectionArgs, queryParams.groupBy, queryParams.having, queryParams.orderBy, queryParams.limit);
 
         if (cursor.moveToFirst()) {
             final T[] objects = (T[]) Array.newInstance(c, cursor.getCount());
@@ -116,6 +112,7 @@ public abstract class DataObject {
                 objects[cursor.getPosition()] = (T) bindCursor(cursor);
             } while (cursor.moveToNext());
 
+            cursor.close();
             return objects;
         } else {
             cursor.close();
