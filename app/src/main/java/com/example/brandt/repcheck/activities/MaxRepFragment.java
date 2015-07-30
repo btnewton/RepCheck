@@ -252,7 +252,7 @@ public class MaxRepFragment extends Fragment {
                 return true;
             case R.id.action_save:
                 SaveSetDialog saveSetDialog =
-                        SaveSetDialog.newInstance(new LoadUpdateHandler(this), formulaWrapper.getReps(), formulaWrapper.getWeight());
+                        SaveSetDialog.newInstance(formulaWrapper.getReps(), formulaWrapper.getWeight());
                 saveSetDialog.show(getFragmentManager(), getTag());
                 return true;
             default:

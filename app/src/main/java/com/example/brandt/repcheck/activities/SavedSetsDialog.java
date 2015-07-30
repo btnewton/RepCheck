@@ -9,6 +9,8 @@ import android.os.Message;
  */
 public class SavedSetsDialog extends SetsListDialog {
 
+    private static Handler updateHandler;
+
     public static SavedSetsDialog newInstance(Handler updateHandler) {
         SavedSetsDialog fragment = new SavedSetsDialog();
         SavedSetsDialog.updateHandler = updateHandler;
