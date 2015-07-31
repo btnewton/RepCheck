@@ -24,14 +24,11 @@ public class SetSlot extends DataObject {
     private double weight;
     private Date lastUsed;
 
-    public static SetSlot defaultSet(String name) {
-        SetSlot setSlot = new SetSlot(10, 135);
-        setSlot.setName(name);
-        return setSlot;
-    }
-
     private SetSlot() {
         super(SetSlotTable.class, true);
+
+        if (lastUsed == null)
+            lastUsed = new Date();
     }
 
     public SetSlot(int reps, double weight) {
@@ -98,6 +95,10 @@ public class SetSlot extends DataObject {
         } else {
             return null;
         }
+    }
+
+    public static int getSlotCount(Context context) {
+        return new SetSlot().getCount(context);
     }
 
     public static SetSlot findById(Context context, int id) {

@@ -16,6 +16,7 @@ public abstract class DataObject {
     private boolean isNewRecord;
     private static Schema table;
     private static int lastInsertID;
+    private String primaryKey;
 
     protected <T extends Schema> DataObject(Class<T> tableType, boolean isNewRecord) {
         if (table == null) {
@@ -27,8 +28,12 @@ public abstract class DataObject {
                 e.printStackTrace();
             }
         }
-
+        primaryKey = "id";
         this.isNewRecord = isNewRecord;
+    }
+
+    public void setPrimaryKey(String primaryKey) {
+        this.primaryKey = primaryKey;
     }
 
     public void setId(int id) {
@@ -42,7 +47,6 @@ public abstract class DataObject {
     protected void setIsNewRecord(boolean isNewRecord) {
         this.isNewRecord = isNewRecord;
     }
-
 
     public boolean saveChanges(Context context) {
         if (isNewRecord) {
@@ -60,6 +64,14 @@ public abstract class DataObject {
             return DBHandler.getWritable(context).
                     update(getTableName(), getContentValues(), whereClause, whereArgs) > 0;
         }
+    }
+
+    public int getCount(Context context) {
+        Cursor cursor = DBHandler.getReadable(context).query(getTableName(),
+                getColumns(),
+                null, null, null, null, null, null);
+
+        return cursor.getCount();
     }
 
     public <T extends DataObject> T find(Context context, int id, T returnType) {

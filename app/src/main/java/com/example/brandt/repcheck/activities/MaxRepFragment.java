@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.brandt.repcheck.R;
+import com.example.brandt.repcheck.database.seeders.SetSeeder;
 import com.example.brandt.repcheck.models.SetSlot;
 import com.example.brandt.repcheck.models.Unit;
 import com.example.brandt.repcheck.models.calculations.FormulaWrapper;
@@ -40,7 +41,6 @@ import java.lang.ref.WeakReference;
  */
 public class MaxRepFragment extends Fragment {
 
-    final int MAX_REPS = 20;
     FormulaWrapper formulaWrapper;
     private EditText weightEditText;
     private Spinner repsSpinner;
@@ -56,12 +56,11 @@ public class MaxRepFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        SetSlot setSlot = SetSlot.first(getActivity());
-
-        if (setSlot == null) {
-            // There are no saved sets
-            setSlot = SetSlot.defaultSet("Default");
+        if (SetSlot.getSlotCount(getActivity()) != getResources().getInteger(R.integer.set_slot_count)) {
+            new SetSeeder().seed(getActivity());
         }
+
+        SetSlot setSlot = SetSlot.first(getActivity());
 
         incrementValue = 5;
 
@@ -143,6 +142,8 @@ public class MaxRepFragment extends Fragment {
                 }
             }
         });
+
+        // Dismiss keyboard when enter is pressed
         weightEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             @Override
@@ -150,15 +151,14 @@ public class MaxRepFragment extends Fragment {
                 if (event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
                     InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                    // NOTE: In the author's example, he uses an identifier
-                    // called searchBar. If setting this code on your EditText
-                    // then use v.getWindowToken() as a reference to your
-                    // EditText is passed into this callback as a TextView
-
-                    in.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                            InputMethodManager.HIDE_NOT_ALWAYS);
-                    // Must return true here to consume event
-                    return true;
+                    try {
+                        in.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                                InputMethodManager.HIDE_NOT_ALWAYS);
+                        // Must return true here to consume event
+                        return true;
+                    }catch(Exception e) {
+                        return false;
+                    }
                 }
                 return false;
             }
@@ -198,11 +198,11 @@ public class MaxRepFragment extends Fragment {
         });
 
         // Rep input
-        Integer[] items = new Integer[MAX_REPS];
-        for (int i = 0; i < MAX_REPS; i++) {
+        Integer[] items = new Integer[getResources().getInteger(R.integer.max_reps)];
+        for (int i = 0; i < items.length; i++) {
             items[i] = i + 1;
         }
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(getActivity(), R.layout.big_spinner_item, items);
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(getActivity(), R.layout.big_spinner_item, items);
         repsSpinner = (Spinner) view.findViewById(R.id.rep_spinner);
         repsSpinner.setAdapter(adapter);
         repsSpinner.setSelection(formulaWrapper.getReps() - 1);
@@ -261,7 +261,7 @@ public class MaxRepFragment extends Fragment {
     }
 
     private void updateCalculations() {
-        weightListAdapter.updateData(formulaWrapper.getWeightForRepRangeAsWeightHolderArray(MAX_REPS));
+        weightListAdapter.updateData(formulaWrapper.getWeightForRepRangeAsWeightHolderArray(getResources().getInteger(R.integer.max_reps)));
     }
 
     private void showIncrementList() {
@@ -274,7 +274,7 @@ public class MaxRepFragment extends Fragment {
         private final WeakReference<MaxRepFragment> mActivity;
 
         public IncrementUpdateHandler(MaxRepFragment maxRepFragment) {
-            mActivity = new WeakReference<MaxRepFragment>(maxRepFragment);
+            mActivity = new WeakReference<>(maxRepFragment);
         }
 
         @Override
@@ -289,7 +289,7 @@ public class MaxRepFragment extends Fragment {
         private final WeakReference<MaxRepFragment> mActivity;
 
         public LoadUpdateHandler(MaxRepFragment maxRepFragment) {
-            mActivity = new WeakReference<MaxRepFragment>(maxRepFragment);
+            mActivity = new WeakReference<>(maxRepFragment);
         }
 
         @Override
