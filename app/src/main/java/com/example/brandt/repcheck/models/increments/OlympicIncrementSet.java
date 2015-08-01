@@ -29,4 +29,9 @@ public class OlympicIncrementSet extends IncrementSet {
     public double[] getIncrements() {
         return imperialSet;
     }
+
+    @Override
+    public int getDefaultWeightIndex() {
+        return 1;
+    }
 }

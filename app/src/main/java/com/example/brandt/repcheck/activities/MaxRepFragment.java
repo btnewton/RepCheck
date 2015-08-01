@@ -30,16 +30,20 @@ import com.example.brandt.repcheck.database.seeders.SetSeeder;
 import com.example.brandt.repcheck.models.SetSlot;
 import com.example.brandt.repcheck.models.Unit;
 import com.example.brandt.repcheck.models.calculations.FormulaWrapper;
+import com.example.brandt.repcheck.models.increments.IncrementFactory;
 import com.example.brandt.repcheck.models.increments.IncrementSet;
-import com.example.brandt.repcheck.models.increments.IronIncrementSet;
 import com.example.brandt.repcheck.util.adapters.WeightListAdapter;
 
 import java.lang.ref.WeakReference;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
+ * Handles all actions for app.
+ *
  * Created by brandt on 7/22/15.
  */
-public class MaxRepFragment extends Fragment {
+public class MaxRepFragment extends Fragment implements Observer {
 
     FormulaWrapper formulaWrapper;
     private EditText weightEditText;
@@ -47,8 +51,11 @@ public class MaxRepFragment extends Fragment {
     private Button subtractButton;
     private Button addButton;
     private double incrementValue;
+    private IncrementSet incrementSet;
     private WeightListAdapter weightListAdapter;
     private Unit unit;
+
+    @SuppressWarnings("FieldCanBeLocal")
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
 
     @Override
@@ -56,18 +63,19 @@ public class MaxRepFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        // Populate table if missing
         if (SetSlot.getSlotCount(getActivity()) != getResources().getInteger(R.integer.set_slot_count)) {
+            SetSlot.truncateTable(getActivity());
             new SetSeeder().seed(getActivity());
         }
-
         SetSlot setSlot = SetSlot.first(getActivity());
 
-        incrementValue = 5;
+        formulaWrapper = new FormulaWrapper(setSlot, getResources().getInteger(R.integer.max_reps));
 
-        formulaWrapper = new FormulaWrapper(setSlot);
-        formulaWrapper.setShouldFormat(true);
-        formulaWrapper.setBaseWeight(0);
-        formulaWrapper.setIsHalfWeight(false);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        loadPreferences(sharedPreferences);
+
+        formulaWrapper.addObserver(this);
     }
 
     @Override
@@ -77,22 +85,27 @@ public class MaxRepFragment extends Fragment {
         listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
-
-                unit = Unit.newUnitByString(unitType, getActivity());
-                formulaWrapper.setUnit(unit);
-                updateCalculations();
-                updateButtons();
+                loadPreferences(sharedPreferences);
             }
         };
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener);
-
-        if (unit == null) {
-            listener.onSharedPreferenceChanged(sharedPreferences, null);
-        }
     }
+
+    private void loadPreferences(SharedPreferences sharedPreferences) {
+        String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
+
+        unit = Unit.newUnitByString(unitType, getActivity());
+        formulaWrapper.setUnit(unit);
+
+        String plateStyle = sharedPreferences.getString(getString(R.string.pref_plate_style_key), getString(R.string.pref_plate_style_classic));
+        incrementSet = IncrementFactory.Make(getActivity(), plateStyle, unit);
+
+        updateIncrement(incrementSet.getDefaultWeightIndex());
+    }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -102,7 +115,7 @@ public class MaxRepFragment extends Fragment {
 
         // Weight input
         weightEditText = (EditText) view.findViewById(R.id.weight);
-        weightEditText.setText(Double.toString(formulaWrapper.getTotalWeight()));
+        weightEditText.setText(Double.toString(formulaWrapper.getWeight()));
         weightEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -122,8 +135,8 @@ public class MaxRepFragment extends Fragment {
 
                 if (weight >= 0) {
                     formulaWrapper.setWeight(weight);
-                    updateCalculations();
                 } else {
+                    // Pseudo-recursive call
                     weightEditText.setText("0");
                 }
             }
@@ -133,6 +146,7 @@ public class MaxRepFragment extends Fragment {
 
             }
         });
+
         weightEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
@@ -151,13 +165,14 @@ public class MaxRepFragment extends Fragment {
                 if (event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
                     InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-                    try {
-                        in.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                    View focus = getActivity().getCurrentFocus();
+
+                    if (focus != null) {
+
+                        in.hideSoftInputFromWindow(focus.getWindowToken(),
                                 InputMethodManager.HIDE_NOT_ALWAYS);
                         // Must return true here to consume event
                         return true;
-                    }catch(Exception e) {
-                        return false;
                     }
                 }
                 return false;
@@ -168,9 +183,8 @@ public class MaxRepFragment extends Fragment {
         subtractButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                formulaWrapper.incrementWeight( -incrementValue);
+                formulaWrapper.incrementWeight(-incrementValue);
                 weightEditText.setText(Double.toString(formulaWrapper.getWeight()));
-                updateCalculations();
             }
         });
         subtractButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -186,7 +200,6 @@ public class MaxRepFragment extends Fragment {
             public void onClick(View v) {
                 formulaWrapper.incrementWeight(incrementValue);
                 weightEditText.setText(Double.toString(formulaWrapper.getWeight()));
-                updateCalculations();
             }
         });
         addButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -212,7 +225,6 @@ public class MaxRepFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 formulaWrapper.setReps(position + 1);
-                updateCalculations();
             }
 
             @Override
@@ -226,9 +238,6 @@ public class MaxRepFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.list_view);
         listView.setEmptyView(view.findViewById(android.R.id.empty));
         listView.setAdapter(weightListAdapter);
-
-        // Populates list
-        updateCalculations();
 
         return view;
     }
@@ -260,14 +269,22 @@ public class MaxRepFragment extends Fragment {
         }
     }
 
-    private void updateCalculations() {
-        weightListAdapter.updateData(formulaWrapper.getWeightForRepRangeAsWeightHolderArray(getResources().getInteger(R.integer.max_reps)));
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        formulaWrapper.calculateSets();
     }
 
     private void showIncrementList() {
         ChangeIncrementDialog changeIncrementDialog =
                 ChangeIncrementDialog.newInstance(new IncrementUpdateHandler(this));
         changeIncrementDialog.show(getFragmentManager(), getTag());
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        if (observable instanceof FormulaWrapper) {
+            weightListAdapter.updateData(formulaWrapper.getSets());
+        }
     }
 
     public static class IncrementUpdateHandler extends Handler {
@@ -296,30 +313,32 @@ public class MaxRepFragment extends Fragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             MaxRepFragment maxRepFragment = mActivity.get();
-            maxRepFragment.updateSet(msg.arg1);
+            maxRepFragment.loadSet(msg.arg1);
         }
     }
 
-    public void updateSet(int id) {
-        formulaWrapper.update(SetSlot.findById(getActivity(), id));
-        updateInput();
-        updateCalculations();
+    public FormulaWrapper getFormulaWrapper() {
+        return formulaWrapper;
     }
 
-    public void updateInput() {
-        repsSpinner.setSelection(formulaWrapper.getReps() - 1);
-        weightEditText.setText(Double.toString(formulaWrapper.getWeight()));
+    public double getIncrementValue() {
+        return incrementValue;
+    }
+
+    public void loadSet(int id) {
+        SetSlot set = SetSlot.findById(getActivity(), id);
+        repsSpinner.setSelection(set.getReps() - 1);
+        weightEditText.setText(Double.toString(set.getWeight()));
     }
 
     public void updateIncrement(int index) {
-        IncrementSet incrementSet = new IronIncrementSet(unit);
         incrementValue = incrementSet.getIncrements()[index];
-        updateButtons();
-    }
 
-    private void updateButtons() {
-        String incrementText = incrementValue + " " + unit.getUnit() + ((incrementValue != 1)? "s" : "");
-        subtractButton.setText("-" + incrementText);
-        addButton.setText("+" + incrementText);
+        // Update buttons
+        if (subtractButton != null && addButton != null) {
+            String incrementText = incrementValue + " " + unit.getUnit() + ((incrementValue != 1) ? "s" : "");
+            subtractButton.setText("-" + incrementText);
+            addButton.setText("+" + incrementText);
+        }
     }
 }

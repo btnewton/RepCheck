@@ -5,7 +5,7 @@ import com.example.brandt.repcheck.models.Unit;
 /**
  * Created by Brandt on 7/23/2015.
  */
-public class IronIncrementSet extends IncrementSet {
+public class ClassicIncrementSet extends IncrementSet {
 
     private double[] imperialSet = new double[] {
             2.5,
@@ -17,7 +17,7 @@ public class IronIncrementSet extends IncrementSet {
             100
     };
 
-    public IronIncrementSet(Unit unit) {
+    public ClassicIncrementSet(Unit unit) {
         super(unit);
     }
 
@@ -29,5 +29,10 @@ public class IronIncrementSet extends IncrementSet {
     @Override
     public double[] getIncrements() {
         return imperialSet;
+    }
+
+    @Override
+    public int getDefaultWeightIndex() {
+        return 2;
     }
 }

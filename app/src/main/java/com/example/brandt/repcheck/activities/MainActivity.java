@@ -32,7 +32,7 @@ public class MainActivity extends ActionBarActivity {
         maxRepFragment = new MaxRepFragment();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content, maxRepFragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.content, maxRepFragment, "MaxRepFragment").commit();
     }
 
     @Override

@@ -2,4 +2,5 @@
 <resources>
     <integer name="max_reps">20</integer>
     <integer name="set_slot_count">6</integer>
+    <integer name="max_slot_name_length">16</integer>
 </resources>

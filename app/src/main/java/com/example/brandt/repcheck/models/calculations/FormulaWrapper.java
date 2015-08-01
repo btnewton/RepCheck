@@ -6,111 +6,62 @@ import com.example.brandt.repcheck.util.adapters.WeightHolder;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Observable;
 
 /**
  * Created by Brandt on 7/23/2015.
  */
-public class FormulaWrapper {
+public class FormulaWrapper extends Observable {
 
     private int reps;
     private double weight;
-    private boolean isHalfWeight;
-    private double baseWeight;
-    private boolean shouldFormat;
     private Unit unit;
+    private WeightHolder[] weightHolders;
+    private int setRange;
 
-    public FormulaWrapper(SetSlot setSlot) {
+    public FormulaWrapper(SetSlot setSlot, int setRange) {
         this.reps = setSlot.getReps();
         this.weight = setSlot.getWeight();
-        isHalfWeight = false;
-        baseWeight = 0;
-        shouldFormat = false;
         unit = Unit.ImperialUnit();
+        this.setRange = setRange;
+        weightHolders = new WeightHolder[setRange];
     }
 
     public void update(SetSlot setSlot) {
         reps = setSlot.getReps();
         weight = setSlot.getWeight();
-    }
-
-    public void setIsHalfWeight(boolean isHalfWeight) {
-        this.isHalfWeight = isHalfWeight;
-    }
-
-    public void setBaseWeight(double baseWeight) {
-        this.baseWeight = baseWeight;
-    }
-
-    public void setShouldFormat(boolean shouldFormat) {
-        this.shouldFormat = shouldFormat;
+        calculateSets();
     }
 
     public void incrementWeight(double incrementValue) {
         weight += incrementValue;
+        calculateSets();
     }
 
     public void setWeight(double weight) {
         this.weight = weight;
+        calculateSets();
     }
 
-    public double getTotalWeight() {
-        double totalWeight = weight;
-
-        if (isHalfWeight)
-            totalWeight *= 2;
-
-        totalWeight += baseWeight;
-
-        return totalWeight;
-    }
-
-    public double getWeightForReps(int index) {
-        Brzycki brzycki = new Brzycki(reps, getTotalWeight());
-        return brzycki.getWeightForReps(index);
-    }
-
-    public double[] getWeightForRepRange(int size) {
-        Brzycki brzycki = new Brzycki(reps, getTotalWeight());
-        double[] weights = new double[size];
-
-        for (int i = 0; i < size; i++) {
-            int reps = i + 1;
-            weights[i] = brzycki.getWeightForReps(reps);
-        }
-
-        return weights;
-    }
-
-    public WeightHolder[] getWeightForRepRangeAsWeightHolderArray(int size) {
-
+    public void calculateSets() {
         NumberFormat formatter = getFormatter();
-        Brzycki brzycki = new Brzycki(reps, getTotalWeight());
+        Brzycki brzycki = new Brzycki(reps, weight);
 
-        WeightHolder[] weightHolders = new WeightHolder[size];
-
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < weightHolders.length; i++) {
             int reps = i + 1;
             double weight = brzycki.getWeightForReps(reps);
             weightHolders[i] = new WeightHolder(reps, formatter.format(weight) + " " + unit.getUnit() + ((weight != 1)? "s" : ""));
         }
 
-        return weightHolders;
+        notifyObservers();
     }
 
     private NumberFormat getFormatter() {
-        NumberFormat formatter;
-
-        if (shouldFormat) {
-            formatter = new DecimalFormat("#0");
-        } else {
-            formatter = new DecimalFormat("#0.00");
-        }
-
-        return formatter;
+        return new DecimalFormat("#0.00");
     }
 
-    public String getWeightAsString(int index) {
-        return getFormatter().format(getWeightForReps(index));
+    public WeightHolder[] getSets() {
+        return weightHolders;
     }
 
     public double getWeight() {
@@ -127,5 +78,6 @@ public class FormulaWrapper {
 
     public void setUnit(Unit unit) {
         this.unit = unit;
+        calculateSets();
     }
 }

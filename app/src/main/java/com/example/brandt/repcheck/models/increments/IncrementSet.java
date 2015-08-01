@@ -28,4 +28,6 @@ public abstract class IncrementSet {
 
         return formattedIncrements;
     }
+
+    public abstract int getDefaultWeightIndex();
 }

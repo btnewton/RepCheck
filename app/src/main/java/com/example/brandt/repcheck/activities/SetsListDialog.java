@@ -146,10 +146,16 @@ public abstract class SetsListDialog extends DialogFragment implements Observer,
             builder.setPositiveButton("Rename", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    String name = input.getText().toString();
+                    String name = input.getText().toString().trim();
                     dialog.dismiss();
 
-                    if (!name.isEmpty() && setSlot != null) {
+                    if (setSlot == null) {
+                        return;
+                    }
+
+                    int maxLength = getResources().getInteger(R.integer.max_slot_name_length);
+
+                    if (!name.isEmpty() && name.length() <= maxLength) {
                         setSlot.setName(name);
 
                         if (setSlot.nameUnique(getActivity())) {
@@ -159,6 +165,9 @@ public abstract class SetsListDialog extends DialogFragment implements Observer,
                             Toast toast = Toast.makeText(getActivity(), "Name taken.", Toast.LENGTH_SHORT);
                             toast.show();
                         }
+                    } else {
+                        Toast toast = Toast.makeText(getActivity(), "Name must have 1 to " + maxLength + " characters.", Toast.LENGTH_SHORT);
+                        toast.show();
                     }
                 }
             });

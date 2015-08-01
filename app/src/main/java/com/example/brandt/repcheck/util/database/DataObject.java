@@ -132,6 +132,10 @@ public abstract class DataObject {
         }
     }
 
+    public static void truncateTable(Context context) {
+        table.truncate(context);
+    }
+
     protected String[] getColumns() {
         return table.getColumns();
     }

@@ -11,7 +11,7 @@ import android.support.v4.app.DialogFragment;
 import android.widget.ArrayAdapter;
 
 import com.example.brandt.repcheck.models.Unit;
-import com.example.brandt.repcheck.models.increments.IronIncrementSet;
+import com.example.brandt.repcheck.models.increments.ClassicIncrementSet;
 
 /**
  * Created by Brandt on 7/23/2015.
@@ -31,7 +31,7 @@ public class ChangeIncrementDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // TODO get unit and increment type from preferences
         ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new IronIncrementSet(Unit.ImperialUnit()).getIncrementsAsStringArray());
+                new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, new ClassicIncrementSet(Unit.ImperialUnit()).getIncrementsAsStringArray());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Set Slot Interval")
