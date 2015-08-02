@@ -1,4 +1,4 @@
-package com.example.brandt.repcheck.activities;
+package com.example.brandt.repcheck.activities.saveslots;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -15,8 +15,8 @@ public class SaveSetDialog extends SetsListDialog implements Observer {
     private static final String REPS_KEY = "reps";
     private static final String WEIGHT_KEY = "weight";
 
-    private static int reps;
-    private static double weight;
+    private int reps;
+    private double weight;
 
     public static SaveSetDialog newInstance(int reps, double weight) {
         SaveSetDialog fragment = new SaveSetDialog();

@@ -8,6 +8,11 @@ public class WeightHolder {
     private String reps;
     private String weight;
 
+    public WeightHolder(String reps, String weight) {
+        this.reps = reps;
+        this.weight = weight;
+    }
+
     public WeightHolder(int reps, double weight) {
         this.reps = Integer.toString(reps);
         this.weight = Double.toString(weight);

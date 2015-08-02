@@ -13,17 +13,11 @@ public class ClassicIncrementSet extends IncrementSet {
             10,
             25,
             35,
-            45,
-            100
+            45
     };
 
     public ClassicIncrementSet(Unit unit) {
         super(unit);
-    }
-
-    @Override
-    public int getCount() {
-        return 0;
     }
 
     @Override

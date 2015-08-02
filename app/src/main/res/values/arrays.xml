@@ -5,11 +5,6 @@
         <item>@string/pref_units_imperial</item>
     </string-array>
 
-    <string-array name="weight_input_styles">
-        <item>@string/pref_weight_input_style_single_side</item>
-        <item>@string/pref_weight_input_style_both_sides</item>
-    </string-array>
-
     <string-array name="plate_styles">
         <item>@string/pref_plate_style_classic</item>
         <item>@string/pref_plate_style_olympic</item>

@@ -1,4 +1,4 @@
-package com.example.brandt.repcheck.activities;
+package com.example.brandt.repcheck.activities.saveslots;
 
 import android.content.DialogInterface;
 import android.os.Handler;

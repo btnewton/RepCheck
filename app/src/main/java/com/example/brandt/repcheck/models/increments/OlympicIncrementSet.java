@@ -21,11 +21,6 @@ public class OlympicIncrementSet extends IncrementSet {
     }
 
     @Override
-    public int getCount() {
-        return 0;
-    }
-
-    @Override
     public double[] getIncrements() {
         return imperialSet;
     }

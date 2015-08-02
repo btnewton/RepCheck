@@ -1,0 +1,13 @@
+<android.support.v7.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?attr/actionBarSize"
+    android:background="@color/primary"
+    android:theme="@style/ToolbarStyle"
+    android:elevation="7dp"
+    app:popupTheme="@style/Theme.AppCompat.NoActionBar"
+    app:navigationContentDescription="@string/abc_action_bar_up_description"
+    app:navigationIcon="?attr/homeAsUpIndicator"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" />

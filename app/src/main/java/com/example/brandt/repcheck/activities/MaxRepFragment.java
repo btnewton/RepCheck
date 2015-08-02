@@ -26,6 +26,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.brandt.repcheck.R;
+import com.example.brandt.repcheck.activities.barconstruction.BarConstructionDialog;
+import com.example.brandt.repcheck.activities.saveslots.SaveSetDialog;
+import com.example.brandt.repcheck.activities.saveslots.SavedSetsDialog;
 import com.example.brandt.repcheck.database.seeders.SetSeeder;
 import com.example.brandt.repcheck.models.SetSlot;
 import com.example.brandt.repcheck.models.Unit;
@@ -91,6 +94,8 @@ public class MaxRepFragment extends Fragment implements Observer {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener);
+
+        formulaWrapper.calculateSets();
     }
 
     private void loadPreferences(SharedPreferences sharedPreferences) {
@@ -104,8 +109,6 @@ public class MaxRepFragment extends Fragment implements Observer {
 
         updateIncrement(incrementSet.getDefaultWeightIndex());
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -183,8 +186,7 @@ public class MaxRepFragment extends Fragment implements Observer {
         subtractButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                formulaWrapper.incrementWeight(-incrementValue);
-                weightEditText.setText(Double.toString(formulaWrapper.getWeight()));
+                incrementWeight(-incrementValue);
             }
         });
         subtractButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -198,8 +200,7 @@ public class MaxRepFragment extends Fragment implements Observer {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                formulaWrapper.incrementWeight(incrementValue);
-                weightEditText.setText(Double.toString(formulaWrapper.getWeight()));
+                incrementWeight(incrementValue);
             }
         });
         addButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -211,11 +212,11 @@ public class MaxRepFragment extends Fragment implements Observer {
         });
 
         // Rep input
-        Integer[] items = new Integer[getResources().getInteger(R.integer.max_reps)];
+        String[] items = new String[getResources().getInteger(R.integer.max_reps)];
         for (int i = 0; i < items.length; i++) {
-            items[i] = i + 1;
+            items[i] = i + 1 + " reps";
         }
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(getActivity(), R.layout.big_spinner_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.big_spinner_item, items);
         repsSpinner = (Spinner) view.findViewById(R.id.rep_spinner);
         repsSpinner.setAdapter(adapter);
         repsSpinner.setSelection(formulaWrapper.getReps() - 1);
@@ -238,8 +239,22 @@ public class MaxRepFragment extends Fragment implements Observer {
         ListView listView = (ListView) view.findViewById(R.id.list_view);
         listView.setEmptyView(view.findViewById(android.R.id.empty));
         listView.setAdapter(weightListAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                BarConstructionDialog barConstructionDialog =
+                        BarConstructionDialog.newInstance(formulaWrapper.getWeight());
+                barConstructionDialog.show(getFragmentManager(), getTag());
+            }
+        });
 
         return view;
+    }
+
+    public void incrementWeight(double incrementValue) {
+        double currentWeight = Double.parseDouble(weightEditText.getText().toString());
+        currentWeight += incrementValue;
+        weightEditText.setText(Double.toString(currentWeight));
     }
 
     @Override
@@ -282,9 +297,7 @@ public class MaxRepFragment extends Fragment implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        if (observable instanceof FormulaWrapper) {
-            weightListAdapter.updateData(formulaWrapper.getSets());
-        }
+        weightListAdapter.updateData(formulaWrapper.getSets());
     }
 
     public static class IncrementUpdateHandler extends Handler {

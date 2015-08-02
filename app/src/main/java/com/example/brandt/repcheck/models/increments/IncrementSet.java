@@ -15,7 +15,6 @@ public abstract class IncrementSet {
         this.unit = unit;
     }
 
-    public abstract int getCount();
     public abstract double[] getIncrements();
 
     public ArrayList<String> getIncrementsAsStringArray() {

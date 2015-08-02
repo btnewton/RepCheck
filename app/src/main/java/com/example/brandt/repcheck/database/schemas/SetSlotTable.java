@@ -22,7 +22,6 @@ public class SetSlotTable extends Schema {
             SetSlotTable.LAST_USED,
     };
 
-
     @Override
     public String getTableName() {
         return TABLE_NAME;

@@ -14,19 +14,6 @@
         android:entries="@array/plate_styles"
         android:entryValues="@array/plate_styles" />
 
-    <ListPreference
-        android:key="@string/pref_weight_input_style_key"
-        android:title="@string/pref_weight_input_style_label"
-        android:defaultValue="@string/pref_weight_input_style_both_sides"
-        android:entries="@array/weight_input_styles"
-        android:entryValues="@array/weight_input_styles" />
-
-    <CheckBoxPreference
-        android:key="@string/pref_add_equipment_weight_key"
-        android:title="@string/pref_add_equipment_weight_label"
-        android:summary="@string/pref_description_add_equipment_weight"
-        android:defaultValue="false" />
-
     <EditTextPreference
         android:key="@string/pref_bar_weight_key"
         android:title="@string/pref_bar_weight_label"

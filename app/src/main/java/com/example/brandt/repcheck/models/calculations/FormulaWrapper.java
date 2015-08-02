@@ -2,6 +2,8 @@ package com.example.brandt.repcheck.models.calculations;
 
 import com.example.brandt.repcheck.models.SetSlot;
 import com.example.brandt.repcheck.models.Unit;
+import com.example.brandt.repcheck.models.calculations.formulas.Brzycki;
+import com.example.brandt.repcheck.models.calculations.formulas.OneRepMaxFormula;
 import com.example.brandt.repcheck.util.adapters.WeightHolder;
 
 import java.text.DecimalFormat;
@@ -18,6 +20,7 @@ public class FormulaWrapper extends Observable {
     private Unit unit;
     private WeightHolder[] weightHolders;
     private int setRange;
+    private OneRepMaxFormula oneRepMaxFormula;
 
     public FormulaWrapper(SetSlot setSlot, int setRange) {
         this.reps = setSlot.getReps();
@@ -25,34 +28,49 @@ public class FormulaWrapper extends Observable {
         unit = Unit.ImperialUnit();
         this.setRange = setRange;
         weightHolders = new WeightHolder[setRange];
+
+        // TODO delete?
+        Brzycki brzycki = new Brzycki();
+    }
+
+    public void setFormula(OneRepMaxFormula oneRepMaxFormula) {
+        this.oneRepMaxFormula = oneRepMaxFormula;
     }
 
     public void update(SetSlot setSlot) {
-        reps = setSlot.getReps();
-        weight = setSlot.getWeight();
-        calculateSets();
-    }
-
-    public void incrementWeight(double incrementValue) {
-        weight += incrementValue;
-        calculateSets();
+        if (reps != setSlot.getReps() || weight != setSlot.getWeight()) {
+            reps = setSlot.getReps();
+            weight = setSlot.getWeight();
+            calculateSets();
+        }
     }
 
     public void setWeight(double weight) {
-        this.weight = weight;
-        calculateSets();
+        if (this.weight != weight) {
+            this.weight = weight;
+            calculateSets();
+        }
+    }
+
+    public void setReps(int reps) {
+        if (this.reps != reps) {
+            this.reps = reps;
+            calculateSets();
+        }
     }
 
     public void calculateSets() {
         NumberFormat formatter = getFormatter();
-        Brzycki brzycki = new Brzycki(reps, weight);
+
+        oneRepMaxFormula.update(reps, weight);
 
         for (int i = 0; i < weightHolders.length; i++) {
             int reps = i + 1;
-            double weight = brzycki.getWeightForReps(reps);
+            double weight = oneRepMaxFormula.getWeightWeightForReps(reps);
             weightHolders[i] = new WeightHolder(reps, formatter.format(weight) + " " + unit.getUnit() + ((weight != 1)? "s" : ""));
         }
 
+        setChanged();
         notifyObservers();
     }
 
@@ -72,9 +90,6 @@ public class FormulaWrapper extends Observable {
         return reps;
     }
 
-    public void setReps(int reps) {
-        this.reps = reps;
-    }
 
     public void setUnit(Unit unit) {
         this.unit = unit;
