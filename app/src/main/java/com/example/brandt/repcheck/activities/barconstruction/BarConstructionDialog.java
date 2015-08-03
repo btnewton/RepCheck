@@ -3,18 +3,18 @@ package com.example.brandt.repcheck.activities.barconstruction;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.DialogFragment;
 
 import com.example.brandt.repcheck.R;
 import com.example.brandt.repcheck.models.Unit;
 import com.example.brandt.repcheck.models.increments.IncrementFactory;
 import com.example.brandt.repcheck.models.increments.IncrementSet;
-import com.example.brandt.repcheck.util.adapters.WeightHolder;
-import com.example.brandt.repcheck.util.adapters.WeightListAdapter;
+import com.example.brandt.repcheck.util.adapters.StandardRowItem;
+import com.example.brandt.repcheck.util.adapters.StandardRowListAdapter;
 
 /**
  * Created by Brandt on 8/1/2015.
@@ -59,7 +59,8 @@ public class BarConstructionDialog extends DialogFragment implements DialogInter
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        WeightListAdapter adapter = new WeightListAdapter(getActivity(), getActivity().getLayoutInflater(), getBarConstruction());
+        StandardRowListAdapter adapter = StandardRowListAdapter.newStandardAdapter(getActivity(), getActivity().getLayoutInflater());
+        adapter.updateData(getBarConstruction());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Set Slot Interval");
@@ -68,20 +69,20 @@ public class BarConstructionDialog extends DialogFragment implements DialogInter
         return builder.create();
     }
 
-    private WeightHolder[] getBarConstruction() {
+    private StandardRowItem[] getBarConstruction() {
 
         double[] increments = incrementSet.getIncrements();
-        WeightHolder[] weightHolders = new WeightHolder[increments.length + 1];
+        StandardRowItem[] weightHolders = new StandardRowItem[increments.length + 1];
 
         for (int i = 0; i < increments.length; i++) {
             double plateWeight = increments[increments.length - i - 1];
 
             int plateCount = (int) weight / (int) plateWeight;
             weight -= plateCount * plateWeight;
-            weightHolders[i] = new WeightHolder(Double.toString(plateWeight), Integer.toString(plateCount));
+            weightHolders[i] = new StandardRowItem(0, Double.toString(plateWeight), Integer.toString(plateCount));
         }
 
-        weightHolders[weightHolders.length - 1] = new WeightHolder("Remainder", Double.toString(weight));
+        weightHolders[weightHolders.length - 1] = new StandardRowItem(0, "Remainder", Double.toString(weight));
 
         return weightHolders;
     }

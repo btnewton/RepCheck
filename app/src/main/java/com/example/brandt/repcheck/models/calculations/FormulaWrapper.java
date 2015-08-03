@@ -2,9 +2,9 @@ package com.example.brandt.repcheck.models.calculations;
 
 import com.example.brandt.repcheck.models.SetSlot;
 import com.example.brandt.repcheck.models.Unit;
-import com.example.brandt.repcheck.models.calculations.formulas.Brzycki;
+import com.example.brandt.repcheck.models.calculations.formulas.BrzyckiFormula;
 import com.example.brandt.repcheck.models.calculations.formulas.OneRepMaxFormula;
-import com.example.brandt.repcheck.util.adapters.WeightHolder;
+import com.example.brandt.repcheck.util.adapters.StandardRowItem;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -18,19 +18,15 @@ public class FormulaWrapper extends Observable {
     private int reps;
     private double weight;
     private Unit unit;
-    private WeightHolder[] weightHolders;
-    private int setRange;
+    private StandardRowItem[] weightHolders;
     private OneRepMaxFormula oneRepMaxFormula;
 
     public FormulaWrapper(SetSlot setSlot, int setRange) {
         this.reps = setSlot.getReps();
         this.weight = setSlot.getWeight();
         unit = Unit.ImperialUnit();
-        this.setRange = setRange;
-        weightHolders = new WeightHolder[setRange];
-
-        // TODO delete?
-        Brzycki brzycki = new Brzycki();
+        weightHolders = new StandardRowItem[setRange];
+        oneRepMaxFormula = new BrzyckiFormula();
     }
 
     public void setFormula(OneRepMaxFormula oneRepMaxFormula) {
@@ -67,7 +63,7 @@ public class FormulaWrapper extends Observable {
         for (int i = 0; i < weightHolders.length; i++) {
             int reps = i + 1;
             double weight = oneRepMaxFormula.getWeightWeightForReps(reps);
-            weightHolders[i] = new WeightHolder(reps, formatter.format(weight) + " " + unit.getUnit() + ((weight != 1)? "s" : ""));
+            weightHolders[i] = new StandardRowItem(0, Integer.toString(reps), formatter.format(weight) + " " + unit.getUnit() + ((weight != 1)? "s" : ""));
         }
 
         setChanged();
@@ -78,7 +74,7 @@ public class FormulaWrapper extends Observable {
         return new DecimalFormat("#0.00");
     }
 
-    public WeightHolder[] getSets() {
+    public StandardRowItem[] getSets() {
         return weightHolders;
     }
 

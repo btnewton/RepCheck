@@ -1,17 +1,12 @@
 package com.example.brandt.repcheck.activities;
 
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.example.brandt.repcheck.R;
@@ -60,8 +55,20 @@ public class SettingsActivity extends PreferenceActivity {
 
         addPreferencesFromResource(R.xml.pref_weight);
 
-        // Add 'developer' preferences, and a corresponding header.
+
         PreferenceCategory fakeHeader = new PreferenceCategory(this);
+        fakeHeader.setTitle(R.string.pref_header_formula);
+        getPreferenceScreen().addPreference(fakeHeader);
+        addPreferencesFromResource(R.xml.pref_formulas);
+
+        // Add 'developer' preferences, and a corresponding header.
+        fakeHeader = new PreferenceCategory(this);
+        fakeHeader.setTitle(R.string.pref_header_about);
+        getPreferenceScreen().addPreference(fakeHeader);
+        addPreferencesFromResource(R.xml.pref_about);
+
+        // Add 'developer' preferences, and a corresponding header.
+        fakeHeader = new PreferenceCategory(this);
         fakeHeader.setTitle(R.string.pref_header_developer);
         getPreferenceScreen().addPreference(fakeHeader);
         addPreferencesFromResource(R.xml.pref_developer);
@@ -72,6 +79,16 @@ public class SettingsActivity extends PreferenceActivity {
         bindPreferenceSummaryToValue(findPreference(getResources().getString(R.string.pref_units_key)));
         bindPreferenceSummaryToValue(findPreference(getResources().getString(R.string.pref_plate_style_key)));
         bindPreferenceSummaryToValue(findPreference(getResources().getString(R.string.pref_bar_weight_key)));
+        bindPreferenceSummaryToValue(findPreference(getResources().getString(R.string.pref_formula_key)));
+
+        Preference formulaButton = (Preference)findPreference(getString(R.string.configure_formula_button));
+        formulaButton .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+
+                return true;
+            }
+        });
 
         Preference populateSetsButton = (Preference)findPreference(getString(R.string.populate_sets_button));
         populateSetsButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -131,28 +148,6 @@ public class SettingsActivity extends PreferenceActivity {
                         index >= 0
                                 ? listPreference.getEntries()[index]
                                 : null);
-
-            } else if (preference instanceof RingtonePreference) {
-                // For ringtone preferences, look up the correct display value
-                // using RingtoneManager.
-                if (TextUtils.isEmpty(stringValue)) {
-                    // Empty values correspond to 'silent' (no ringtone).
-                    preference.setSummary(R.string.pref_ringtone_silent);
-
-                } else {
-                    Ringtone ringtone = RingtoneManager.getRingtone(
-                            preference.getContext(), Uri.parse(stringValue));
-
-                    if (ringtone == null) {
-                        // Clear the summary if there was a lookup error.
-                        preference.setSummary(null);
-                    } else {
-                        // SetSlot the summary to reflect the new ringtone display
-                        // name.
-                        String name = ringtone.getTitle(preference.getContext());
-                        preference.setSummary(name);
-                    }
-                }
 
             } else {
                 // For all other preferences, set the summary to the value's

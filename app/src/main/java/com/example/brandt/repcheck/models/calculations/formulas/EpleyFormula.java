@@ -3,14 +3,21 @@ package com.example.brandt.repcheck.models.calculations.formulas;
 /**
  * Created by Brandt on 8/2/2015.
  */
-public class Lombardi extends OneRepMaxFormula {
+public class EpleyFormula extends OneRepMaxFormula {
+
+
     @Override
     protected double calculateMax(int reps, double weight) {
-        return weight * Math.pow(reps, 0.1);
+        return weight * (1 + reps / 30);
     }
 
     @Override
     protected double calculateWeightForRep(int reps) {
-        return max / Math.pow(reps, 0.1);
+        return max / (1 + reps / 30);
+    }
+
+    @Override
+    public FormulaType toEnum() {
+        return FormulaType.Epley;
     }
 }

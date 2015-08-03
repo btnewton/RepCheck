@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:title="@string/pref_how_to_use_label"
+        android:key="@string/how_to_use_button"
+        android:summary="@string/how_to_use_summary"/>
+
+    <Preference
+        android:title="@string/pref_about_label"
+        android:key="@string/about_button"
+        android:summary="@string/about_summary"/>
+</PreferenceScreen>

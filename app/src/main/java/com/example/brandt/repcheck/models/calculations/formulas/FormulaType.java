@@ -3,7 +3,7 @@ package com.example.brandt.repcheck.models.calculations.formulas;
 /**
  * Created by Brandt on 8/2/2015.
  */
-public enum FormulaManifest {
+public enum FormulaType {
     Adams,
     Berger,
     Brown,

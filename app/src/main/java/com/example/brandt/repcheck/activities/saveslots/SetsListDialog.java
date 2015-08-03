@@ -20,8 +20,9 @@ import android.widget.Toast;
 import com.example.brandt.repcheck.R;
 import com.example.brandt.repcheck.models.SetSlot;
 import com.example.brandt.repcheck.models.Unit;
+import com.example.brandt.repcheck.util.adapters.IStandardRowItem;
 import com.example.brandt.repcheck.util.adapters.StandardRowItem;
-import com.example.brandt.repcheck.util.adapters.StandardRowItemAdapter;
+import com.example.brandt.repcheck.util.adapters.StandardRowListAdapter;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -34,8 +35,8 @@ import java.util.Observer;
  */
 public abstract class SetsListDialog extends DialogFragment implements Observer, DialogInterface.OnClickListener {
 
-    protected StandardRowItemAdapter adapter;
-    protected List<StandardRowItem> rowItems;
+    protected StandardRowListAdapter adapter;
+    protected List<IStandardRowItem> rowItems;
     private Handler asyncHandler;
 
     @NonNull
@@ -43,7 +44,7 @@ public abstract class SetsListDialog extends DialogFragment implements Observer,
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         asyncHandler = new Handler();
-        adapter = new StandardRowItemAdapter(getActivity(), getActivity().getLayoutInflater(), null);
+        adapter = StandardRowListAdapter.newSaveSlotAdapter(getActivity(), getActivity().getLayoutInflater());
         rowItems = new ArrayList<>();
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getTitle())

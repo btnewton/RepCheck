@@ -1,9 +1,9 @@
 package com.example.brandt.repcheck.util.adapters;
 
 /**
- * Created by Brandt on 7/25/2015.
+ * Created by Brandt on 8/2/2015.
  */
-public class StandardRowItem {
+public class StandardRowItem implements IStandardRowItem {
 
     private int id;
     private String title;
@@ -15,14 +15,17 @@ public class StandardRowItem {
         this.text = text;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }
 
+    @Override
     public String getText() {
         return text;
     }

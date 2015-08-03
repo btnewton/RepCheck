@@ -29,13 +29,14 @@ import com.example.brandt.repcheck.R;
 import com.example.brandt.repcheck.activities.barconstruction.BarConstructionDialog;
 import com.example.brandt.repcheck.activities.saveslots.SaveSetDialog;
 import com.example.brandt.repcheck.activities.saveslots.SavedSetsDialog;
+import com.example.brandt.repcheck.database.seeders.FormulaConfigurationSeeder;
 import com.example.brandt.repcheck.database.seeders.SetSeeder;
 import com.example.brandt.repcheck.models.SetSlot;
 import com.example.brandt.repcheck.models.Unit;
 import com.example.brandt.repcheck.models.calculations.FormulaWrapper;
 import com.example.brandt.repcheck.models.increments.IncrementFactory;
 import com.example.brandt.repcheck.models.increments.IncrementSet;
-import com.example.brandt.repcheck.util.adapters.WeightListAdapter;
+import com.example.brandt.repcheck.util.adapters.StandardRowListAdapter;
 
 import java.lang.ref.WeakReference;
 import java.util.Observable;
@@ -55,7 +56,7 @@ public class MaxRepFragment extends Fragment implements Observer {
     private Button addButton;
     private double incrementValue;
     private IncrementSet incrementSet;
-    private WeightListAdapter weightListAdapter;
+    private StandardRowListAdapter weightListAdapter;
     private Unit unit;
 
     @SuppressWarnings("FieldCanBeLocal")
@@ -66,9 +67,11 @@ public class MaxRepFragment extends Fragment implements Observer {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+        new FormulaConfigurationSeeder().repair(getActivity());
+
         // Populate table if missing
         if (SetSlot.getSlotCount(getActivity()) != getResources().getInteger(R.integer.set_slot_count)) {
-            SetSlot.truncateTable(getActivity());
+            new SetSlot(1,1).truncateTable(getActivity());
             new SetSeeder().seed(getActivity());
         }
         SetSlot setSlot = SetSlot.first(getActivity());
@@ -117,7 +120,7 @@ public class MaxRepFragment extends Fragment implements Observer {
         View view = inflater.inflate(R.layout.max_rep, container, false);
 
         // Weight input
-        weightEditText = (EditText) view.findViewById(R.id.weight);
+        weightEditText = (EditText) view.findViewById(R.id.detail);
         weightEditText.setText(Double.toString(formulaWrapper.getWeight()));
         weightEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -234,7 +237,7 @@ public class MaxRepFragment extends Fragment implements Observer {
             }
         });
 
-        weightListAdapter = new WeightListAdapter(getActivity(), getActivity().getLayoutInflater(), null);
+        weightListAdapter = StandardRowListAdapter.newStandardAdapter(getActivity(), getActivity().getLayoutInflater());
 
         ListView listView = (ListView) view.findViewById(R.id.list_view);
         listView.setEmptyView(view.findViewById(android.R.id.empty));

@@ -33,7 +33,7 @@ public class FormulaConfigurationTable extends Schema {
                 + ID          + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + REPS          + " INTEGER NOT NULL UNIQUE, "
                 + FORMULA     + " INTEGER NOT NULL, "
-                + IS_USED + " BOOLEAN DEFAULT FALSE, "
+                + IS_USED + " BOOLEAN DEFAULT FALSE "
                 + ")";
     }
 

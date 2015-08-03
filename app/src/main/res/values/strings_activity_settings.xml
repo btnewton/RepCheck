@@ -1,38 +1,6 @@
 <resources>
     <string name="title_activity_settings">Settings</string>
 
-    <!-- Strings related to Settings -->
-
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
-
-
-
-
-
-    <string name="pref_title_social_recommendations">Enable social recommendations</string>
-    <string name="pref_description_social_recommendations">Recommendations for people to contact
-        based on your message history
-    </string>
-
-    <string name="pref_title_display_name">Name</string>
-    <string name="pref_default_display_name">John Smith</string>
-
-    <string name="pref_title_subtitle">Subtitle</string>
-    <string name="pref_default_subtitle">I will persist until I succeed</string>
-
-    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
-    </string-array>
-
     <!-- Weight Settings-->
     <string name="pref_header_weights">Weights</string>
 
@@ -40,6 +8,10 @@
     <string name="pref_units_key">units</string>
     <string name="pref_units_metric">Metric</string>
     <string name="pref_units_imperial">Imperial</string>
+
+    <string name="pref_round_values_label">Round Values</string>
+    <string name="pref_round_values_key">round_values</string>
+    <string name="pref_round_values_summary">Round values down to the nearest whole number.</string>
 
     <string name="pref_plate_style_label">Plate Style</string>
     <string name="pref_plate_style_key">plate_style</string>
@@ -50,6 +22,39 @@
     <string name="pref_bar_weight_key">bar_weight</string>
     <string name="pref_default_bar_weight">45</string>
 
+    <!-- Formula Settings -->
+    <string name="pref_header_formula">Formulas</string>
+    <string name="pref_formula_label">Select Formula</string>
+    <string name="pref_formula_key">formula</string>
+
+    <string name="pref_custom_formula_label">Define Custom Combination</string>
+    <string name="configure_formula_button">formula</string>
+    <string name="configure_formula_summary">Configure what formulas are used to calculate your one rep max</string>
+
+    <string name="adams_formula">Adams</string>
+    <string name="berger_formula">Berger</string>
+    <string name="brown_formula">Brown</string>
+    <string name="brzycki_formula">Brzycki</string>
+    <string name="epley_formula">Epley</string>
+    <string name="kemmler_formula">Kemmler et al</string>
+    <string name="lander_formula">Lander</string>
+    <string name="lombardi_formula">Lombardi</string>
+    <string name="mayhew_formula">Mayhew et al</string>
+    <string name="oconner_formula">O\'Conner et al</string>
+    <string name="wathen_formula">Wathen</string>
+    <string name="custom_combination_formula">Custom...</string>
+
+    <!-- Documentation-->
+    <string name="pref_header_about">About</string>
+
+    <string name="pref_how_to_use_label">How to use</string>
+    <string name="how_to_use_button">how_to_use</string>
+    <string name="how_to_use_summary">Learn how to get the most out of Rep Check</string>
+
+    <string name="pref_about_label">About</string>
+    <string name="about_button">about</string>
+    <string name="about_summary">Learn more about this app and its developer</string>
+
     <!-- Developer Settings -->
     <string name="pref_header_developer">Developer</string>
     <string name="pref_title_populate_sets">Populate Sets</string>
@@ -59,37 +64,4 @@
     <string name="pref_title_truncate_all">Truncate All</string>
     <string name="truncate_all_button">truncate_all</string>
 
-    <!-- Example settings for Data & Sync -->
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-
-    <string name="pref_title_sync_frequency">Sync frequency</string>
-    <string-array name="pref_sync_frequency_titles">
-        <item>15 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>3 hours</item>
-        <item>6 hours</item>
-        <item>Never</item>
-    </string-array>
-    <string-array name="pref_sync_frequency_values">
-        <item>15</item>
-        <item>30</item>
-        <item>60</item>
-        <item>180</item>
-        <item>360</item>
-        <item>-1</item>
-    </string-array>
-
-    <string name="pref_title_system_sync_settings">System sync settings</string>
-
-    <!-- Example settings for Notifications -->
-    <string name="pref_header_notifications">Notifications</string>
-
-
-    <string name="pref_title_new_message_notifications">New message notifications</string>
-
-    <string name="pref_title_ringtone">Ringtone</string>
-    <string name="pref_ringtone_silent">Silent</string>
-
-    <string name="pref_title_vibrate">Vibrate</string>
 </resources>

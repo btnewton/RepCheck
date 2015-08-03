@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.brandt.repcheck.database.schemas.FormulaConfigurationTable;
 import com.example.brandt.repcheck.database.schemas.SetSlotTable;
 
 import java.sql.Timestamp;
@@ -22,7 +23,7 @@ import java.util.TimeZone;
 public class DBHandler extends SQLiteOpenHelper {
 
     // Increase to make app call onUpgrade
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "repcheck.db";
 
     // Singleton DBHandler instance
@@ -31,6 +32,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     private Schema[] tables = new Schema[] {
             new SetSlotTable(),
+            new FormulaConfigurationTable(),
             // ADD NEW TABLES HERE!
     };
 

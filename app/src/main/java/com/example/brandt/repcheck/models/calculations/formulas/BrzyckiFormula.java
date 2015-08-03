@@ -1,10 +1,10 @@
 package com.example.brandt.repcheck.models.calculations.formulas;
 
 /**
- * Brzycki
+ * BrzyckiFormula
  * Created by Brandt on 7/23/2015.
  */
-public class Brzycki extends OneRepMaxFormula {
+public class BrzyckiFormula extends OneRepMaxFormula {
 
     @Override
     protected double calculateMax(int reps, double weight) {
@@ -14,5 +14,10 @@ public class Brzycki extends OneRepMaxFormula {
     @Override
     protected double calculateWeightForRep(int reps) {
         return max * (37 - reps) / 36;
+    }
+
+    @Override
+    public FormulaType toEnum() {
+        return FormulaType.Brzycki;
     }
 }

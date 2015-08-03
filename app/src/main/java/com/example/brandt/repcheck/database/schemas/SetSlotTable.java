@@ -12,7 +12,7 @@ public class SetSlotTable extends Schema {
     public static final String NAME = "name";
     public static final String REPS = "reps";
     public static final String WEIGHT = "weight";
-    public static final String LAST_USED = "time_consumed";
+    public static final String LAST_USED = "last_used";
 
     public static final String[] columns = new String[]{
             SetSlotTable.ID,

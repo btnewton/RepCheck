@@ -19,7 +19,7 @@
             android:layout_height="wrap_content" />
 
         <EditText
-            android:id="@+id/weight"
+            android:id="@+id/detail"
             android:layout_marginStart="@dimen/standard"
             android:layout_marginEnd="@dimen/standard"
             android:selectAllOnFocus="true"

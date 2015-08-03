@@ -12,28 +12,38 @@ import com.example.brandt.repcheck.R;
 import java.util.List;
 
 /**
- * Created by Brandt on 7/25/2015.
+ * Created by brandt on 2/6/15.
  */
-public class StandardRowItemAdapter extends BaseAdapter {
+public class StandardRowListAdapter extends BaseAdapter {
 
     Context mContext;
     LayoutInflater mInflater;
-    List<StandardRowItem> standardRowItems;
+    IStandardRowItem[] standardRowItems;
+    int layout;
 
-    public StandardRowItemAdapter(Context context, LayoutInflater inflater, List<StandardRowItem> standardRowItems) {
+    public static StandardRowListAdapter newStandardAdapter(Context context, LayoutInflater layoutInflater) {
+        return new StandardRowListAdapter(context, layoutInflater, R.layout.row_standard);
+    }
+
+    public static StandardRowListAdapter newSaveSlotAdapter(Context context, LayoutInflater layoutInflater) {
+        return new StandardRowListAdapter(context, layoutInflater, R.layout.row_save_slot);
+    }
+
+    private StandardRowListAdapter(Context context, LayoutInflater inflater, int layout) {
         mContext = context;
         mInflater = inflater;
-        this.standardRowItems = standardRowItems;
+        standardRowItems = null;
+        this.layout = layout;
     }
 
     @Override
     public int getCount() {
-        return (standardRowItems == null) ? 0 : standardRowItems.size();
+        return (standardRowItems == null) ? 0 : standardRowItems.length;
     }
 
     @Override
-    public StandardRowItem getItem(int position) {
-        return standardRowItems.get(position);
+    public IStandardRowItem getItem(int position) {
+        return standardRowItems[position];
     }
 
     @Override
@@ -51,7 +61,7 @@ public class StandardRowItemAdapter extends BaseAdapter {
         if (convertView == null) {
 
             // Inflate the custom row layout from your XML.
-            convertView = mInflater.inflate(R.layout.row_standard, null);
+            convertView = mInflater.inflate(layout, null);
 
             // create a new "Holder" with subviews
             holder = new ViewHolder();
@@ -67,20 +77,26 @@ public class StandardRowItemAdapter extends BaseAdapter {
         }
 
         // Get the current book's data in JSON form
-        StandardRowItem standardRowItemHolder = getItem(position);
-        String title = standardRowItemHolder.getTitle();
-        String text = standardRowItemHolder.getText();
+        IStandardRowItem standardRowItems = getItem(position);
+        String title = standardRowItems.getTitle();
+        String detail = standardRowItems.getText();
 
         // Send these Strings to the TextViews for display
         holder.title.setText(title);
-        holder.text.setText(text);
+        holder.text.setText(detail);
 
         return convertView;
     }
 
-    public void updateData(List<StandardRowItem> standardRowItems) {
+    public void updateData(IStandardRowItem[] standardRowItems) {
         // update the adapter's data set
         this.standardRowItems = standardRowItems;
+        notifyDataSetChanged();
+    }
+
+    public void updateData(List<IStandardRowItem> standardRowItems) {
+        // update the adapter's data set
+        this.standardRowItems = (IStandardRowItem[]) standardRowItems.toArray();
         notifyDataSetChanged();
     }
 

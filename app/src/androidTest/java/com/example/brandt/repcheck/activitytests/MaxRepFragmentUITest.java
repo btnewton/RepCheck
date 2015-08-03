@@ -41,7 +41,7 @@ public class MaxRepFragmentUITest extends ActivityInstrumentationTestCase2<MainA
         maxRepFragment = (MaxRepFragment) waitForFragment("MaxRepFragment", 5000);
 
         weightEditText = (EditText)
-                mMainActivity.findViewById(R.id.weight);
+                mMainActivity.findViewById(R.id.detail);
         repsSpinner = (Spinner)
                 mMainActivity.findViewById(R.id.rep_spinner);
 
@@ -123,11 +123,11 @@ public class MaxRepFragmentUITest extends ActivityInstrumentationTestCase2<MainA
 //
 //        TouchUtils.clickView(this, repsSpinner);
 //        TouchUtils.clickView(this, repsSpinner.getChildAt(firstRepValue));
-//        int reps = maxRepFragment.getFormulaWrapper().getReps() - 1;
-//        assertEquals(firstRepValue, reps);
+//        int title = maxRepFragment.getFormulaWrapper().getReps() - 1;
+//        assertEquals(firstRepValue, title);
 //
 //        TouchUtils.clickView(this, repsSpinner.getChildAt(secondRepValue));
-//        reps = maxRepFragment.getFormulaWrapper().getReps() - 1;
-//        assertEquals(secondRepValue, reps);
+//        title = maxRepFragment.getFormulaWrapper().getReps() - 1;
+//        assertEquals(secondRepValue, title);
 //    }
 }

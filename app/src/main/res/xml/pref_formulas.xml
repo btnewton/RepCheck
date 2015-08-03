@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:title="@string/pref_formula_label"
+        android:key="@string/pref_formula_key"
+        android:defaultValue="@string/brzycki_formula"
+        android:entries="@array/one_rep_max_formula_options"
+        android:entryValues="@array/one_rep_max_formula_options"
+        />
+
+    <Preference
+        android:title="@string/pref_custom_formula_label"
+        android:key="@string/configure_formula_button"
+        android:summary="@string/configure_formula_summary"/>
+
+</PreferenceScreen>

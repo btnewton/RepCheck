@@ -14,7 +14,7 @@ import java.lang.reflect.Array;
 public abstract class DataObject {
     protected int id;
     private boolean isNewRecord;
-    private static Schema table;
+    private Schema table;
     private static int lastInsertID;
     private String primaryKey;
 
@@ -51,14 +51,14 @@ public abstract class DataObject {
     public boolean saveChanges(Context context) {
         if (isNewRecord) {
             ContentValues contentValues = getContentValues();
-            if (contentValues.containsKey("id")) {
-                contentValues.remove("id");
+            if (contentValues.containsKey(primaryKey)) {
+                contentValues.remove(primaryKey);
             }
             lastInsertID = (int) (long) DBHandler.getWritable(context).
                     insert(getTableName(), null, contentValues);
             return lastInsertID != -1;
         } else {
-            String whereClause = "id=?";
+            String whereClause = primaryKey + "=?";
             String[] whereArgs = new String[]{ Integer.toString(id) };
 
             return DBHandler.getWritable(context).
@@ -77,7 +77,7 @@ public abstract class DataObject {
     public <T extends DataObject> T find(Context context, int id, T returnType) {
         Cursor cursor = DBHandler.getReadable(context).query(getTableName(),
                 getColumns(),
-                "id=?",
+                primaryKey + "=?",
                 new String[] {Integer.toString(id)},
                 null, null, null, null);
 
@@ -98,7 +98,7 @@ public abstract class DataObject {
     protected abstract ContentValues getContentValues();
 
     public boolean delete(Context context) {
-        String whereClause = "id=?";
+        String whereClause = primaryKey + "=?";
         String[] whereArgs = { Integer.toString(id) };
         if (DBHandler.getWritable(context)
                 .delete(getTableName(), whereClause, whereArgs) > 0) {
@@ -132,7 +132,7 @@ public abstract class DataObject {
         }
     }
 
-    public static void truncateTable(Context context) {
+    public void truncateTable(Context context) {
         table.truncate(context);
     }
 

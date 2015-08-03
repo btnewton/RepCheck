@@ -15,6 +15,12 @@ public abstract class OneRepMaxFormula {
 
     protected abstract double calculateWeightForRep(int reps);
 
+    public abstract FormulaType toEnum();
+
+    public String toString() {
+        return toEnum().toString();
+    }
+
     public double getWeightWeightForReps(int reps) {
         if (reps == 1) {
             return max;

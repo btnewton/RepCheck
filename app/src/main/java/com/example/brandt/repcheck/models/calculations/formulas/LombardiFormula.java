@@ -1,17 +1,21 @@
 package com.example.brandt.repcheck.models.calculations.formulas;
 
 /**
- * Brown et al
  * Created by Brandt on 8/2/2015.
  */
-public class Brown extends OneRepMaxFormula {
+public class LombardiFormula extends OneRepMaxFormula {
     @Override
     protected double calculateMax(int reps, double weight) {
-        return (reps * 0.0328 + 0.9849) * weight;
+        return weight * Math.pow(reps, 0.1);
     }
 
     @Override
     protected double calculateWeightForRep(int reps) {
-        return max / (reps * 0.0328 + 0.9849);
+        return max / Math.pow(reps, 0.1);
+    }
+
+    @Override
+    public FormulaType toEnum() {
+        return FormulaType.Lombardi;
     }
 }
