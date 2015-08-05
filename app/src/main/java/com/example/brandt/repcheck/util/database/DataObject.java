@@ -70,8 +70,9 @@ public abstract class DataObject {
         Cursor cursor = DBHandler.getReadable(context).query(getTableName(),
                 getColumns(),
                 null, null, null, null, null, null);
-
-        return cursor.getCount();
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
     }
 
     public <T extends DataObject> T find(Context context, int id, T returnType) {

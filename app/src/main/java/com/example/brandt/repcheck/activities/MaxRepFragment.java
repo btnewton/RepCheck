@@ -34,6 +34,8 @@ import com.example.brandt.repcheck.database.seeders.SetSeeder;
 import com.example.brandt.repcheck.models.SetSlot;
 import com.example.brandt.repcheck.models.Unit;
 import com.example.brandt.repcheck.models.calculations.FormulaWrapper;
+import com.example.brandt.repcheck.models.calculations.formulas.BrzyckiFormula;
+import com.example.brandt.repcheck.models.calculations.formulas.OneRepMaxFormula;
 import com.example.brandt.repcheck.models.increments.IncrementFactory;
 import com.example.brandt.repcheck.models.increments.IncrementSet;
 import com.example.brandt.repcheck.util.adapters.StandardRowListAdapter;
@@ -78,11 +80,9 @@ public class MaxRepFragment extends Fragment implements Observer {
 
         formulaWrapper = new FormulaWrapper(setSlot, getResources().getInteger(R.integer.max_reps));
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        loadPreferences(sharedPreferences);
-
         formulaWrapper.addObserver(this);
     }
+
 
     @Override
     public void onResume() {
@@ -98,11 +98,23 @@ public class MaxRepFragment extends Fragment implements Observer {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener);
 
-        formulaWrapper.calculateSets();
+        loadPreferences(sharedPreferences);
     }
 
     private void loadPreferences(SharedPreferences sharedPreferences) {
         String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
+
+        String formulaName = sharedPreferences.getString(getString(R.string.pref_formula_key), getString(R.string.brzycki_formula_value));
+
+        OneRepMaxFormula oneRepMaxFormula;
+
+        try {
+            oneRepMaxFormula = (OneRepMaxFormula) Class.forName("com.example.brandt.repcheck.models.calculations.formulas." + formulaName).getConstructor().newInstance();
+        } catch (Exception e) {
+            oneRepMaxFormula = new BrzyckiFormula();
+        }
+
+        formulaWrapper.setFormula(oneRepMaxFormula);
 
         unit = Unit.newUnitByString(unitType, getActivity());
         formulaWrapper.setUnit(unit);

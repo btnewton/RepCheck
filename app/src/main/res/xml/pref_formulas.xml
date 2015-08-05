@@ -5,8 +5,8 @@
         android:title="@string/pref_formula_label"
         android:key="@string/pref_formula_key"
         android:defaultValue="@string/brzycki_formula"
-        android:entries="@array/one_rep_max_formula_options"
-        android:entryValues="@array/one_rep_max_formula_options"
+        android:entries="@array/one_rep_max_formula_option_labels"
+        android:entryValues="@array/one_rep_max_formula_option_values"
         />
 
     <Preference

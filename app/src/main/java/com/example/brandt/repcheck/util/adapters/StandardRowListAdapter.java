@@ -18,7 +18,7 @@ public class StandardRowListAdapter extends BaseAdapter {
 
     Context mContext;
     LayoutInflater mInflater;
-    IStandardRowItem[] standardRowItems;
+    List<IStandardRowItem> standardRowItems;
     int layout;
 
     public static StandardRowListAdapter newStandardAdapter(Context context, LayoutInflater layoutInflater) {
@@ -38,12 +38,12 @@ public class StandardRowListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return (standardRowItems == null) ? 0 : standardRowItems.length;
+        return (standardRowItems == null) ? 0 : standardRowItems.size();
     }
 
     @Override
     public IStandardRowItem getItem(int position) {
-        return standardRowItems[position];
+        return standardRowItems.get(position);
     }
 
     @Override
@@ -88,15 +88,9 @@ public class StandardRowListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void updateData(IStandardRowItem[] standardRowItems) {
-        // update the adapter's data set
-        this.standardRowItems = standardRowItems;
-        notifyDataSetChanged();
-    }
-
     public void updateData(List<IStandardRowItem> standardRowItems) {
         // update the adapter's data set
-        this.standardRowItems = (IStandardRowItem[]) standardRowItems.toArray();
+        this.standardRowItems = standardRowItems;
         notifyDataSetChanged();
     }
 

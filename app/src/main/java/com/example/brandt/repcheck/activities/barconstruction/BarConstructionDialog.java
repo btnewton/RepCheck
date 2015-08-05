@@ -13,8 +13,12 @@ import com.example.brandt.repcheck.R;
 import com.example.brandt.repcheck.models.Unit;
 import com.example.brandt.repcheck.models.increments.IncrementFactory;
 import com.example.brandt.repcheck.models.increments.IncrementSet;
+import com.example.brandt.repcheck.util.adapters.IStandardRowItem;
 import com.example.brandt.repcheck.util.adapters.StandardRowItem;
 import com.example.brandt.repcheck.util.adapters.StandardRowListAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Brandt on 8/1/2015.
@@ -69,20 +73,20 @@ public class BarConstructionDialog extends DialogFragment implements DialogInter
         return builder.create();
     }
 
-    private StandardRowItem[] getBarConstruction() {
+    private List<IStandardRowItem> getBarConstruction() {
 
         double[] increments = incrementSet.getIncrements();
-        StandardRowItem[] weightHolders = new StandardRowItem[increments.length + 1];
+        List<IStandardRowItem> weightHolders = new ArrayList<>(increments.length + 1);
 
         for (int i = 0; i < increments.length; i++) {
             double plateWeight = increments[increments.length - i - 1];
 
             int plateCount = (int) weight / (int) plateWeight;
             weight -= plateCount * plateWeight;
-            weightHolders[i] = new StandardRowItem(0, Double.toString(plateWeight), Integer.toString(plateCount));
+            weightHolders.add(new StandardRowItem(0, Double.toString(plateWeight), Integer.toString(plateCount)));
         }
 
-        weightHolders[weightHolders.length - 1] = new StandardRowItem(0, "Remainder", Double.toString(weight));
+        weightHolders.add(new StandardRowItem(0, "Remainder", Double.toString(weight)));
 
         return weightHolders;
     }

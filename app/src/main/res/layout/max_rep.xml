@@ -14,7 +14,6 @@
 
         <Button
             android:id="@+id/quick_subtract"
-            android:text="-5 lbs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -32,7 +31,6 @@
 
         <Button
             android:id="@+id/quick_add"
-            android:text="+5 lbs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

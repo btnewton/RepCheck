@@ -8,7 +8,11 @@ public abstract class OneRepMaxFormula {
     protected double max;
 
     public void update(int reps, double weight) {
-        calculateMax(reps, weight);
+        if (reps == 1) {
+            max = weight;
+        } else {
+            max = calculateMax(reps, weight);
+        }
     }
 
     protected abstract double calculateMax(int reps, double weight);

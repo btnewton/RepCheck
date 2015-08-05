@@ -5,15 +5,14 @@ package com.example.brandt.repcheck.models.calculations.formulas;
  */
 public class EpleyFormula extends OneRepMaxFormula {
 
-
     @Override
     protected double calculateMax(int reps, double weight) {
-        return weight * (1 + reps / 30);
+        return weight * (1 + (reps / 30));
     }
 
     @Override
     protected double calculateWeightForRep(int reps) {
-        return max / (1 + reps / 30);
+        return max / (1 + (reps / 30));
     }
 
     @Override
