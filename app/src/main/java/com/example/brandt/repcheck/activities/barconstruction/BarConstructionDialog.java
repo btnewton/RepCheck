@@ -13,9 +13,9 @@ import com.example.brandt.repcheck.R;
 import com.example.brandt.repcheck.models.Unit;
 import com.example.brandt.repcheck.models.increments.IncrementFactory;
 import com.example.brandt.repcheck.models.increments.IncrementSet;
-import com.example.brandt.repcheck.util.adapters.IStandardRowItem;
-import com.example.brandt.repcheck.util.adapters.StandardRowItem;
-import com.example.brandt.repcheck.util.adapters.StandardRowListAdapter;
+import com.example.brandt.repcheck.util.adapters.standard.IStandardRowItem;
+import com.example.brandt.repcheck.util.adapters.standard.StandardRowItem;
+import com.example.brandt.repcheck.util.adapters.standard.StandardRowListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

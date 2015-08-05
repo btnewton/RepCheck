@@ -15,6 +15,10 @@ public abstract class OneRepMaxFormula {
         }
     }
 
+    public double getPercentOfMax(double weight) {
+        return 100 * weight / max;
+    }
+
     protected abstract double calculateMax(int reps, double weight);
 
     protected abstract double calculateWeightForRep(int reps);

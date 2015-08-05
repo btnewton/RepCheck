@@ -20,9 +20,9 @@ import android.widget.Toast;
 import com.example.brandt.repcheck.R;
 import com.example.brandt.repcheck.models.SetSlot;
 import com.example.brandt.repcheck.models.Unit;
-import com.example.brandt.repcheck.util.adapters.IStandardRowItem;
-import com.example.brandt.repcheck.util.adapters.StandardRowItem;
-import com.example.brandt.repcheck.util.adapters.StandardRowListAdapter;
+import com.example.brandt.repcheck.util.adapters.standard.IStandardRowItem;
+import com.example.brandt.repcheck.util.adapters.standard.StandardRowItem;
+import com.example.brandt.repcheck.util.adapters.standard.StandardRowListAdapter;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

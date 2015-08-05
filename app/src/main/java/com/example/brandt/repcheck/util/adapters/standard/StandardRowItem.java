@@ -1,4 +1,4 @@
-package com.example.brandt.repcheck.util.adapters;
+package com.example.brandt.repcheck.util.adapters.standard;
 
 /**
  * Created by Brandt on 8/2/2015.

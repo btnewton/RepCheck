@@ -4,8 +4,8 @@ import com.example.brandt.repcheck.models.SetSlot;
 import com.example.brandt.repcheck.models.Unit;
 import com.example.brandt.repcheck.models.calculations.formulas.BrzyckiFormula;
 import com.example.brandt.repcheck.models.calculations.formulas.OneRepMaxFormula;
-import com.example.brandt.repcheck.util.adapters.IStandardRowItem;
-import com.example.brandt.repcheck.util.adapters.StandardRowItem;
+import com.example.brandt.repcheck.util.adapters.detail.DetailRow;
+import com.example.brandt.repcheck.util.adapters.detail.IDetailRow;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -21,7 +21,7 @@ public class FormulaWrapper extends Observable {
     private int reps;
     private double weight;
     private Unit unit;
-    private List<IStandardRowItem> weightHolders;
+    private List<IDetailRow> weightHolders;
     private OneRepMaxFormula oneRepMaxFormula;
     private final int MAX_REPS;
 
@@ -73,7 +73,9 @@ public class FormulaWrapper extends Observable {
         for (int i = 0; i < MAX_REPS; i++) {
             int reps = i + 1;
             double weight = oneRepMaxFormula.getWeightWeightForReps(reps);
-            weightHolders.add(new StandardRowItem(0, Integer.toString(reps), formatter.format(weight) + " " + unit.getUnit() + ((weight != 1) ? "s" : "")));
+            weightHolders.add(new DetailRow(0, Integer.toString(reps),
+                    formatter.format(weight) + " " + unit.getUnit() + ((weight != 1) ? "s" : ""),
+                    Integer.toString((int)oneRepMaxFormula.getPercentOfMax(weight)) + "%"));
         }
 
         setChanged();
@@ -84,7 +86,7 @@ public class FormulaWrapper extends Observable {
         return new DecimalFormat("#0.00");
     }
 
-    public List<IStandardRowItem> getSets() {
+    public List<IDetailRow> getSets() {
         return weightHolders;
     }
 

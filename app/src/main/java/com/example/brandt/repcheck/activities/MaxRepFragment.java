@@ -38,7 +38,7 @@ import com.example.brandt.repcheck.models.calculations.formulas.BrzyckiFormula;
 import com.example.brandt.repcheck.models.calculations.formulas.OneRepMaxFormula;
 import com.example.brandt.repcheck.models.increments.IncrementFactory;
 import com.example.brandt.repcheck.models.increments.IncrementSet;
-import com.example.brandt.repcheck.util.adapters.StandardRowListAdapter;
+import com.example.brandt.repcheck.util.adapters.detail.DetailRowListAdapter;
 
 import java.lang.ref.WeakReference;
 import java.util.Observable;
@@ -51,14 +51,14 @@ import java.util.Observer;
  */
 public class MaxRepFragment extends Fragment implements Observer {
 
-    FormulaWrapper formulaWrapper;
+    private FormulaWrapper formulaWrapper;
     private EditText weightEditText;
     private Spinner repsSpinner;
     private Button subtractButton;
     private Button addButton;
     private double incrementValue;
     private IncrementSet incrementSet;
-    private StandardRowListAdapter weightListAdapter;
+    private DetailRowListAdapter weightListAdapter;
     private Unit unit;
 
     @SuppressWarnings("FieldCanBeLocal")
@@ -249,7 +249,7 @@ public class MaxRepFragment extends Fragment implements Observer {
             }
         });
 
-        weightListAdapter = StandardRowListAdapter.newStandardAdapter(getActivity(), getActivity().getLayoutInflater());
+        weightListAdapter = DetailRowListAdapter.newSetListAdapter(getActivity(), getActivity().getLayoutInflater());
 
         ListView listView = (ListView) view.findViewById(R.id.list_view);
         listView.setEmptyView(view.findViewById(android.R.id.empty));

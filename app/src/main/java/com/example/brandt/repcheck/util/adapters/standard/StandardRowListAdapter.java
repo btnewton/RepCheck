@@ -1,4 +1,4 @@
-package com.example.brandt.repcheck.util.adapters;
+package com.example.brandt.repcheck.util.adapters.standard;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -77,9 +77,9 @@ public class StandardRowListAdapter extends BaseAdapter {
         }
 
         // Get the current book's data in JSON form
-        IStandardRowItem standardRowItems = getItem(position);
-        String title = standardRowItems.getTitle();
-        String detail = standardRowItems.getText();
+        IStandardRowItem standardRowItem = getItem(position);
+        String title = standardRowItem.getTitle();
+        String detail = standardRowItem.getText();
 
         // Send these Strings to the TextViews for display
         holder.title.setText(title);
