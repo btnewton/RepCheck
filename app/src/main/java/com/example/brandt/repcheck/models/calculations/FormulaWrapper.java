@@ -24,6 +24,7 @@ public class FormulaWrapper extends Observable {
     private List<IDetailRow> weightHolders;
     private OneRepMaxFormula oneRepMaxFormula;
     private final int MAX_REPS;
+    private NumberFormat formatter;
 
     public FormulaWrapper(SetSlot setSlot, int setRange) {
         this.reps = setSlot.getReps();
@@ -32,12 +33,12 @@ public class FormulaWrapper extends Observable {
         weightHolders = new ArrayList<>(setRange);
         MAX_REPS = setRange;
         oneRepMaxFormula = new BrzyckiFormula();
+        setRoundCalculations(true);
     }
 
     public void setFormula(OneRepMaxFormula oneRepMaxFormula) {
         if (this.oneRepMaxFormula != oneRepMaxFormula) {
             this.oneRepMaxFormula = oneRepMaxFormula;
-            calculateSets();
         }
     }
 
@@ -45,27 +46,22 @@ public class FormulaWrapper extends Observable {
         if (reps != setSlot.getReps() || weight != setSlot.getWeight()) {
             reps = setSlot.getReps();
             weight = setSlot.getWeight();
-            calculateSets();
         }
     }
 
     public void setWeight(double weight) {
         if (this.weight != weight) {
             this.weight = weight;
-            calculateSets();
         }
     }
 
     public void setReps(int reps) {
         if (this.reps != reps) {
             this.reps = reps;
-            calculateSets();
         }
     }
 
     public void calculateSets() {
-        NumberFormat formatter = getFormatter();
-
         oneRepMaxFormula.update(reps, weight);
 
         weightHolders = new ArrayList<>(MAX_REPS);
@@ -77,13 +73,16 @@ public class FormulaWrapper extends Observable {
                     formatter.format(weight) + " " + unit.getUnit() + ((weight != 1) ? "s" : ""),
                     Integer.toString((int)oneRepMaxFormula.getPercentOfMax(weight)) + "%"));
         }
-
         setChanged();
         notifyObservers();
     }
 
-    private NumberFormat getFormatter() {
-        return new DecimalFormat("#0.00");
+    public void setRoundCalculations(boolean shouldRound) {
+        if (shouldRound) {
+            formatter = new DecimalFormat("#0");
+        } else {
+            formatter = new DecimalFormat("#0.00");
+        }
     }
 
     public List<IDetailRow> getSets() {
@@ -101,7 +100,6 @@ public class FormulaWrapper extends Observable {
     public void setUnit(Unit unit) {
         if ( ! this.unit.getUnit().equals(unit.getUnit())) {
             this.unit = unit;
-            calculateSets();
         }
     }
 }

@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#ffd1252b</color>
-    <color name="secondary">#ff8c1c1c</color>
-    <color name="background">#ECEFF1</color>
-    <color name="primary_zing">#FF7043</color>
-    <color name="secondary_zing">#FF3D00</color>
+    <color name="primary_100">#CFD8DC</color>
+    <color name="primary_500">#607D8B</color>
+    <color name="primary_700">#455A64</color>
+    <color name="accent_100">#FFFF8D</color>
+    <color name="accent_500">#FFEA00</color>
+    <color name="accent_700">#FFD600</color>
 
     <!-- Text-->
     <color name="primary_text">#dd000000</color>
     <color name="secondary_text">#89000000</color>
     <!-- For Hints, Disabled text and icons -->
     <color name="disabled_text">#42000000</color>
-
-
-    <color name="danger">#e6ff1629</color>
-    <color name="transparent">#00000000</color>
-    <color name="tabsScrollColor">#ff8c1c1c</color>
 </resources>

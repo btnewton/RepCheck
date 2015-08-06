@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.brandt.repcheck.R;
 import com.example.brandt.repcheck.activities.barconstruction.BarConstructionDialog;
@@ -51,18 +52,22 @@ import java.util.Observer;
  */
 public class MaxRepFragment extends Fragment implements Observer {
 
+    // Models
     private FormulaWrapper formulaWrapper;
+    private IncrementSet incrementSet;
+    private Unit unit;
+
+    // UI
+    private DetailRowListAdapter weightListAdapter;
     private EditText weightEditText;
     private Spinner repsSpinner;
     private Button subtractButton;
     private Button addButton;
-    private double incrementValue;
-    private IncrementSet incrementSet;
-    private DetailRowListAdapter weightListAdapter;
-    private Unit unit;
-
     @SuppressWarnings("FieldCanBeLocal")
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
+
+    private double incrementValue;
+    private double barWeight;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,7 +84,6 @@ public class MaxRepFragment extends Fragment implements Observer {
         SetSlot setSlot = SetSlot.first(getActivity());
 
         formulaWrapper = new FormulaWrapper(setSlot, getResources().getInteger(R.integer.max_reps));
-
         formulaWrapper.addObserver(this);
     }
 
@@ -102,26 +106,34 @@ public class MaxRepFragment extends Fragment implements Observer {
     }
 
     private void loadPreferences(SharedPreferences sharedPreferences) {
-        String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
 
-        String formulaName = sharedPreferences.getString(getString(R.string.pref_formula_key), getString(R.string.brzycki_formula_value));
+        barWeight = Double.parseDouble(sharedPreferences.getString(getString(R.string.pref_bar_weight_key), "45"));
 
-        OneRepMaxFormula oneRepMaxFormula;
-
-        try {
-            oneRepMaxFormula = (OneRepMaxFormula) Class.forName("com.example.brandt.repcheck.models.calculations.formulas." + formulaName).getConstructor().newInstance();
-        } catch (Exception e) {
-            oneRepMaxFormula = new BrzyckiFormula();
+        if (formulaWrapper.getWeight() < barWeight) {
+            formulaWrapper.setWeight(barWeight);
         }
 
-        formulaWrapper.setFormula(oneRepMaxFormula);
+        // Reflect formula or default to Brzycki
+        try {
+            String formulaName = sharedPreferences.getString(getString(R.string.pref_formula_key), getString(R.string.brzycki_formula_value));
+            formulaWrapper.setFormula((OneRepMaxFormula) Class.forName("com.example.brandt.repcheck.models.calculations.formulas." + formulaName).getConstructor().newInstance());
+        } catch (Exception e) {
+            formulaWrapper.setFormula(new BrzyckiFormula());
+        }
 
+        // Get & apply unit type
+        String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
         unit = Unit.newUnitByString(unitType, getActivity());
         formulaWrapper.setUnit(unit);
+
+        boolean roundCalculations = sharedPreferences.getBoolean(getString(R.string.pref_round_values_key), true);
+        formulaWrapper.setRoundCalculations(roundCalculations);
 
         String plateStyle = sharedPreferences.getString(getString(R.string.pref_plate_style_key), getString(R.string.pref_plate_style_classic));
         incrementSet = IncrementFactory.Make(getActivity(), plateStyle, unit);
 
+        // Update display
+        formulaWrapper.calculateSets();
         updateIncrement(incrementSet.getDefaultWeightIndex());
     }
 
@@ -151,11 +163,14 @@ public class MaxRepFragment extends Fragment implements Observer {
                     weight = -1;
                 }
 
-                if (weight >= 0) {
+                if (weight >= barWeight) {
                     formulaWrapper.setWeight(weight);
+                    formulaWrapper.calculateSets();
                 } else {
+                    Toast.makeText(getActivity(), "Weight cannot be less than the bar.", Toast.LENGTH_SHORT).show();
+
                     // Pseudo-recursive call
-                    weightEditText.setText("0");
+                    weightEditText.setText(Double.toString(barWeight));
                 }
             }
 

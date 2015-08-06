@@ -3,4 +3,5 @@
     <dimen name="tiny">5dp</dimen>
     <dimen name="small">10dp</dimen>
 
+    <dimen name="larger_text">18sp</dimen>
 </resources>

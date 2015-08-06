@@ -6,12 +6,12 @@ package com.example.brandt.repcheck.models.calculations.formulas;
 public class BergerFormula extends OneRepMaxFormula {
     @Override
     protected double calculateMax(int reps, double weight) {
-        return weight / (1.0261 * Math.pow(Math.E, -0.00262 * reps));
+        return weight / (Math.pow(1.0261 * Math.E, -0.00262 * reps));
     }
 
     @Override
     protected double calculateWeightForRep(int reps) {
-        return max * (1.0261 * Math.pow(Math.E, -0.00262 * reps));
+        return max * (Math.pow(1.0261 * Math.E, -0.00262 * reps));
     }
 
     @Override
