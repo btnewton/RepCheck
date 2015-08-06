@@ -19,6 +19,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         setContentView(R.layout.main_activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -29,7 +31,13 @@ public class MainActivity extends ActionBarActivity {
 
         AdMobHelper.CreateAdRequest(this);
 
-        maxRepFragment = new MaxRepFragment();
+
+        if (savedInstanceState != null) {
+            //Restore the fragment's instance
+            maxRepFragment = (MaxRepFragment) getSupportFragmentManager().getFragment(savedInstanceState, "MaxRepFragment");
+        } else {
+            maxRepFragment = new MaxRepFragment();
+        }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content, maxRepFragment, "MaxRepFragment").commit();
@@ -52,5 +60,12 @@ public class MainActivity extends ActionBarActivity {
        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //Save the fragment's instance
+        getSupportFragmentManager().putFragment(outState, "MaxRepFragment", maxRepFragment);
     }
 }

@@ -68,6 +68,8 @@ public class MaxRepFragment extends Fragment implements Observer {
 
     private double incrementValue;
     private double barWeight;
+    private static final String STATE_WEIGHT = "stateWeight";
+    private static final String STATE_REPS = "stateReps";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,17 +78,24 @@ public class MaxRepFragment extends Fragment implements Observer {
 
         new FormulaConfigurationSeeder().repair(getActivity());
 
-        // Populate table if missing
-        if (SetSlot.getSlotCount(getActivity()) != getResources().getInteger(R.integer.set_slot_count)) {
-            new SetSlot(1,1).truncateTable(getActivity());
-            new SetSeeder().seed(getActivity());
-        }
-        SetSlot setSlot = SetSlot.first(getActivity());
+        SetSlot setSlot;
 
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            double weight = savedInstanceState.getInt(STATE_WEIGHT);
+            int reps = savedInstanceState.getInt(STATE_REPS);
+            setSlot = new SetSlot(reps, weight);
+        } else {
+            // Populate table if missing
+            if (SetSlot.getSlotCount(getActivity()) != getResources().getInteger(R.integer.set_slot_count)) {
+                new SetSlot(1, 1).truncateTable(getActivity());
+                new SetSeeder().seed(getActivity());
+            }
+            setSlot = SetSlot.first(getActivity());
+        }
         formulaWrapper = new FormulaWrapper(setSlot, getResources().getInteger(R.integer.max_reps));
         formulaWrapper.addObserver(this);
     }
-
 
     @Override
     public void onResume() {
@@ -108,10 +117,6 @@ public class MaxRepFragment extends Fragment implements Observer {
     private void loadPreferences(SharedPreferences sharedPreferences) {
 
         barWeight = Double.parseDouble(sharedPreferences.getString(getString(R.string.pref_bar_weight_key), "45"));
-
-        if (formulaWrapper.getWeight() < barWeight) {
-            formulaWrapper.setWeight(barWeight);
-        }
 
         // Reflect formula or default to Brzycki
         try {
@@ -140,6 +145,14 @@ public class MaxRepFragment extends Fragment implements Observer {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            double weight = savedInstanceState.getInt(STATE_WEIGHT);
+            int reps = savedInstanceState.getInt(STATE_REPS);
+            formulaWrapper.setWeight(weight);
+            formulaWrapper.setReps(reps);
+        }
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.max_rep, container, false);
 
@@ -163,14 +176,12 @@ public class MaxRepFragment extends Fragment implements Observer {
                     weight = -1;
                 }
 
-                if (weight >= barWeight) {
+                if (weight >= 0) {
                     formulaWrapper.setWeight(weight);
                     formulaWrapper.calculateSets();
                 } else {
-                    Toast.makeText(getActivity(), "Weight cannot be less than the bar.", Toast.LENGTH_SHORT).show();
-
                     // Pseudo-recursive call
-                    weightEditText.setText(Double.toString(barWeight));
+                    weightEditText.setText("0");
                 }
             }
 
@@ -256,6 +267,7 @@ public class MaxRepFragment extends Fragment implements Observer {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 formulaWrapper.setReps(position + 1);
+                formulaWrapper.calculateSets();
             }
 
             @Override
@@ -272,13 +284,26 @@ public class MaxRepFragment extends Fragment implements Observer {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                BarConstructionDialog barConstructionDialog =
-                        BarConstructionDialog.newInstance(formulaWrapper.getWeight());
-                barConstructionDialog.show(getFragmentManager(), getTag());
+                if (formulaWrapper.getWeight() >= barWeight) {
+                    BarConstructionDialog barConstructionDialog =
+                            BarConstructionDialog.newInstance(formulaWrapper.getWeight());
+                    barConstructionDialog.show(getFragmentManager(), getTag());
+                } else {
+                    Toast.makeText(getActivity(), "Weight cannot be less than the bar.", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putDouble(STATE_WEIGHT, formulaWrapper.getWeight());
+        outState.putInt(STATE_REPS, formulaWrapper.getReps());
     }
 
     public void incrementWeight(double incrementValue) {

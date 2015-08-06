@@ -28,6 +28,7 @@ public class BarConstructionDialog extends DialogFragment implements DialogInter
     private IncrementSet incrementSet;
     private static final String WEIGHT_KEY = "weight";
     private double weight;
+    private double barWeight;
     private Unit unit;
 
     public static BarConstructionDialog newInstance(double weight) {
@@ -54,6 +55,7 @@ public class BarConstructionDialog extends DialogFragment implements DialogInter
 
         // Load unit and plate style
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        barWeight = Double.parseDouble(sharedPreferences.getString(getString(R.string.pref_bar_weight_key), "45"));
         String plateStyle = sharedPreferences.getString(getString(R.string.pref_plate_style_key), getString(R.string.pref_plate_style_classic));
         String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
         unit = Unit.newUnitByString(unitType, activity);
@@ -78,12 +80,14 @@ public class BarConstructionDialog extends DialogFragment implements DialogInter
         double[] increments = incrementSet.getIncrements();
         List<IStandardRowItem> weightHolders = new ArrayList<>(increments.length + 1);
 
+        weight -= barWeight;
+
         for (int i = 0; i < increments.length; i++) {
             double plateWeight = increments[increments.length - i - 1];
 
-            int plateCount = (int) weight / (int) plateWeight;
-            weight -= plateCount * plateWeight;
-            weightHolders.add(new StandardRowItem(0, Double.toString(plateWeight), Integer.toString(plateCount)));
+            int plateCount = (int) weight / (int) (2 * plateWeight);
+            weight -= (2 * plateCount) * plateWeight;
+            weightHolders.add(new StandardRowItem(0, Double.toString(plateWeight), Integer.toString(2 * plateCount)));
         }
 
         weightHolders.add(new StandardRowItem(0, "Remainder", Double.toString(weight)));
