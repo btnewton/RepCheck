@@ -28,7 +28,6 @@ public class MainActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
         AdMobHelper.CreateAdRequest(this);
 
-
         if (savedInstanceState != null) {
             //Restore the fragment's instance
             maxRepFragment = (MaxRepFragment) getSupportFragmentManager().getFragment(savedInstanceState, "MaxRepFragment");

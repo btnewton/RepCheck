@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.brandt.dietron.util.FloatingActionButton;
 import com.example.brandt.repcheck.R;
 import com.example.brandt.repcheck.activities.barconstruction.BarConstructionDialog;
 import com.example.brandt.repcheck.activities.saveslots.SaveSetDialog;
@@ -63,6 +64,7 @@ public class MaxRepFragment extends Fragment implements Observer {
     private Spinner repsSpinner;
     private Button subtractButton;
     private Button addButton;
+    private FloatingActionButton floatingActionButton;
     @SuppressWarnings("FieldCanBeLocal")
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
 
@@ -156,6 +158,9 @@ public class MaxRepFragment extends Fragment implements Observer {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.max_rep, container, false);
 
+        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+        floatingActionButton.setOnClickListener(this);
+
         // Weight input
         weightEditText = (EditText) view.findViewById(R.id.detail);
         weightEditText.setText(Double.toString(formulaWrapper.getWeight()));
@@ -182,6 +187,7 @@ public class MaxRepFragment extends Fragment implements Observer {
                 } else {
                     // Pseudo-recursive call
                     weightEditText.setText("0");
+                    weightEditText.selectAll();
                 }
             }
 
@@ -405,7 +411,7 @@ public class MaxRepFragment extends Fragment implements Observer {
 
         // Update buttons
         if (subtractButton != null && addButton != null) {
-            String incrementText = incrementValue + " " + unit.getUnit();
+            String incrementText = incrementValue + " " + unit.getUnit() + ((incrementValue != 1)? "s" : "");
             subtractButton.setText("-" + incrementText);
             addButton.setText("+" + incrementText);
         }
