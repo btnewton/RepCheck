@@ -2,13 +2,12 @@ package com.example.brandt.repcheck.models.calculations;
 
 import com.example.brandt.repcheck.models.SetSlot;
 import com.example.brandt.repcheck.models.Unit;
+import com.example.brandt.repcheck.models.WeightFormatter;
 import com.example.brandt.repcheck.models.calculations.formulas.BrzyckiFormula;
 import com.example.brandt.repcheck.models.calculations.formulas.OneRepMaxFormula;
 import com.example.brandt.repcheck.util.adapters.detail.DetailRow;
 import com.example.brandt.repcheck.util.adapters.detail.IDetailRow;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -24,7 +23,7 @@ public class FormulaWrapper extends Observable {
     private List<IDetailRow> weightHolders;
     private OneRepMaxFormula oneRepMaxFormula;
     private final int MAX_REPS;
-    private NumberFormat formatter;
+    private WeightFormatter weightFormatter;
 
     public FormulaWrapper(SetSlot setSlot, int setRange) {
         this.reps = setSlot.getReps();
@@ -33,7 +32,7 @@ public class FormulaWrapper extends Observable {
         weightHolders = new ArrayList<>(setRange);
         MAX_REPS = setRange;
         oneRepMaxFormula = new BrzyckiFormula();
-        setRoundCalculations(true);
+        weightFormatter = new WeightFormatter(true);
     }
 
     public void setFormula(OneRepMaxFormula oneRepMaxFormula) {
@@ -70,19 +69,15 @@ public class FormulaWrapper extends Observable {
             int reps = i + 1;
             double weight = oneRepMaxFormula.getWeightWeightForReps(reps);
             weightHolders.add(new DetailRow(0, Integer.toString(reps),
-                    formatter.format(weight) + " " + unit.getUnit(),
+                    weightFormatter.format(weight) + " " + unit.displayUnit(weight),
                     Integer.toString((int)oneRepMaxFormula.getPercentOfMax(weight)) + "%"));
         }
         setChanged();
         notifyObservers();
     }
 
-    public void setRoundCalculations(boolean shouldRound) {
-        if (shouldRound) {
-            formatter = new DecimalFormat("#0");
-        } else {
-            formatter = new DecimalFormat("#0.0");
-        }
+    public void setRoundCalculations(WeightFormatter weightFormatter) {
+        this.weightFormatter = weightFormatter;
     }
 
     public List<IDetailRow> getSets() {
@@ -98,7 +93,7 @@ public class FormulaWrapper extends Observable {
     }
 
     public void setUnit(Unit unit) {
-        if ( ! this.unit.getUnit().equals(unit.getUnit())) {
+        if ( ! this.unit.equals(unit)) {
             this.unit = unit;
         }
     }

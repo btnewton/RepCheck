@@ -24,6 +24,9 @@ public class SetSlot extends DataObject {
     private double weight;
     private Date lastUsed;
 
+    private int originalReps;
+    private double originalWeight;
+
     private SetSlot() {
         super(SetSlotTable.class, true);
 
@@ -153,5 +156,16 @@ public class SetSlot extends DataObject {
         );
         set.setName(cursor.getString(1));
         return set;
+    }
+
+    public void rollbackChanges(Context context) {
+        setWeight(originalWeight);
+        setReps(originalReps);
+        saveChanges(context);
+    }
+
+    public void resetSnapshot() {
+        originalReps = reps;
+        originalWeight = weight;
     }
 }

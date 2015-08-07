@@ -64,6 +64,10 @@
     <string name="how_to_use_button">how_to_use</string>
     <string name="how_to_use_summary">Learn how to get the most out of Rep Check</string>
 
+    <string name="pref_rate_label">Rate Rep Check</string>
+    <string name="rate_button">rate_app</string>
+    <string name="rate_summary">Share your experiences or thoughts on how to make this app better</string>
+
     <string name="pref_about_label">About</string>
     <string name="about_button">about</string>
     <string name="about_summary">Learn more about this app and its developer</string>

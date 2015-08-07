@@ -18,7 +18,4 @@ public class ReflectionHelper<T> {
         Class<T> myClass = (Class<T>) Class.forName(className);
         return myClass.newInstance();
     }
-
-
-
 }

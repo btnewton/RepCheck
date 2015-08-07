@@ -2,6 +2,7 @@ package com.example.brandt.repcheck.activities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -29,12 +30,13 @@ import android.widget.Toast;
 
 import com.example.brandt.repcheck.R;
 import com.example.brandt.repcheck.activities.barconstruction.BarConstructionDialog;
+import com.example.brandt.repcheck.activities.saveslots.LoadSetDialog;
 import com.example.brandt.repcheck.activities.saveslots.SaveSetDialog;
-import com.example.brandt.repcheck.activities.saveslots.SavedSetsDialog;
 import com.example.brandt.repcheck.database.seeders.FormulaConfigurationSeeder;
 import com.example.brandt.repcheck.database.seeders.SetSeeder;
 import com.example.brandt.repcheck.models.SetSlot;
 import com.example.brandt.repcheck.models.Unit;
+import com.example.brandt.repcheck.models.WeightFormatter;
 import com.example.brandt.repcheck.models.calculations.FormulaWrapper;
 import com.example.brandt.repcheck.models.calculations.formulas.BrzyckiFormula;
 import com.example.brandt.repcheck.models.calculations.formulas.OneRepMaxFormula;
@@ -59,14 +61,15 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     private FormulaWrapper formulaWrapper;
     private IncrementSet incrementSet;
     private Unit unit;
+    private SetSlot setSlot;
 
     // UI
     private DetailRowListAdapter weightListAdapter;
+    private TextView setNameTextView;
     private EditText weightEditText;
     private Spinner repsSpinner;
     private Button subtractButton;
     private Button addButton;
-    private FloatingActionButton floatingActionButton;
     private UndoBarController mUndoBarController;
 
     @SuppressWarnings("FieldCanBeLocal")
@@ -74,6 +77,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
     private double incrementValue;
     private double barWeight;
+    private static final String SET_ID = "setID";
     private static final String STATE_WEIGHT = "stateWeight";
     private static final String STATE_REPS = "stateReps";
 
@@ -84,21 +88,27 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
         new FormulaConfigurationSeeder().repair(getActivity());
 
-        SetSlot setSlot;
+        // Populate table if missing
+        if (SetSlot.getSlotCount(getActivity()) != getResources().getInteger(R.integer.set_slot_count)) {
+            new SetSlot(1, 1).truncateTable(getActivity());
+            new SetSeeder().seed(getActivity());
+        }
 
         if (savedInstanceState != null) {
             // Restore value of members from saved state
+            int setID = savedInstanceState.getInt(SET_ID);
+
+            setSlot = SetSlot.findById(getActivity(), setID);
+
             double weight = savedInstanceState.getInt(STATE_WEIGHT);
             int reps = savedInstanceState.getInt(STATE_REPS);
-            setSlot = new SetSlot(reps, weight);
+
+            setSlot.setWeight(weight);
+            setSlot.setReps(reps);
         } else {
-            // Populate table if missing
-            if (SetSlot.getSlotCount(getActivity()) != getResources().getInteger(R.integer.set_slot_count)) {
-                new SetSlot(1, 1).truncateTable(getActivity());
-                new SetSeeder().seed(getActivity());
-            }
             setSlot = SetSlot.first(getActivity());
         }
+
         formulaWrapper = new FormulaWrapper(setSlot, getResources().getInteger(R.integer.max_reps));
         formulaWrapper.addObserver(this);
     }
@@ -138,7 +148,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         formulaWrapper.setUnit(unit);
 
         boolean roundCalculations = sharedPreferences.getBoolean(getString(R.string.pref_round_values_key), true);
-        formulaWrapper.setRoundCalculations(roundCalculations);
+        formulaWrapper.setRoundCalculations(new WeightFormatter(roundCalculations));
 
         String plateStyle = sharedPreferences.getString(getString(R.string.pref_plate_style_key), getString(R.string.pref_plate_style_classic));
         incrementSet = IncrementFactory.Make(getActivity(), plateStyle, unit);
@@ -164,6 +174,9 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
         mUndoBarController = new UndoBarController(view.findViewById(R.id.undobar), this);
 
+        setNameTextView = (TextView) view.findViewById(R.id.set_name);
+        setNameTextView.setText(setSlot.getName());
+
         // Weight input
         weightEditText = (EditText) view.findViewById(R.id.detail);
         weightEditText.setText(Double.toString(formulaWrapper.getWeight()));
@@ -187,6 +200,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
                 if (weight >= 0) {
                     formulaWrapper.setWeight(weight);
                     formulaWrapper.calculateSets();
+                    updateSetNameStyle();
                 } else {
                     // Pseudo-recursive call
                     weightEditText.setText("0");
@@ -221,7 +235,6 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
                     View focus = getActivity().getCurrentFocus();
 
                     if (focus != null) {
-
                         in.hideSoftInputFromWindow(focus.getWindowToken(),
                                 InputMethodManager.HIDE_NOT_ALWAYS);
                         // Must return true here to consume event
@@ -261,14 +274,23 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             }
         });
 
-        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mUndoBarController.showUndoBar(
-                        false,
-                        getString(R.string.undobar_sample_message),
-                        null);
+
+                if (setHasChanged()) {
+                    mUndoBarController.showUndoBar(
+                            false,
+                            getString(R.string.undobar_sample_message),
+                            null);
+                    setSlot.setWeight(formulaWrapper.getWeight());
+                    setSlot.setReps(formulaWrapper.getReps());
+                    setSlot.saveChanges(getActivity());
+                    updateSetNameStyle();
+                } else {
+                    Toast.makeText(getActivity(), "Nothing to save.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         floatingActionButton.setOnLongClickListener(new View.OnLongClickListener() {
@@ -290,13 +312,13 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         repsSpinner = (Spinner) view.findViewById(R.id.rep_spinner);
         repsSpinner.setAdapter(adapter);
         repsSpinner.setSelection(formulaWrapper.getReps() - 1);
-
         repsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 formulaWrapper.setReps(position + 1);
                 formulaWrapper.calculateSets();
+                updateSetNameStyle();
             }
 
             @Override
@@ -320,7 +342,6 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
                 } else {
                     Toast.makeText(getActivity(), "Weight cannot be less than the bar.", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
@@ -330,7 +351,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
+        outState.putInt(SET_ID, setSlot.getId());
         outState.putDouble(STATE_WEIGHT, formulaWrapper.getWeight());
         outState.putInt(STATE_REPS, formulaWrapper.getReps());
     }
@@ -347,7 +368,6 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         MenuItem item = menu.add(Menu.NONE, R.id.action_load, 10, R.string.action_load);
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         item.setIcon(R.drawable.ic_storage);
-        menu.add(Menu.NONE, R.id.action_save, 10, R.string.action_save);
     }
 
     @Override
@@ -355,14 +375,9 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         // Handle presses on the action bar items
         switch (item.getItemId()) {
             case R.id.action_load:
-                SavedSetsDialog savedSetsDialog =
-                        SavedSetsDialog.newInstance(new LoadUpdateHandler(this));
-                savedSetsDialog.show(getFragmentManager(), getTag());
-                return true;
-            case R.id.action_save:
-                SaveSetDialog saveSetDialog =
-                        SaveSetDialog.newInstance(formulaWrapper.getReps(), formulaWrapper.getWeight());
-                saveSetDialog.show(getFragmentManager(), getTag());
+                LoadSetDialog loadSetDialog =
+                        LoadSetDialog.newInstance(new LoadUpdateHandler(this));
+                loadSetDialog.show(getFragmentManager(), getTag());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -387,7 +402,25 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
     @Override
     public void onUndo(Parcelable token) {
-        // TODO Undo
+        setSlot.rollbackChanges(getActivity());
+        updateSetNameStyle();
+    }
+
+    @Override
+    public void onUndoTimeout() {
+        setSlot.resetSnapshot();
+    }
+
+    public boolean setHasChanged() {
+        return setSlot.getWeight() != formulaWrapper.getWeight() || setSlot.getReps() != formulaWrapper.getReps();
+    }
+
+    public void updateSetNameStyle() {
+        if (setHasChanged()) {
+            setNameTextView.setTypeface(null, Typeface.ITALIC);
+        } else {
+            setNameTextView.setTypeface(null, Typeface.NORMAL);
+        }
     }
 
     public static class IncrementUpdateHandler extends Handler {
@@ -439,7 +472,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
         // Update buttons
         if (subtractButton != null && addButton != null) {
-            String incrementText = incrementValue + " " + unit.getUnit() + ((incrementValue != 1)? "s" : "");
+            String incrementText = incrementValue + " " + unit.displayUnit(incrementValue);
             subtractButton.setText("-" + incrementText);
             addButton.setText("+" + incrementText);
         }

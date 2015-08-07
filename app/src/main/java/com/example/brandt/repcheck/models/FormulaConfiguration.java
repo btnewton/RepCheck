@@ -63,6 +63,16 @@ public class FormulaConfiguration extends DataObject {
         );
     }
 
+    @Override
+    public void resetSnapshot() {
+
+    }
+
+    @Override
+    public void rollbackChanges(Context context) {
+
+    }
+
     public void setIsUsed(boolean isUsed) {
         this.isUsed = isUsed;
     }

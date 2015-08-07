@@ -7,13 +7,13 @@ import android.os.Message;
 /**
  * Created by brandt on 7/25/15.
  */
-public class SavedSetsDialog extends SetsListDialog {
+public class LoadSetDialog extends SetsListDialog {
 
     private static Handler updateHandler;
 
-    public static SavedSetsDialog newInstance(Handler updateHandler) {
-        SavedSetsDialog fragment = new SavedSetsDialog();
-        SavedSetsDialog.updateHandler = updateHandler;
+    public static LoadSetDialog newInstance(Handler updateHandler) {
+        LoadSetDialog fragment = new LoadSetDialog();
+        LoadSetDialog.updateHandler = updateHandler;
         return fragment;
     }
 
@@ -27,6 +27,6 @@ public class SavedSetsDialog extends SetsListDialog {
 
     @Override
     public String getTitle() {
-        return "Saved Sets";
+        return "Load Set";
     }
 }

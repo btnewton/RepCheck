@@ -1,5 +1,8 @@
 package com.example.brandt.repcheck.activities;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -80,6 +83,21 @@ public class SettingsActivity extends PreferenceActivity {
         bindPreferenceSummaryToValue(findPreference(getResources().getString(R.string.pref_plate_style_key)));
         bindPreferenceSummaryToValue(findPreference(getResources().getString(R.string.pref_bar_weight_key)));
         bindPreferenceSummaryToValue(findPreference(getResources().getString(R.string.pref_formula_key)));
+
+        Preference rateButton = (Preference)findPreference(getString(R.string.rate_button));
+        rateButton .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Uri uri = Uri.parse("market://details?id=" + getPackageName());
+                Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+                try {
+                    startActivity(goToMarket);
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+                }
+                return true;
+            }
+        });
 
         Preference formulaButton = (Preference)findPreference(getString(R.string.configure_formula_button));
         formulaButton .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

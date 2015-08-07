@@ -22,7 +22,7 @@ public abstract class IncrementSet {
         ArrayList<String>  formattedIncrements = new ArrayList<String>(increments.length);
 
         for (int i = 0; i < increments.length; i++) {
-            formattedIncrements.add(increments[i] + " " + unit.getUnit());
+            formattedIncrements.add(increments[i] + " " + unit.displayUnit(increments[i]));
         }
 
         return formattedIncrements;

@@ -26,6 +26,7 @@ public class UndoBarController {
 
     public interface UndoListener {
         void onUndo(Parcelable token);
+        void onUndoTimeout();
     }
 
     public UndoBarController(View undoBarView, UndoListener undoListener) {
@@ -113,6 +114,7 @@ public class UndoBarController {
     private Runnable mHideRunnable = new Runnable() {
         @Override
         public void run() {
+            mUndoListener.onUndoTimeout();
             hideUndoBar(false);
         }
     };

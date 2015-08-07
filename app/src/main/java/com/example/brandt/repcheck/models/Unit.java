@@ -40,7 +40,19 @@ public class Unit {
         return newUnit;
     }
 
-    public String getUnit() {
+    protected String getUnit() {
         return unit;
+    }
+
+    public boolean equals(Unit unit) {
+        return unit.getUnit().equals(unit);
+    }
+
+    public String displayUnit() {
+        return displayUnit(1);
+    }
+
+    public String displayUnit(double weight) {
+        return unit + ((weight != 1)? "s" : "");
     }
 }

@@ -4,7 +4,10 @@
         android:title="@string/pref_how_to_use_label"
         android:key="@string/how_to_use_button"
         android:summary="@string/how_to_use_summary"/>
-
+    <Preference
+        android:title="@string/pref_rate_label"
+        android:key="@string/rate_button"
+        android:summary="@string/rate_summary"/>
     <Preference
         android:title="@string/pref_about_label"
         android:key="@string/about_button"

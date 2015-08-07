@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.example.brandt.repcheck.R;
 import com.example.brandt.repcheck.models.SetSlot;
 import com.example.brandt.repcheck.models.Unit;
+import com.example.brandt.repcheck.models.WeightFormatter;
 import com.example.brandt.repcheck.util.adapters.standard.IStandardRowItem;
 import com.example.brandt.repcheck.util.adapters.standard.StandardRowItem;
 import com.example.brandt.repcheck.util.adapters.standard.StandardRowListAdapter;
@@ -213,11 +214,13 @@ public abstract class SetsListDialog extends DialogFragment implements Observer,
                 String unitType = sharedPreferences.getString(getActivity().getString(R.string.pref_units_key), getActivity().getString(R.string.pref_units_imperial));
                 Unit unit = Unit.newUnitByString(unitType, getActivity());
 
+                boolean shouldRound = sharedPreferences.getBoolean(getActivity().getString(R.string.pref_round_values_key), true);
+                WeightFormatter formatter = new WeightFormatter(shouldRound);
+
                 for (SetSlot setSlot : setSlots) {
-                    rowItems.add(new StandardRowItem(setSlot.getId(), setSlot.getName(), setSlot.getReps() + " rep" + ((setSlot.getReps() != 1) ? "s" : "") + " at " + setSlot.getWeight() + " " + unit.getUnit() + "s"));
+                    rowItems.add(new StandardRowItem(setSlot.getId(), setSlot.getName(), setSlot.getReps() + " rep"
+                            + ((setSlot.getReps() != 1) ? "s" : "") + " at " + formatter.format(setSlot.getWeight()) + " " + unit.displayUnit(setSlot.getWeight())));
                 }
-
-
             } else {
                 rowItems = null;
             }
