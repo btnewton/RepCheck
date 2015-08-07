@@ -89,6 +89,7 @@
             android:layout_width="@dimen/fab_icon_size"
             android:layout_height="@dimen/fab_icon_size"
             android:src="@drawable/fab_icons"
+            android:scaleType="center"
             android:layout_gravity="center"
             android:duplicateParentState="true"/>
 
