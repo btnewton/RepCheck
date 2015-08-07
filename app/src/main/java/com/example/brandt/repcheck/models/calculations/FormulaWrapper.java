@@ -70,7 +70,7 @@ public class FormulaWrapper extends Observable {
             int reps = i + 1;
             double weight = oneRepMaxFormula.getWeightWeightForReps(reps);
             weightHolders.add(new DetailRow(0, Integer.toString(reps),
-                    formatter.format(weight) + " " + unit.getUnit() + ((weight != 1) ? "s" : ""),
+                    formatter.format(weight) + " " + unit.getUnit(),
                     Integer.toString((int)oneRepMaxFormula.getPercentOfMax(weight)) + "%"));
         }
         setChanged();
@@ -81,7 +81,7 @@ public class FormulaWrapper extends Observable {
         if (shouldRound) {
             formatter = new DecimalFormat("#0");
         } else {
-            formatter = new DecimalFormat("#0.00");
+            formatter = new DecimalFormat("#0.0");
         }
     }
 

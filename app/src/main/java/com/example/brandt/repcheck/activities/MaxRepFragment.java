@@ -317,6 +317,7 @@ public class MaxRepFragment extends Fragment implements Observer {
         super.onCreateOptionsMenu(menu, inflater);
         MenuItem item = menu.add(Menu.NONE, R.id.action_load, 10, R.string.action_load);
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        item.setIcon(R.drawable.ic_storage);
         menu.add(Menu.NONE, R.id.action_save, 10, R.string.action_save);
     }
 
@@ -404,7 +405,7 @@ public class MaxRepFragment extends Fragment implements Observer {
 
         // Update buttons
         if (subtractButton != null && addButton != null) {
-            String incrementText = incrementValue + " " + unit.getUnit() + ((incrementValue != 1) ? "s" : "");
+            String incrementText = incrementValue + " " + unit.getUnit();
             subtractButton.setText("-" + incrementText);
             addButton.setText("+" + incrementText);
         }

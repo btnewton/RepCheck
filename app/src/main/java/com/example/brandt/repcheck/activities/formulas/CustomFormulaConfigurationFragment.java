@@ -18,7 +18,6 @@ public class CustomFormulaConfigurationFragment extends Fragment implements Obse
     private RepFormulaConfigurationHolder[] formulaHolders;
     private Handler asyncHandler;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -26,9 +26,6 @@ public class MainActivity extends ActionBarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));
         setSupportActionBar(toolbar);
-
-        toolbar.setLogo(R.mipmap.ic_launcher);
-
         AdMobHelper.CreateAdRequest(this);
 
 

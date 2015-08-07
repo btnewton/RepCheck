@@ -18,11 +18,11 @@ public class Unit {
     }
 
     public static Unit ImperialUnit() {
-        return new Unit("lb");
+        return new Unit("LB");
     }
 
     public static Unit MetricUnit() {
-        return new Unit("kg");
+        return new Unit("KG");
     }
 
     public static Unit newUnitByString(String unit, Context context) {
