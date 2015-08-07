@@ -87,32 +87,11 @@
         android:layout_gravity="center"
         android:layout="@layout/empty_list" />
 
-    <com.example.brandt.repcheck.util.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="@dimen/fab_size"
-        android:layout_height="@dimen/fab_size"
-        android:layout_marginTop="16dp"
-        android:layout_alignParentRight="true"
-        android:layout_above="@+id/undobar_wrapper"
-        android:layout_marginBottom="@dimen/standard"
-        android:layout_marginRight="@dimen/standard"
-        android:elevation="@dimen/fab_elevation"
-        android:background="@drawable/fab_background"
-        android:stateListAnimator="@animator/fab_anim"
-        android:layout_gravity="center_horizontal">
-
-        <ImageView
-            android:layout_width="@dimen/fab_icon_size"
-            android:layout_height="@dimen/fab_icon_size"
-            android:src="@drawable/fab_icons"
-            android:scaleType="center"
-            android:layout_gravity="center"
-            android:duplicateParentState="true"/>
-
-    </com.example.brandt.repcheck.util.FloatingActionButton>
+    <!-- May be either v15 or v21 Floating Action Button-->
+    <include layout="@layout/floating_action_button" />
 
     <LinearLayout
-        android:id="@id/undobar_wrapper"
+        android:id="@+id/undobar_wrapper"
         android:layout_alignParentBottom="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">

@@ -1,6 +1,7 @@
 package com.example.brandt.repcheck.activities;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
@@ -25,6 +26,10 @@ public class MainActivity extends ActionBarActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.app_name));
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            toolbar.setElevation(getResources().getDimension(R.dimen.toolbar_elevation));
+        }
+
         setSupportActionBar(toolbar);
         AdMobHelper.CreateAdRequest(this);
 

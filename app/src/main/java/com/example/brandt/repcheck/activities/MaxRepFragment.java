@@ -42,7 +42,6 @@ import com.example.brandt.repcheck.models.calculations.formulas.BrzyckiFormula;
 import com.example.brandt.repcheck.models.calculations.formulas.OneRepMaxFormula;
 import com.example.brandt.repcheck.models.increments.IncrementFactory;
 import com.example.brandt.repcheck.models.increments.IncrementSet;
-import com.example.brandt.repcheck.util.FloatingActionButton;
 import com.example.brandt.repcheck.util.UndoBarController;
 import com.example.brandt.repcheck.util.adapters.detail.DetailRowListAdapter;
 
@@ -71,7 +70,6 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     private Button subtractButton;
     private Button addButton;
     private UndoBarController mUndoBarController;
-
     @SuppressWarnings("FieldCanBeLocal")
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
 
@@ -274,7 +272,9 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             }
         });
 
-        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+        View floatingActionButton;
+
+        floatingActionButton = view.findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

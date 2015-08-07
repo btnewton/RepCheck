@@ -3,6 +3,7 @@ package com.example.brandt.repcheck.activities;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -42,6 +43,9 @@ public class SettingsActivity extends PreferenceActivity {
                 finish();
             }
         });
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            toolbar.setElevation(getResources().getDimension(R.dimen.toolbar_elevation));
+        }
 
         setupSimplePreferencesScreen();
     }
