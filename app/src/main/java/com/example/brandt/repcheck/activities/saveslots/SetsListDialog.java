@@ -214,7 +214,7 @@ public abstract class SetsListDialog extends DialogFragment implements Observer,
                 Unit unit = Unit.newUnitByString(unitType, getActivity());
 
                 for (SetSlot setSlot : setSlots) {
-                    rowItems.add(new StandardRowItem(setSlot.getId(), setSlot.getName(), setSlot.getReps() + " rep" + ((setSlot.getReps() != 1) ? "s" : "") + " at " + setSlot.getWeight() + unit.getUnit() + "s"));
+                    rowItems.add(new StandardRowItem(setSlot.getId(), setSlot.getName(), setSlot.getReps() + " rep" + ((setSlot.getReps() != 1) ? "s" : "") + " at " + setSlot.getWeight() + " " + unit.getUnit() + "s"));
                 }
 
 

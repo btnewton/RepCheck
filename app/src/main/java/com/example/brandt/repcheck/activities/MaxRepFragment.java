@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -26,7 +27,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.brandt.dietron.util.FloatingActionButton;
 import com.example.brandt.repcheck.R;
 import com.example.brandt.repcheck.activities.barconstruction.BarConstructionDialog;
 import com.example.brandt.repcheck.activities.saveslots.SaveSetDialog;
@@ -40,6 +40,8 @@ import com.example.brandt.repcheck.models.calculations.formulas.BrzyckiFormula;
 import com.example.brandt.repcheck.models.calculations.formulas.OneRepMaxFormula;
 import com.example.brandt.repcheck.models.increments.IncrementFactory;
 import com.example.brandt.repcheck.models.increments.IncrementSet;
+import com.example.brandt.repcheck.util.FloatingActionButton;
+import com.example.brandt.repcheck.util.UndoBarController;
 import com.example.brandt.repcheck.util.adapters.detail.DetailRowListAdapter;
 
 import java.lang.ref.WeakReference;
@@ -51,7 +53,7 @@ import java.util.Observer;
  *
  * Created by brandt on 7/22/15.
  */
-public class MaxRepFragment extends Fragment implements Observer {
+public class MaxRepFragment extends Fragment implements Observer, UndoBarController.UndoListener {
 
     // Models
     private FormulaWrapper formulaWrapper;
@@ -65,6 +67,8 @@ public class MaxRepFragment extends Fragment implements Observer {
     private Button subtractButton;
     private Button addButton;
     private FloatingActionButton floatingActionButton;
+    private UndoBarController mUndoBarController;
+
     @SuppressWarnings("FieldCanBeLocal")
     private SharedPreferences.OnSharedPreferenceChangeListener listener;
 
@@ -158,8 +162,7 @@ public class MaxRepFragment extends Fragment implements Observer {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.max_rep, container, false);
 
-        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
-        floatingActionButton.setOnClickListener(this);
+        mUndoBarController = new UndoBarController(view.findViewById(R.id.undobar), this);
 
         // Weight input
         weightEditText = (EditText) view.findViewById(R.id.detail);
@@ -201,7 +204,7 @@ public class MaxRepFragment extends Fragment implements Observer {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
-                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
             }
@@ -254,6 +257,26 @@ public class MaxRepFragment extends Fragment implements Observer {
             @Override
             public boolean onLongClick(View v) {
                 showIncrementList();
+                return true;
+            }
+        });
+
+        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mUndoBarController.showUndoBar(
+                        false,
+                        getString(R.string.undobar_sample_message),
+                        null);
+            }
+        });
+        floatingActionButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                SaveSetDialog saveSetDialog =
+                        SaveSetDialog.newInstance(formulaWrapper.getReps(), formulaWrapper.getWeight());
+                saveSetDialog.show(getFragmentManager(), getTag());
                 return true;
             }
         });
@@ -360,6 +383,11 @@ public class MaxRepFragment extends Fragment implements Observer {
     @Override
     public void update(Observable observable, Object o) {
         weightListAdapter.updateData(formulaWrapper.getSets());
+    }
+
+    @Override
+    public void onUndo(Parcelable token) {
+        // TODO Undo
     }
 
     public static class IncrementUpdateHandler extends Handler {

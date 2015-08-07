@@ -1,4 +1,4 @@
-package com.example.brandt.dietron.util;
+package com.example.brandt.repcheck.util;
 
 import android.annotation.TargetApi;
 import android.content.Context;

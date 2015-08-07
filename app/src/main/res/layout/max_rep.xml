@@ -42,19 +42,35 @@
         android:layout_below="@id/weight_input_wrapper"
         android:layout_marginBottom="@dimen/standard"
         android:id="@+id/rep_input_wrapper"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal">
 
-        <Spinner
-            android:layout_marginStart="@dimen/standard"
-            android:layout_marginEnd="@dimen/standard"
-            android:layout_gravity="end"
-            android:id="@+id/rep_spinner"
-            android:layout_width="100dp"
+        <TextView
+            android:text="Benchpress"
+            android:scrollHorizontally="true"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_width="0dp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:layout_weight="1"
             android:layout_height="wrap_content" />
 
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content">
+            <Spinner
+                android:layout_marginStart="@dimen/standard"
+                android:layout_marginEnd="@dimen/standard"
+                android:layout_gravity="end"
+                android:id="@+id/rep_spinner"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
 
     <ListView
@@ -71,13 +87,13 @@
         android:layout_gravity="center"
         android:layout="@layout/empty_list" />
 
-    <com.example.brandt.dietron.util.FloatingActionButton
+    <com.example.brandt.repcheck.util.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="@dimen/fab_size"
         android:layout_height="@dimen/fab_size"
         android:layout_marginTop="16dp"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/undobar_wrapper"
         android:layout_marginBottom="@dimen/standard"
         android:layout_marginRight="@dimen/standard"
         android:elevation="@dimen/fab_elevation"
@@ -93,5 +109,25 @@
             android:layout_gravity="center"
             android:duplicateParentState="true"/>
 
-    </com.example.brandt.dietron.util.FloatingActionButton>
+    </com.example.brandt.repcheck.util.FloatingActionButton>
+
+    <LinearLayout
+        android:id="@id/undobar_wrapper"
+        android:layout_alignParentBottom="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/undobar"
+            style="@style/UndoBar">
+            <TextView android:id="@+id/undobar_message" style="@style/UndoBarMessage" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:paddingTop="@dimen/tiny"
+                android:paddingBottom="@dimen/tiny"
+                android:background="@android:color/darker_gray"/>
+            <Button android:id="@+id/undobar_button" style="@style/UndoBarButton" />
+        </LinearLayout>
+    </LinearLayout>
+
 </RelativeLayout>
