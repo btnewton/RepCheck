@@ -212,14 +212,13 @@ public abstract class SetsListDialog extends DialogFragment implements Observer,
 
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 String unitType = sharedPreferences.getString(getActivity().getString(R.string.pref_units_key), getActivity().getString(R.string.pref_units_imperial));
-                Unit unit = Unit.newUnitByString(unitType, getActivity());
 
                 boolean shouldRound = sharedPreferences.getBoolean(getActivity().getString(R.string.pref_round_values_key), true);
-                WeightFormatter formatter = new WeightFormatter(shouldRound);
+                WeightFormatter formatter = new WeightFormatter(shouldRound, Unit.newUnitByString(unitType, getActivity()));
 
                 for (SetSlot setSlot : setSlots) {
                     rowItems.add(new StandardRowItem(setSlot.getId(), setSlot.getName(), setSlot.getReps() + " rep"
-                            + ((setSlot.getReps() != 1) ? "s" : "") + " at " + formatter.format(setSlot.getWeight()) + " " + unit.displayUnit(setSlot.getWeight())));
+                            + ((setSlot.getReps() != 1) ? "s" : "") + " at " + formatter.format(setSlot.getWeight()) + " " + formatter.getUnit(setSlot.getWeight())));
                 }
             } else {
                 rowItems = null;

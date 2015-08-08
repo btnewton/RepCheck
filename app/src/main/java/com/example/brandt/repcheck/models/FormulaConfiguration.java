@@ -64,6 +64,11 @@ public class FormulaConfiguration extends DataObject {
     }
 
     @Override
+    public boolean hasChanged() {
+        return false;
+    }
+
+    @Override
     public void resetSnapshot() {
 
     }

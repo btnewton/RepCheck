@@ -17,6 +17,8 @@ public class WeightFormatter {
         } else {
             formatter = new DecimalFormat("#0.0");
         }
+
+        this.unit = unit;
     }
 
     public String format(double number) {

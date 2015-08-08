@@ -38,7 +38,6 @@ import com.example.brandt.repcheck.database.seeders.SetSeeder;
 import com.example.brandt.repcheck.models.SetSlot;
 import com.example.brandt.repcheck.models.Unit;
 import com.example.brandt.repcheck.models.WeightFormatter;
-import com.example.brandt.repcheck.models.calculations.FormulaWrapper;
 import com.example.brandt.repcheck.models.calculations.formulas.BrzyckiFormula;
 import com.example.brandt.repcheck.models.calculations.formulas.OneRepMaxFormula;
 import com.example.brandt.repcheck.models.increments.IncrementFactory;
@@ -66,12 +65,11 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     private static final String STATE_REPS = "stateReps";
 
     // Models
-    private FormulaWrapper formulaWrapper;
     private IncrementSet incrementSet;
     private WeightFormatter formatter;
     private SetSlot setSlot;
     private OneRepMaxFormula formula;
-    private Handler handler;
+    private static Handler handler;
     private AsyncCalculate asyncCalculate;
 
     // UI
@@ -114,8 +112,12 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             setSlot = SetSlot.first(getActivity());
         }
 
+        handler = new Handler();
         asyncCalculate = new AsyncCalculate();
         asyncCalculate.addObserver(this);
+
+        // Update preferences
+        loadPreferences(PreferenceManager.getDefaultSharedPreferences(getActivity()));
     }
 
     @Override
@@ -131,8 +133,6 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener);
-
-        loadPreferences(sharedPreferences);
     }
 
     private void loadPreferences(SharedPreferences sharedPreferences) {
@@ -144,8 +144,6 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         Unit unit = Unit.newUnitByString(unitType, getActivity());
         boolean roundCalculations = sharedPreferences.getBoolean(getString(R.string.pref_round_values_key), true);
         formatter = new WeightFormatter(roundCalculations, unit);
-
-        double maxReps = getResources().getInteger(R.integer.max_reps);
 
         // Reflect formula or default to Brzycki
         try {
@@ -159,21 +157,13 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         incrementSet = IncrementFactory.Make(getActivity(), plateStyle, unit);
 
         // Update display
-        formulaWrapper.calculateSets(setSlot.getReps(), setSlot.getWeight());
+        startCalculateSets();
         updateIncrement(incrementSet.getDefaultWeightIndex());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            // Restore value of members from saved state
-            double weight = savedInstanceState.getInt(STATE_WEIGHT);
-            int reps = savedInstanceState.getInt(STATE_REPS);
-            setSlot.setWeight(weight);
-            setSlot.setReps(reps);
-        }
-
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.max_rep, container, false);
 
@@ -195,16 +185,17 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
                 double weight;
+
                 try {
                     weight = Double.parseDouble(weightEditText.getText().toString());
                 } catch (Exception e) {
-                    //
-                    weight = -1;
+                    weight = 0;
                 }
 
                 if (weight >= 0) {
                     setSlot.setWeight(weight);
                     updateSetNameStyle();
+                    startCalculateSets();
                 } else {
                     // Pseudo-recursive call
                     weightEditText.setText("0");
@@ -217,7 +208,6 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
             }
         });
-
         weightEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
@@ -227,7 +217,6 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
                 }
             }
         });
-
         // Dismiss keyboard when enter is pressed
         weightEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
@@ -278,9 +267,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             }
         });
 
-        View floatingActionButton;
-
-        floatingActionButton = view.findViewById(R.id.fab);
+        View floatingActionButton = view.findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -321,7 +308,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 setSlot.setReps(position + 1);
-                calculateSets();
+                startCalculateSets();
                 updateSetNameStyle();
             }
 
@@ -349,6 +336,9 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             }
         });
 
+        // Update UI
+        updateIncrement(incrementSet.getDefaultWeightIndex());
+
         return view;
     }
 
@@ -365,7 +355,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             formula.update(setSlot.getReps(), setSlot.getWeight());
 
             int maxReps = getResources().getInteger(R.integer.max_reps);
-            List<IDetailRow> weightHolders = new ArrayList<>(maxReps);
+            weightHolders = new ArrayList<>(maxReps);
 
             for (int i = 0; i < maxReps; i++) {
                 int currentReps = i + 1;
@@ -382,22 +372,6 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
                     notifyObservers();
                 }
             });
-        }
-    }
-
-    // TODO thread?
-    private void calculateSets() {
-        formula.update(setSlot.getReps(), setSlot.getWeight());
-
-        int maxReps = getResources().getInteger(R.integer.max_reps);
-        List<IDetailRow> weightHolders = new ArrayList<>(maxReps);
-
-        for (int i = 0; i < maxReps; i++) {
-            int currentReps = i + 1;
-            double currentWeight = formula.getWeightWeightForReps(currentReps);
-            weightHolders.add(new DetailRow(currentReps, Integer.toString(currentReps),
-                    formatter.format(currentWeight) + " " + formatter.getUnit(currentWeight),
-                    Integer.toString((int)formula.getPercentOfMax(currentWeight)) + "%"));
         }
     }
 
@@ -439,7 +413,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        formulaWrapper.calculateSets(setSlot.getReps(), setSlot.getWeight());
+        startCalculateSets();
     }
 
     private void showIncrementList() {
@@ -505,9 +479,6 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         }
     }
 
-    public FormulaWrapper getFormulaWrapper() {
-        return formulaWrapper;
-    }
 
     public double getIncrementValue() {
         return incrementValue;
@@ -515,6 +486,10 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
     public void loadSet(int id) {
         setSlot = SetSlot.findById(getActivity(), id);
+    }
+
+    public void startCalculateSets() {
+        new Thread(asyncCalculate).start();
     }
 
     public void updateSet() {

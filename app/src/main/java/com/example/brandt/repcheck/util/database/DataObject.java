@@ -30,6 +30,7 @@ public abstract class DataObject {
         }
         primaryKey = "id";
         this.isNewRecord = isNewRecord;
+
         resetSnapshot();
     }
 

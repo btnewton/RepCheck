@@ -5,4 +5,11 @@
     android:minHeight="?attr/actionBarSize"
     android:background="@color/primary_800"
     android:theme="@style/ToolbarStyle"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView
+        android:layout_width="100dp"
+        android:src="@drawable/rep_check_brand"
+        android:layout_gravity="left"
+        android:gravity="left"
+        android:layout_height="48dp" />
+    </android.support.v7.widget.Toolbar>

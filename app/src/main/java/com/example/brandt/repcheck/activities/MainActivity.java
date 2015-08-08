@@ -25,12 +25,13 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.main_activity);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(getResources().getString(R.string.app_name));
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             toolbar.setElevation(getResources().getDimension(R.dimen.toolbar_elevation));
         }
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         AdMobHelper.CreateAdRequest(this);
 
         if (savedInstanceState != null) {
