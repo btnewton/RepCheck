@@ -51,6 +51,7 @@ public abstract class DataObject {
     }
 
     public boolean saveChanges(Context context) {
+
         if (isNewRecord) {
             ContentValues contentValues = getContentValues();
             if (contentValues.containsKey(primaryKey)) {
@@ -61,11 +62,12 @@ public abstract class DataObject {
             return lastInsertID != -1;
         } else {
             String whereClause = primaryKey + "=?";
-            String[] whereArgs = new String[]{ Integer.toString(id) };
+            String[] whereArgs = new String[]{Integer.toString(id)};
 
             return DBHandler.getWritable(context).
                     update(getTableName(), getContentValues(), whereClause, whereArgs) > 0;
         }
+
     }
 
     public int getCount(Context context) {

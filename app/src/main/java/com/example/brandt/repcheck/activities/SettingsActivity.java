@@ -88,6 +88,16 @@ public class SettingsActivity extends PreferenceActivity {
         bindPreferenceSummaryToValue(findPreference(getResources().getString(R.string.pref_bar_weight_key)));
         bindPreferenceSummaryToValue(findPreference(getResources().getString(R.string.pref_formula_key)));
 
+        Preference aboutButton = (Preference)findPreference(getString(R.string.about_button));
+        aboutButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                AboutDialog aboutDialog = new AboutDialog();
+                aboutDialog.show(getFragmentManager(), "AboutDialog");
+                return true;
+            }
+        });
+
         Preference rateButton = (Preference)findPreference(getString(R.string.rate_button));
         rateButton .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override

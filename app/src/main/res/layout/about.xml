@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/primary_400"
+    android:layout_height="wrap_content"
+    android:layout_width="fill_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ImageView
+        android:src="@drawable/rep_check_brand_outline"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="0dp"
+        android:layout_width="fill_parent"
+        android:scaleType="fitCenter"
+        android:layout_height="100dp" />
+
+    <TextView
+        android:text="Version 1.0.0"
+        android:gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_marginTop="30dp"
+        android:text="Project Manager &amp; Developer"
+        android:textSize="18sp"
+        android:layout_marginLeft="@dimen/standard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="14sp"
+        android:layout_marginTop="@dimen/tiny"
+        android:layout_marginLeft="@dimen/standard"
+        android:text="Designed and developed the back end and interface"
+        android:textStyle="italic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textSize="18sp"
+        android:layout_margin="@dimen/standard"
+        android:text="Brandt Newton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:paddingLeft="@dimen/small"
+        android:paddingRight="@dimen/small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/brandt_website_link"
+            android:background="@drawable/circle"
+            android:src="@drawable/ic_globe"
+            android:layout_marginRight="@dimen/small"
+            android:padding="@dimen/small"
+            android:layout_width="45dp"
+            android:layout_height="45dp" />
+        <ImageView
+            android:id="@+id/brandt_resume_link"
+            android:background="@drawable/circle"
+            android:src="@drawable/ic_document"
+            android:layout_marginRight="@dimen/small"
+            android:padding="@dimen/small"
+            android:layout_width="45dp"
+            android:layout_height="45dp" />
+
+        <ImageView
+            android:id="@+id/brandt_email_link"
+            android:background="@drawable/circle"
+            android:src="@drawable/ic_mail"
+            android:layout_marginRight="@dimen/small"
+            android:padding="@dimen/small"
+            android:layout_width="45dp"
+            android:layout_height="45dp" />
+    </LinearLayout>
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:text="Graphic Designer"
+            android:textSize="18sp"
+            android:layout_marginLeft="@dimen/standard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:textSize="14sp"
+            android:layout_marginTop="@dimen/tiny"
+            android:layout_marginLeft="@dimen/standard"
+            android:text="Developed Rep Check logos and overall style"
+            android:textStyle="italic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:textSize="14sp"
+            android:layout_marginTop="@dimen/tiny"
+            android:layout_marginLeft="@dimen/standard"
+            android:text="Contributed to interface design"
+            android:textStyle="italic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:textSize="18sp"
+            android:layout_margin="@dimen/standard"
+            android:text="Konnor Newton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:paddingLeft="@dimen/small"
+        android:paddingRight="@dimen/small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/konnor_email_link"
+            android:background="@drawable/circle"
+            android:src="@drawable/ic_mail"
+            android:layout_marginRight="@dimen/small"
+            android:padding="@dimen/small"
+            android:layout_width="45dp"
+            android:layout_height="45dp" />
+    </LinearLayout>
+</LinearLayout>
+</ScrollView>

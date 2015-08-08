@@ -5,4 +5,9 @@
     <string name="action_settings">Settings</string>
     <string name="undo">Undo</string>
     <string name="undobar_sample_message">Slot saved.</string>
+
+    <string name="brandt_email">bnewton149@gmail.com</string>
+    <string name="brandt_website">http://brandtnewton.com</string>
+    <string name="brandt_resume">http://brandtnewton.com/resume2015.pdf</string>
+    <string name="konnor_email">newtonk@husson.edu</string>
 </resources>

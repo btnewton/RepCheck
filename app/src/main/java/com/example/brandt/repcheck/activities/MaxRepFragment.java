@@ -278,7 +278,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
                             getString(R.string.undobar_sample_message),
                             null);
                     setSlot.saveChanges(getActivity());
-                    updateSetNameStyle();
+                    setNameTextView.setTypeface(null, Typeface.NORMAL);
                 } else {
                     Toast.makeText(getActivity(), "Nothing to save.", Toast.LENGTH_SHORT).show();
                 }
