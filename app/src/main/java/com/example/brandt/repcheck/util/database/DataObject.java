@@ -134,6 +134,8 @@ public abstract class DataObject {
         }
     }
 
+    public abstract boolean hasChanged();
+
     public abstract void resetSnapshot();
 
     public abstract void rollbackChanges(Context context);

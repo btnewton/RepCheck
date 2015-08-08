@@ -115,7 +115,7 @@ public class SetSlot extends DataObject {
 
     public void setReps(int reps) {
         if (reps <= 0) {
-            return;
+            reps = 1;
         }
         this.reps = reps;
     }
@@ -126,7 +126,7 @@ public class SetSlot extends DataObject {
 
     public void setWeight(double weight) {
         if (weight <= 0) {
-            return;
+            weight = 0;
         }
         this.weight = weight;
     }
@@ -156,6 +156,11 @@ public class SetSlot extends DataObject {
         );
         set.setName(cursor.getString(1));
         return set;
+    }
+
+    @Override
+    public boolean hasChanged() {
+        return weight != originalWeight || reps != originalReps;
     }
 
     public void rollbackChanges(Context context) {

@@ -9,8 +9,9 @@ import java.text.NumberFormat;
 public class WeightFormatter {
 
     private NumberFormat formatter;
+    private Unit unit;
 
-    public WeightFormatter(boolean shouldRound) {
+    public WeightFormatter(boolean shouldRound, Unit unit) {
         if (shouldRound) {
             formatter = new DecimalFormat("#0");
         } else {
@@ -21,4 +22,7 @@ public class WeightFormatter {
     public String format(double number) {
         return formatter.format(number);
     }
+
+    public String getUnit() { return unit.displayUnit(); }
+    public String getUnit(double number) { return unit.displayUnit(number); }
 }

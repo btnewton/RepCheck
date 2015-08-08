@@ -6,7 +6,6 @@
 
 
     <TextView
-        android:text="Title"
         android:id="@+id/title"
         android:textStyle="bold"
         android:textSize="18sp"
@@ -20,7 +19,6 @@
         android:layout_gravity="center_vertical" />
 
     <TextView
-        android:text="Text"
         android:id="@+id/text"
         android:layout_width="0dp"
         android:layout_weight="4"

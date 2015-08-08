@@ -17,27 +17,27 @@ public class SetSeeder extends Seeder {
         int now = new Date().getSeconds();
 
         SetSlot set1 = new SetSlot(5, 135);
-        set1.setName("Slot 1");
+        set1.setName("Bench press");
         set1.saveChanges(context);
 
-        SetSlot set2 = new SetSlot(5, 135);
-        set2.setName("Slot 2");
+        SetSlot set2 = new SetSlot(8, 135);
+        set2.setName("Dead Lift");
         set2.saveChanges(context);
 
-        SetSlot set3 = new SetSlot(5, 135);
-        set3.setName("Slot 3");
+        SetSlot set3 = new SetSlot(10, 135);
+        set3.setName("Squat");
         set3.saveChanges(context);
 
-        SetSlot set4 = new SetSlot(5, 135);
-        set4.setName("Slot 4");
+        SetSlot set4 = new SetSlot(10, 95);
+        set4.setName("Military Press");
         set4.saveChanges(context);
 
-        SetSlot set5 = new SetSlot(5, 135);
-        set5.setName("Slot 5");
+        SetSlot set5 = new SetSlot(10, 65);
+        set5.setName("Barbell Curl");
         set5.saveChanges(context);
 
-        SetSlot set6 = new SetSlot(5, 135);
-        set6.setName("Slot 6");
+        SetSlot set6 = new SetSlot(5, 225);
+        set6.setName("Leg Press");
         set6.saveChanges(context);
     }
 }

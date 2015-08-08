@@ -87,8 +87,14 @@
         android:layout_gravity="center"
         android:layout="@layout/empty_list" />
 
-    <!-- May be either v15 or v21 Floating Action Button-->
-    <include layout="@layout/floating_action_button" />
+    <LinearLayout
+        android:layout_above="@+id/undobar_wrapper"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <!-- May be either v15 or v21 Floating Action Button-->
+        <include layout="@layout/floating_action_button" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/undobar_wrapper"
