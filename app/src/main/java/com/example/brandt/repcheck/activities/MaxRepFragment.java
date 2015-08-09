@@ -1,7 +1,9 @@
 package com.example.brandt.repcheck.activities;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -55,7 +57,7 @@ import java.util.Observer;
 
 /**
  * Handles all actions for app.
- *
+ * <p/>
  * Created by brandt on 7/22/15.
  */
 public class MaxRepFragment extends Fragment implements Observer, UndoBarController.UndoListener {
@@ -65,15 +67,15 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     private static final String STATE_REPS = "stateReps";
 
     // Models
-    private IncrementSet incrementSet;
-    private WeightFormatter formatter;
-    private SetSlot setSlot;
-    private OneRepMaxFormula formula;
+    public IncrementSet incrementSet;
+    public WeightFormatter formatter;
+    public SetSlot setSlot;
+    public OneRepMaxFormula formula;
     private static Handler handler;
     private AsyncCalculate asyncCalculate;
-
     // UI
     private DetailRowListAdapter weightListAdapter;
+    private View floatingActionButton;
     private TextView setNameTextView;
     private EditText weightEditText;
     private Spinner repsSpinner;
@@ -164,8 +166,13 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.max_rep, container, false);
+
+        View view;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            view = inflater.inflate(R.layout.max_rep_portrait, container, false);
+        } else {
+            view = inflater.inflate(R.layout.max_rep_landscape, container, false);
+        }
 
         mUndoBarController = new UndoBarController(view.findViewById(R.id.undobar), this);
 
@@ -267,16 +274,38 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             }
         });
 
-        View floatingActionButton = view.findViewById(R.id.fab);
+        floatingActionButton = view.findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (setSlot.hasChanged()) {
-                    mUndoBarController.showUndoBar(
-                            false,
-                            getString(R.string.undobar_sample_message),
-                            null);
+                    floatingActionButton.animate().translationY(-170).setDuration(getActivity().getResources().getInteger(android.R.integer.config_shortAnimTime)).setListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            mUndoBarController.showUndoBar(
+                                    false,
+                                    getString(R.string.undobar_sample_message),
+                                    null);
+                            floatingActionButton.animate().setListener(null);
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+
                     setSlot.saveChanges(getActivity());
                     setNameTextView.setTypeface(null, Typeface.NORMAL);
                 } else {
@@ -362,7 +391,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
                 double currentWeight = formula.getWeightWeightForReps(currentReps);
                 weightHolders.add(new DetailRow(currentReps, Integer.toString(currentReps),
                         formatter.format(currentWeight) + " " + formatter.getUnit(currentWeight),
-                        Integer.toString((int)formula.getPercentOfMax(currentWeight)) + "%"));
+                        Integer.toString((int) formula.getPercentOfMax(currentWeight)) + "%"));
             }
 
             handler.post(new Runnable() {
@@ -431,11 +460,13 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     public void onUndo(Parcelable token) {
         setSlot.rollbackChanges(getActivity());
         updateSetNameStyle();
+        floatingActionButton.animate().translationY(0);
     }
 
     @Override
     public void onUndoTimeout() {
         setSlot.resetSnapshot();
+        floatingActionButton.animate().translationY(0);
     }
 
 

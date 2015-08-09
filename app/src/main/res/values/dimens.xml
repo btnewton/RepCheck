@@ -3,6 +3,7 @@
     <dimen name="tiny">5dp</dimen>
     <dimen name="small">10dp</dimen>
     <dimen name="larger_text">18sp</dimen>
+    <dimen name="small_fab_size">45dp</dimen>
     <dimen name="fab_size">56dp</dimen>
     <dimen name="fab_icon_size">24dp</dimen>
     <dimen name="fab_press_translation_z">9dp</dimen>

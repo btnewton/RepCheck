@@ -98,7 +98,7 @@ public class MaxRepFragmentUITest extends ActivityInstrumentationTestCase2<MainA
         weightEditText.setText("-1");
         String weightText = weightEditText.getText().toString();
         assertEquals("0", weightText);
-        assertEquals(0.0, maxRepFragment.getFormulaWrapper().getWeight());
+        assertEquals(0.0, maxRepFragment.setSlot.getWeight());
     }
 
     // Assert noninteger values are reset to 0
@@ -107,7 +107,7 @@ public class MaxRepFragmentUITest extends ActivityInstrumentationTestCase2<MainA
         weightEditText.setText("NaN");
         String weightText = weightEditText.getText().toString();
         assertEquals("0", weightText);
-        assertEquals(0.0, maxRepFragment.getFormulaWrapper().getWeight());
+        assertEquals(0.0, maxRepFragment.setSlot.getWeight());
 
     }
 

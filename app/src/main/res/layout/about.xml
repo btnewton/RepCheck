@@ -58,29 +58,20 @@
 
         <ImageView
             android:id="@+id/brandt_website_link"
-            android:background="@drawable/circle"
+            style="@style/smallFloatingActionButton"
             android:src="@drawable/ic_globe"
-            android:layout_marginRight="@dimen/small"
-            android:padding="@dimen/small"
-            android:layout_width="45dp"
-            android:layout_height="45dp" />
+            android:layout_marginRight="@dimen/small" />
         <ImageView
             android:id="@+id/brandt_resume_link"
-            android:background="@drawable/circle"
+            style="@style/smallFloatingActionButton"
             android:src="@drawable/ic_document"
-            android:layout_marginRight="@dimen/small"
-            android:padding="@dimen/small"
-            android:layout_width="45dp"
-            android:layout_height="45dp" />
+            android:layout_marginRight="@dimen/small" />
 
         <ImageView
             android:id="@+id/brandt_email_link"
-            android:background="@drawable/circle"
+            style="@style/smallFloatingActionButton"
             android:src="@drawable/ic_mail"
-            android:layout_marginRight="@dimen/small"
-            android:padding="@dimen/small"
-            android:layout_width="45dp"
-            android:layout_height="45dp" />
+            android:layout_marginRight="@dimen/small" />
     </LinearLayout>
 
         <TextView
@@ -95,7 +86,7 @@
             android:textSize="14sp"
             android:layout_marginTop="@dimen/tiny"
             android:layout_marginLeft="@dimen/standard"
-            android:text="Developed Rep Check logos and overall style"
+            android:text="Developed Rep Check logos"
             android:textStyle="italic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -104,7 +95,7 @@
             android:textSize="14sp"
             android:layout_marginTop="@dimen/tiny"
             android:layout_marginLeft="@dimen/standard"
-            android:text="Contributed to interface design"
+            android:text="Contributed to user experience design &amp; overall style"
             android:textStyle="italic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -125,12 +116,10 @@
 
         <ImageView
             android:id="@+id/konnor_email_link"
-            android:background="@drawable/circle"
+            style="@style/smallFloatingActionButton"
             android:src="@drawable/ic_mail"
-            android:layout_marginRight="@dimen/small"
-            android:padding="@dimen/small"
-            android:layout_width="45dp"
-            android:layout_height="45dp" />
+            android:layout_marginRight="@dimen/small" />
+
     </LinearLayout>
 </LinearLayout>
 </ScrollView>
