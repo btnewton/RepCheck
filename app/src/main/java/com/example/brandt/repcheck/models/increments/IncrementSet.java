@@ -19,10 +19,10 @@ public abstract class IncrementSet {
 
     public ArrayList<String> getIncrementsAsStringArray() {
         double[] increments = getIncrements();
-        ArrayList<String>  formattedIncrements = new ArrayList<String>(increments.length);
+        ArrayList<String>  formattedIncrements = new ArrayList<>(increments.length);
 
-        for (int i = 0; i < increments.length; i++) {
-            formattedIncrements.add(increments[i] + " " + unit.displayUnit(increments[i]));
+        for (double increment : increments) {
+            formattedIncrements.add(increment + " " + unit.displayUnit(increment));
         }
 
         return formattedIncrements;

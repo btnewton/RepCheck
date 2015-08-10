@@ -36,7 +36,6 @@
         <item>@string/mayhew_formula</item>
         <item>@string/oconner_formula</item>
         <item>@string/wathen_formula</item>
-        <item>@string/custom_combination_formula</item>
     </string-array>
 
     <string-array name="one_rep_max_formula_option_values">
@@ -51,6 +50,5 @@
         <item>@string/mayhew_formula_value</item>
         <item>@string/oconner_formula_value</item>
         <item>@string/wathen_formula_value</item>
-        <item>@string/custom_combination_formula_value</item>
     </string-array>
 </resources>

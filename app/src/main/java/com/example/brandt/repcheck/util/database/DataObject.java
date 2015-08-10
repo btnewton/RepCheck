@@ -143,10 +143,6 @@ public abstract class DataObject {
 
     public abstract void rollbackChanges(Context context);
 
-    public void truncateTable(Context context) {
-        table.truncate(context);
-    }
-
     protected String[] getColumns() {
         return table.getColumns();
     }

@@ -9,9 +9,4 @@
         android:entryValues="@array/one_rep_max_formula_option_values"
         />
 
-    <Preference
-        android:title="@string/pref_custom_formula_label"
-        android:key="@string/configure_formula_button"
-        android:summary="@string/configure_formula_summary"/>
-
 </PreferenceScreen>

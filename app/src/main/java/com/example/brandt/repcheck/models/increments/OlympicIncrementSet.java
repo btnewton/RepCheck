@@ -7,7 +7,8 @@ import com.example.brandt.repcheck.models.Unit;
  */
 public class OlympicIncrementSet extends IncrementSet {
 
-    private double[] imperialSet = new double[] {
+    private double[] olympicSet = new double[] {
+            2.5,
             5,
             10,
             22,
@@ -22,7 +23,7 @@ public class OlympicIncrementSet extends IncrementSet {
 
     @Override
     public double[] getIncrements() {
-        return imperialSet;
+        return olympicSet;
     }
 
     @Override

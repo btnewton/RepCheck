@@ -111,6 +111,11 @@ public class DBHandler extends SQLiteOpenHelper {
         Log.w("DB Handler", "Tables truncated!");
     }
 
+    public static void truncateTable(Context context, Schema schema) {
+        SQLiteDatabase db = DBHandler.getInstance(context).getWritableDatabase();
+        db.execSQL("DELETE FROM " + schema.getTableName());
+    }
+
     public static Date convertStringTime(String time) {
         DateFormat format = new SimpleDateFormat("yyyy-MM-d HH:mm:ss");
         try {

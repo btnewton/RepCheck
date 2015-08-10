@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -149,7 +150,6 @@ public abstract class SetsListDialog extends DialogFragment implements Observer,
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     String name = input.getText().toString().trim();
-                    dialog.dismiss();
 
                     if (setSlot == null) {
                         return;
@@ -162,6 +162,7 @@ public abstract class SetsListDialog extends DialogFragment implements Observer,
 
                         if (setSlot.nameUnique(getActivity())) {
                             setSlot.saveChanges(getActivity());
+                            dialog.dismiss();
                             updateHandler.sendEmptyMessage(0);
                         } else {
                             Toast toast = Toast.makeText(getActivity(), "Name taken.", Toast.LENGTH_SHORT);
@@ -180,7 +181,10 @@ public abstract class SetsListDialog extends DialogFragment implements Observer,
                 }
             });
 
-            return builder.create();
+            Dialog dialog = builder.create();
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+            return dialog;
         }
     }
 

@@ -42,7 +42,6 @@
     <string name="mayhew_formula">Mayhew et al</string>
     <string name="oconner_formula">O\'Conner et al</string>
     <string name="wathen_formula">Wathen</string>
-    <string name="custom_combination_formula">Custom...</string>
 
     <string name="adams_formula_value">AdamsFormula</string>
     <string name="berger_formula_value">BergerFormula</string>
@@ -55,7 +54,6 @@
     <string name="mayhew_formula_value">MayhewEtAlFormula</string>
     <string name="oconner_formula_value">OConnerEtAlFormula</string>
     <string name="wathen_formula_value">WathenFormula</string>
-    <string name="custom_combination_formula_value">CustomFormula</string>
 
     <!-- Documentation-->
     <string name="pref_header_about">About</string>

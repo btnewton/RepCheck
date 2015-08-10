@@ -29,6 +29,10 @@ public class StandardRowListAdapter extends BaseAdapter {
         return new StandardRowListAdapter(context, layoutInflater, R.layout.row_save_slot);
     }
 
+    public static StandardRowListAdapter newBarLoadAdapter(Context context, LayoutInflater layoutInflater) {
+        return new StandardRowListAdapter(context, layoutInflater, R.layout.row_bar_load);
+    }
+
     private StandardRowListAdapter(Context context, LayoutInflater inflater, int layout) {
         mContext = context;
         mInflater = inflater;

@@ -32,9 +32,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.brandt.repcheck.R;
-import com.example.brandt.repcheck.activities.barconstruction.BarConstructionDialog;
+import com.example.brandt.repcheck.activities.barload.BarLoadDialog;
 import com.example.brandt.repcheck.activities.saveslots.LoadSetDialog;
 import com.example.brandt.repcheck.activities.saveslots.SaveSetDialog;
+import com.example.brandt.repcheck.database.schemas.SetSlotTable;
 import com.example.brandt.repcheck.database.seeders.FormulaConfigurationSeeder;
 import com.example.brandt.repcheck.database.seeders.SetSeeder;
 import com.example.brandt.repcheck.models.SetSlot;
@@ -48,6 +49,7 @@ import com.example.brandt.repcheck.util.UndoBarController;
 import com.example.brandt.repcheck.util.adapters.detail.DetailRow;
 import com.example.brandt.repcheck.util.adapters.detail.DetailRowListAdapter;
 import com.example.brandt.repcheck.util.adapters.detail.IDetailRow;
+import com.example.brandt.repcheck.util.database.DBHandler;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -60,7 +62,7 @@ import java.util.Observer;
  * <p/>
  * Created by brandt on 7/22/15.
  */
-public class MaxRepFragment extends Fragment implements Observer, UndoBarController.UndoListener {
+public class MaxRepFragment extends Fragment implements Observer, UndoBarController.UndoListener, View.OnLongClickListener {
 
     private static final String SET_ID = "setID";
     private static final String STATE_WEIGHT = "stateWeight";
@@ -97,7 +99,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
         // Populate table if missing
         if (SetSlot.getSlotCount(getActivity()) != getResources().getInteger(R.integer.set_slot_count)) {
-            new SetSlot(1, 1).truncateTable(getActivity());
+            DBHandler.truncateTable(getActivity(), new SetSlotTable());
             new SetSeeder().seed(getActivity());
         }
 
@@ -313,15 +315,15 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
                 }
             }
         });
-        floatingActionButton.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                SaveSetDialog saveSetDialog =
-                        SaveSetDialog.newInstance(setSlot.getReps(), setSlot.getWeight());
-                saveSetDialog.show(getFragmentManager(), getTag());
-                return true;
-            }
-        });
+        floatingActionButton.setOnLongClickListener(this);
+//            @Override
+//            public boolean onLongClick(View v) {
+//                SaveSetDialog saveSetDialog =
+//                        SaveSetDialog.newInstance(new LoadUpdateHandler(), setSlot.getReps(), setSlot.getWeight());
+//                saveSetDialog.show(getFragmentManager(), getTag());
+//                return true;
+//            }
+//        });
 
         // Rep input
         String[] items = new String[getResources().getInteger(R.integer.max_reps)];
@@ -356,9 +358,9 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (setSlot.getWeight() >= barWeight) {
-                    BarConstructionDialog barConstructionDialog =
-                            BarConstructionDialog.newInstance(setSlot.getWeight());
-                    barConstructionDialog.show(getFragmentManager(), getTag());
+                    BarLoadDialog barLoadDialog =
+                            BarLoadDialog.newInstance(setSlot.getWeight());
+                    barLoadDialog.show(getFragmentManager(), getTag());
                 } else {
                     Toast.makeText(getActivity(), "Weight cannot be less than the bar.", Toast.LENGTH_SHORT).show();
                 }
@@ -369,6 +371,18 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         updateIncrement(incrementSet.getDefaultWeightIndex());
 
         return view;
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        boolean consumed = true;
+        switch (v.getId()) {
+            case R.id.fab:
+                SaveSetDialog saveSetDialog =
+                        SaveSetDialog.newInstance(new LoadUpdateHandler(this), setSlot.getReps(), setSlot.getWeight());
+                saveSetDialog.show(getFragmentManager(), getTag());
+        }
+        return consumed;
     }
 
     private class AsyncCalculate extends Observable implements Runnable {

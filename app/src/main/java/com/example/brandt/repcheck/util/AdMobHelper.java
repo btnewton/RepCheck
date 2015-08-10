@@ -21,17 +21,20 @@ public class AdMobHelper {
     };
 
 
-    public static void CreateAdRequest(Activity activity) {
+    public static AdView CreateAdRequest(Activity activity) {
         String android_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
         String deviceId = MD5_Hash(android_id).toUpperCase();
 
         AdView mAdView = (AdView) activity.findViewById(R.id.adView);
+
         AdRequest.Builder adRequest = new AdRequest.Builder();
         for (String testDeviceID : testDeviceIDs) {
             adRequest.addTestDevice(testDeviceID);
         }
         adRequest.addTestDevice(deviceId);
         mAdView.loadAd(adRequest.build());
+
+        return mAdView;
     }
 
     public static String MD5_Hash(String s) {

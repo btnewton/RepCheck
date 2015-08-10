@@ -11,16 +11,16 @@ import android.view.MenuItem;
 
 import com.example.brandt.repcheck.R;
 import com.example.brandt.repcheck.util.AdMobHelper;
+import com.google.android.gms.ads.AdView;
 
 public class MainActivity extends ActionBarActivity {
 
     MaxRepFragment maxRepFragment;
+    AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
         setContentView(R.layout.main_activity);
 
@@ -32,7 +32,7 @@ public class MainActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        AdMobHelper.CreateAdRequest(this);
+        adView = AdMobHelper.CreateAdRequest(this);
 
         if (savedInstanceState != null) {
             //Restore the fragment's instance
@@ -69,5 +69,23 @@ public class MainActivity extends ActionBarActivity {
         super.onSaveInstanceState(outState);
         //Save the fragment's instance
         getSupportFragmentManager().putFragment(outState, "MaxRepFragment", maxRepFragment);
+    }
+
+    @Override
+    protected void onPause() {
+        adView.pause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adView.resume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        adView.pause();
     }
 }

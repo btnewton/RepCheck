@@ -81,8 +81,8 @@ public class SetSlot extends DataObject {
 
     public boolean nameUnique(Context context) {
         QueryParams queryParams = new QueryParams();
-        queryParams.selection = SetSlotTable.NAME + " LIKE ?";
-        queryParams.selectionArgs = new String[] {name};
+        queryParams.selection = SetSlotTable.NAME + " LIKE ? AND " + SetSlotTable.ID + " != ?";
+        queryParams.selectionArgs = new String[] {name, String.valueOf(id)};
         SetSlot setSlot = new SetSlot();
         return setSlot.select(context, queryParams, setSlot.getClass()) == null;
     }

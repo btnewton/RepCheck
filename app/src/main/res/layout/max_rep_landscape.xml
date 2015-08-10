@@ -16,6 +16,7 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:orientation="horizontal">
 
             <Button
@@ -44,12 +45,11 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginBottom="@dimen/standard"
             android:id="@+id/rep_input_wrapper"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:layout_gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
@@ -57,10 +57,10 @@
                 android:scrollHorizontally="true"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="asdfasdf"
                 android:layout_width="0dp"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
+                android:layout_marginLeft="@dimen/standard"
                 android:textSize="18sp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content" />
@@ -68,11 +68,10 @@
             <LinearLayout
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_gravity="right"
+                android:gravity="right"
                 android:layout_height="wrap_content">
                 <Spinner
-                    android:layout_marginStart="@dimen/standard"
-                    android:layout_marginEnd="@dimen/standard"
+                    android:layout_marginLeft="@dimen/standard"
                     android:layout_gravity="end"
                     android:id="@+id/rep_spinner"
                     android:layout_width="100dp"
