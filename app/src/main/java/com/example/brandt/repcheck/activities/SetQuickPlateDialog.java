@@ -26,13 +26,13 @@ import com.example.brandt.repcheck.models.increments.IncrementFactory;
 /**
  * Created by Brandt on 7/23/2015.
  */
-public class ChangeIncrementDialog extends DialogFragment {
+public class SetQuickPlateDialog extends DialogFragment {
 
     private static Handler updateHandler;
 
-    public static ChangeIncrementDialog newInstance(Handler updateHandler) {
-        ChangeIncrementDialog fragment = new ChangeIncrementDialog();
-        ChangeIncrementDialog.updateHandler = updateHandler;
+    public static SetQuickPlateDialog newInstance(Handler updateHandler) {
+        SetQuickPlateDialog fragment = new SetQuickPlateDialog();
+        SetQuickPlateDialog.updateHandler = updateHandler;
         return fragment;
     }
 

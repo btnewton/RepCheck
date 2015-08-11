@@ -468,9 +468,9 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     }
 
     private void showIncrementList() {
-        ChangeIncrementDialog changeIncrementDialog =
-                ChangeIncrementDialog.newInstance(new IncrementUpdateHandler(this));
-        changeIncrementDialog.show(getFragmentManager(), getTag());
+        SetQuickPlateDialog setQuickPlateDialog =
+                SetQuickPlateDialog.newInstance(new IncrementUpdateHandler(this));
+        setQuickPlateDialog.show(getFragmentManager(), getTag());
     }
 
     @Override

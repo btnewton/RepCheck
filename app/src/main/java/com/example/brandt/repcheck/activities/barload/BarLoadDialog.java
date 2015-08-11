@@ -58,6 +58,7 @@ public class BarLoadDialog extends DialogFragment {
             weight = getArguments().getDouble(WEIGHT_KEY);
         } else {
             dismiss();
+            return;
         }
 
         Activity activity = getActivity();

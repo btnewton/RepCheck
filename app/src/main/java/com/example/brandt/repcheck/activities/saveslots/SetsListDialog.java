@@ -63,7 +63,6 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-
                 TextView titleTextView = (TextView) setSlotsView.findViewById(R.id.title);
                 titleTextView.setText(getTitle());
 
@@ -123,19 +122,19 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
     public abstract void onItemClickAction(AdapterView<?> parent, View view, int position, long id);
 
     public boolean longItemClickAction(AdapterView<?> parent, View view, int position, long id) {
-        DialogFragment saveAsNewDialog = RenameSlotDialog.newInstance(new UpdateOnDismissHandler(this), adapter.getItem(position).getId());
-        saveAsNewDialog.show(getActivity().getSupportFragmentManager(), "RenameSlotDialog");
+        DialogFragment saveAsNewDialog = RenameSetDialog.newInstance(new UpdateOnDismissHandler(this), adapter.getItem(position).getId());
+        saveAsNewDialog.show(getActivity().getSupportFragmentManager(), "RenameSetDialog");
         return true;
     }
 
-    public static class RenameSlotDialog extends DialogFragment {
+    public static class RenameSetDialog extends DialogFragment {
 
         private static final String SLOT_ID_KEY = "slot_id";
         public Handler updateHandler;
         SetSlot setSlot;
 
-        public static RenameSlotDialog newInstance(Handler updateHandler, int slotId) {
-            RenameSlotDialog dialog = new RenameSlotDialog();
+        public static RenameSetDialog newInstance(Handler updateHandler, int slotId) {
+            RenameSetDialog dialog = new RenameSetDialog();
             dialog.updateHandler = updateHandler;
 
             Bundle args = new Bundle();
@@ -162,54 +161,66 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("Rename Slot");
-
             if (setSlot == null) {
                 getDialog().dismiss();
             }
 
-            final EditText input = new EditText(getActivity());
-            input.setText(setSlot.getName());
-            input.setSelectAllOnFocus(true);
-            input.setInputType(InputType.TYPE_CLASS_TEXT);
-            builder.setView(input);
-            builder.setPositiveButton("Rename", new DialogInterface.OnClickListener() {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            // Get the layout inflater
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+
+            final View setSlotsView = inflater.inflate(R.layout.edittext_dialog, null);
+            builder.setView(setSlotsView);
+            final AlertDialog dialog = builder.create();
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    String name = input.getText().toString().trim();
+                public void onShow(final DialogInterface dialog) {
+                    TextView titleTextView = (TextView) setSlotsView.findViewById(R.id.title);
+                    titleTextView.setText("Rename Set");
 
-                    if (setSlot == null) {
-                        return;
-                    }
+                    final EditText inputField = (EditText) setSlotsView.findViewById(R.id.text_field);
+                    inputField.setText(setSlot.getName());
+                    inputField.setSelectAllOnFocus(true);
+                    inputField.setInputType(InputType.TYPE_CLASS_TEXT);
 
-                    int maxLength = getResources().getInteger(R.integer.max_slot_name_length);
-
-                    if (!name.isEmpty() && name.length() <= maxLength) {
-                        setSlot.setName(name);
-
-                        if (setSlot.nameUnique(getActivity())) {
-                            setSlot.saveChanges(getActivity());
-                            dialog.dismiss();
-                            updateHandler.sendEmptyMessage(0);
-                        } else {
-                            Toast toast = Toast.makeText(getActivity(), "Name taken.", Toast.LENGTH_SHORT);
-                            toast.show();
+                    Button cancelButton = (Button) setSlotsView.findViewById(R.id.negative_btn);
+                    cancelButton.setText("CANCEL");
+                    cancelButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dismiss();
                         }
-                    } else {
-                        Toast toast = Toast.makeText(getActivity(), "Name must have 1 to " + maxLength + " characters.", Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-                }
-            });
-            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+                    });
+                    Button renameButton = (Button) setSlotsView.findViewById(R.id.positive_btn);
+                    renameButton.setText("RENAME");
+                    renameButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String name = inputField.getText().toString().trim();
+
+                            int maxLength = getResources().getInteger(R.integer.max_set_name_length);
+
+                            if (!name.isEmpty() && name.length() <= maxLength) {
+                                setSlot.setName(name);
+
+                                if (setSlot.nameUnique(getActivity())) {
+                                    setSlot.saveChanges(getActivity());
+                                    dialog.dismiss();
+                                    updateHandler.sendEmptyMessage(0);
+                                } else {
+                                    Toast toast = Toast.makeText(getActivity(), "Name taken.", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
+                            } else {
+                                Toast toast = Toast.makeText(getActivity(), "Name must have 1 to " + maxLength + " characters.", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        }
+                    });
                 }
             });
 
-            Dialog dialog = builder.create();
             dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
             return dialog;
