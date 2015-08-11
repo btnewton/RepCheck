@@ -5,7 +5,7 @@
     android:singleLine="true"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/tiny"
-    android:padding="@dimen/tiny"
+    android:layout_marginTop="6dp"
+    android:padding="6dp"
     android:textSize="20sp"
     android:gravity="center"/>

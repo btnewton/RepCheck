@@ -22,14 +22,8 @@
     <string name="pref_bar_weight_key">bar_weight</string>
     <string name="pref_default_bar_weight">45</string>
 
-    <!-- Formula Settings -->
-    <string name="pref_header_formula">Formulas</string>
     <string name="pref_formula_label">Select Formula</string>
     <string name="pref_formula_key">formula</string>
-
-    <string name="pref_custom_formula_label">Define Custom Combination</string>
-    <string name="configure_formula_button">formula</string>
-    <string name="configure_formula_summary">Configure what formulas are used to calculate your one rep max</string>
 
     <string name="adams_formula">Adams</string>
     <string name="berger_formula">Berger</string>

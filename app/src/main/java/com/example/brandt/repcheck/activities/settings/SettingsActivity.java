@@ -1,4 +1,4 @@
-package com.example.brandt.repcheck.activities;
+package com.example.brandt.repcheck.activities.settings;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceCategory;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.example.brandt.repcheck.R;
+import com.example.brandt.repcheck.activities.AboutDialog;
 import com.example.brandt.repcheck.database.seeders.SetSeeder;
 import com.example.brandt.repcheck.util.database.DBHandler;
 
@@ -63,19 +63,14 @@ public class SettingsActivity extends PreferenceActivity {
         addPreferencesFromResource(R.xml.pref_weight);
 
 
-        PreferenceCategory fakeHeader = new PreferenceCategory(this);
-        fakeHeader.setTitle(R.string.pref_header_formula);
-        getPreferenceScreen().addPreference(fakeHeader);
-        addPreferencesFromResource(R.xml.pref_formulas);
-
-        // Add 'developer' preferences, and a corresponding header.
-        fakeHeader = new PreferenceCategory(this);
+        CustomPreferenceCategory fakeHeader = new CustomPreferenceCategory(this);
+        fakeHeader = new CustomPreferenceCategory(this);
         fakeHeader.setTitle(R.string.pref_header_about);
         getPreferenceScreen().addPreference(fakeHeader);
         addPreferencesFromResource(R.xml.pref_about);
 
         // Add 'developer' preferences, and a corresponding header.
-        fakeHeader = new PreferenceCategory(this);
+        fakeHeader = new CustomPreferenceCategory(this);
         fakeHeader.setTitle(R.string.pref_header_developer);
         getPreferenceScreen().addPreference(fakeHeader);
         addPreferencesFromResource(R.xml.pref_developer);
@@ -109,15 +104,6 @@ public class SettingsActivity extends PreferenceActivity {
                 } catch (ActivityNotFoundException e) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
                 }
-                return true;
-            }
-        });
-
-        Preference formulaButton = (Preference)findPreference(getString(R.string.configure_formula_button));
-        formulaButton .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-
                 return true;
             }
         });

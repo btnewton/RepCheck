@@ -303,7 +303,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         // Rep input
         String[] items = new String[getResources().getInteger(R.integer.max_reps)];
         for (int i = 0; i < items.length; i++) {
-            items[i] = i + 1 + " reps";
+            items[i] = i + 1 + "  reps";
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.big_spinner_item, items);
         repsSpinner = (Spinner) view.findViewById(R.id.rep_spinner);

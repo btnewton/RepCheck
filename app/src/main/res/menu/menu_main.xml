@@ -3,5 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="200" app:showAsAction="never" />
+        android:icon="@drawable/ic_cog"
+        android:orderInCategory="200" app:showAsAction="ifRoom" />
 </menu>
