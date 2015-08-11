@@ -6,61 +6,97 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:padding="@dimen/standard"
+        android:paddingTop="24dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingBottom="20dp"
         android:text="Bar Load"
-        android:textAllCaps="true"
         android:textStyle="bold"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:layout_margin="@dimen/standard"
         android:orientation="horizontal"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="@dimen/tiny"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:gravity="left"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content">
-            <TextView
-                android:text="Bar weight: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/bar_weight"
-                android:text="45 lb"
-                android:textSize="16sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
+        <TextView
+            android:text="Total Weight: "
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/total_weight"
+            android:textSize="16sp"
+            android:text="135"
             android:gravity="right"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:text="Remainder: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:layout_marginLeft="@dimen/tiny"
-                android:text="0 lb"
-                android:textSize="16sp"
-                android:id="@+id/weight_remainder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="@dimen/tiny"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="Bar Weight: "
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/bar_weight"
+            android:textSize="16sp"
+            android:text="45 lb"
+            android:gravity="right"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="@dimen/standard"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="Remainder: "
+            android:textSize="16sp"
+            android:gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_marginLeft="@dimen/tiny"
+            android:textSize="16sp"
+            android:text="0 lb"
+            android:id="@+id/weight_remainder"
+            android:gravity="right"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <View
+        android:background="@color/disabled_text"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"/>
 
     <ListView
         android:id="@+id/plate_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"/>
 
+    <Button
+        android:id="@+id/close_btn"
+        android:layout_margin="6dp"
+        android:layout_width="fill_parent"
+        android:layout_height="36dp"
+        android:textColor="@color/primary_900"
+        android:text="CLOSE"
+        style="?android:attr/borderlessButtonStyle"
+        />
 </LinearLayout>

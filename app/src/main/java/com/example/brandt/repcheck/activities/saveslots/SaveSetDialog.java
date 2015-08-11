@@ -1,9 +1,10 @@
 package com.example.brandt.repcheck.activities.saveslots;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.example.brandt.repcheck.models.SetSlot;
 
@@ -52,8 +53,8 @@ public class SaveSetDialog extends SetsListDialog implements Observer {
     }
 
     @Override
-    public void onClick(DialogInterface dialog, int which) {
-        SetSlot setSlot = SetSlot.findById(getActivity(), rowItems.get(which).getId());
+    public void onItemClickAction(AdapterView<?> parent, View view, int position, long id) {
+        SetSlot setSlot = SetSlot.findById(getActivity(), rowItems.get(position).getId());
         setSlot.setReps(reps);
         setSlot.setWeight(weight);
         setSlot.saveChanges(getActivity());

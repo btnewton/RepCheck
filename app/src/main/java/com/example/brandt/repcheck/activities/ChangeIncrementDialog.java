@@ -11,7 +11,13 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.brandt.repcheck.R;
 import com.example.brandt.repcheck.models.Unit;
@@ -41,20 +47,46 @@ public class ChangeIncrementDialog extends DialogFragment {
         String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
         Unit unit = Unit.newUnitByString(unitType, activity);
 
-        ArrayAdapter<String> arrayAdapter =
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        final ArrayAdapter<String> arrayAdapter =
                 new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, IncrementFactory.Make(activity, plateStyle, unit).getIncrementsAsStringArray());
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle("Set Slot Interval")
-                .setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+        // Get the layout inflater
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        final View setSlotsView = inflater.inflate(R.layout.list_dialog, null);
+        builder.setView(setSlotsView);
+        final AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+
+                TextView titleTextView = (TextView) setSlotsView.findViewById(R.id.title);
+                titleTextView.setText("Quick Plate Size");
+
+                ListView listView = (ListView) setSlotsView.findViewById(R.id.list);
+                listView.setAdapter(arrayAdapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Message msg = new Message();
-                        msg.arg1 = which;
+                        msg.arg1 = position;
                         updateHandler.sendMessage(msg);
                         dismiss();
                     }
                 });
 
-        return builder.create();
+                Button closeButton = (Button) setSlotsView.findViewById(R.id.close_btn);
+                closeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+                    }
+                });
+            }
+        });
+
+        return dialog;
     }
 }

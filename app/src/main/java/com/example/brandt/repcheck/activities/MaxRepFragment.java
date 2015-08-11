@@ -192,24 +192,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                double weight;
-
-                try {
-                    weight = Double.parseDouble(weightEditText.getText().toString());
-                } catch (Exception e) {
-                    weight = 0;
-                }
-
-                if (weight >= 0) {
-                    setSlot.setWeight(weight);
-                    updateSetNameStyle();
-                    startCalculateSets();
-                } else {
-                    // Pseudo-recursive call
-                    weightEditText.setText("0");
-                    weightEditText.selectAll();
-                }
+                updateWeightFromInput();
             }
 
             @Override
@@ -281,7 +264,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             @Override
             public void onClick(View v) {
 
-                if (setSlot.hasChanged()) {
+                if (setSlot.getWeight() > 0 && setSlot.hasChanged()) {
                     floatingActionButton.animate().translationY(-170).setDuration(getActivity().getResources().getInteger(android.R.integer.config_shortAnimTime)).setListener(new Animator.AnimatorListener() {
                         @Override
                         public void onAnimationStart(Animator animation) {
@@ -311,19 +294,11 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
                     setSlot.saveChanges(getActivity());
                     setNameTextView.setTypeface(null, Typeface.NORMAL);
                 } else {
-                    Toast.makeText(getActivity(), "Nothing to save.", Toast.LENGTH_SHORT).show();
+                    cannotSaveToast();
                 }
             }
         });
         floatingActionButton.setOnLongClickListener(this);
-//            @Override
-//            public boolean onLongClick(View v) {
-//                SaveSetDialog saveSetDialog =
-//                        SaveSetDialog.newInstance(new LoadUpdateHandler(), setSlot.getReps(), setSlot.getWeight());
-//                saveSetDialog.show(getFragmentManager(), getTag());
-//                return true;
-//            }
-//        });
 
         // Rep input
         String[] items = new String[getResources().getInteger(R.integer.max_reps)];
@@ -338,9 +313,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setSlot.setReps(position + 1);
-                startCalculateSets();
-                updateSetNameStyle();
+                updateRepsFromInput();
             }
 
             @Override
@@ -357,9 +330,11 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (setSlot.getWeight() >= barWeight) {
+                double weight = formula.getWeightWeightForReps(position + 1);
+
+                if (weight >= barWeight) {
                     BarLoadDialog barLoadDialog =
-                            BarLoadDialog.newInstance(setSlot.getWeight());
+                            BarLoadDialog.newInstance(weight);
                     barLoadDialog.show(getFragmentManager(), getTag());
                 } else {
                     Toast.makeText(getActivity(), "Weight cannot be less than the bar.", Toast.LENGTH_SHORT).show();
@@ -373,16 +348,49 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         return view;
     }
 
+    public void updateWeightFromInput() {
+        double weight;
+
+        try {
+            weight = Double.parseDouble(weightEditText.getText().toString());
+        } catch (Exception e) {
+            // Pseudo-recursive call
+            weightEditText.setText("0");
+            weightEditText.selectAll();
+            return;
+        }
+
+        if (weight >= 0) {
+            setSlot.setWeight(weight);
+            updateSetNameStyle();
+            startCalculateSets();
+        }
+    }
+
+    public void updateRepsFromInput() {
+        setSlot.setReps(repsSpinner.getSelectedItemPosition() + 1);
+        startCalculateSets();
+        updateSetNameStyle();
+    }
+
+    private void cannotSaveToast() {
+        Toast.makeText(getActivity(), "Nothing to save.", Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public boolean onLongClick(View v) {
-        boolean consumed = true;
-        switch (v.getId()) {
-            case R.id.fab:
-                SaveSetDialog saveSetDialog =
-                        SaveSetDialog.newInstance(new LoadUpdateHandler(this), setSlot.getReps(), setSlot.getWeight());
+
+        if (v.getId() == R.id.fab) {
+            if (setSlot.getWeight() > 0) {
+            SaveSetDialog saveSetDialog =
+                    SaveSetDialog.newInstance(new LoadUpdateHandler(this), setSlot.getReps(), setSlot.getWeight());
                 saveSetDialog.show(getFragmentManager(), getTag());
+            } else {
+                cannotSaveToast();
+            }
         }
-        return consumed;
+
+        return true;
     }
 
     private class AsyncCalculate extends Observable implements Runnable {
@@ -473,6 +481,8 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     @Override
     public void onUndo(Parcelable token) {
         setSlot.rollbackChanges(getActivity());
+        updateWeightFromInput();
+        updateRepsFromInput();
         updateSetNameStyle();
         floatingActionButton.animate().translationY(0);
     }

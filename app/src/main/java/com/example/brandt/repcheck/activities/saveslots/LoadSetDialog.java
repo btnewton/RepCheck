@@ -1,8 +1,9 @@
 package com.example.brandt.repcheck.activities.saveslots;
 
-import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
+import android.widget.AdapterView;
 
 /**
  * Created by brandt on 7/25/15.
@@ -18,15 +19,15 @@ public class LoadSetDialog extends SetsListDialog {
     }
 
     @Override
-    public void onClick(DialogInterface dialogInterface, int i) {
-        Message msg = new Message();
-        msg.arg1 = rowItems.get(i).getId();
-        updateHandler.sendMessage(msg);
-        dismiss();
+    public String getTitle() {
+        return "Load Set";
     }
 
     @Override
-    public String getTitle() {
-        return "Load Set";
+    public void onItemClickAction(AdapterView<?> parent, View view, int position, long id) {
+        Message msg = new Message();
+        msg.arg1 = rowItems.get(position).getId();
+        updateHandler.sendMessage(msg);
+        dismiss();
     }
 }

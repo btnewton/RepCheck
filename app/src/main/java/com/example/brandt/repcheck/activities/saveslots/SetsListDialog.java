@@ -11,11 +11,14 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.brandt.repcheck.R;
@@ -35,38 +38,61 @@ import java.util.Observer;
 /**
  * Created by Brandt on 7/23/2015.
  */
-public abstract class SetsListDialog extends DialogFragment implements Observer, DialogInterface.OnClickListener {
+public abstract class SetsListDialog extends DialogFragment implements Observer {
 
     protected StandardRowListAdapter adapter;
     protected List<IStandardRowItem> rowItems;
     private Handler asyncHandler;
+    private final static String LOG_KEY = "SetsListDialog";
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
         asyncHandler = new Handler();
         adapter = StandardRowListAdapter.newSaveSlotAdapter(getActivity(), getActivity().getLayoutInflater());
         rowItems = new ArrayList<>();
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getTitle())
-                .setAdapter(adapter, this);
 
-        final AlertDialog mDialog = builder.create();
-        mDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        // Get the layout inflater
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        final View setSlotsView = inflater.inflate(R.layout.list_dialog, null);
+        builder.setView(setSlotsView);
+        final AlertDialog dialog = builder.create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                ListView listview = mDialog.getListView();
-                listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+                TextView titleTextView = (TextView) setSlotsView.findViewById(R.id.title);
+                titleTextView.setText(getTitle());
+
+                ListView listView = (ListView) setSlotsView.findViewById(R.id.list);
+                listView.setAdapter(adapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        onItemClickAction(parent, view, position, id);
+                    }
+                });
+                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                         return longItemClickAction(parent, view, position, id);
                     }
                 });
+
+                Button closeButton = (Button) setSlotsView.findViewById(R.id.close_btn);
+                closeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
+                    }
+                });
             }
         });
 
-        return mDialog;
+        return dialog;
     }
 
     @Override
@@ -93,6 +119,8 @@ public abstract class SetsListDialog extends DialogFragment implements Observer,
     }
 
     public abstract String getTitle();
+
+    public abstract void onItemClickAction(AdapterView<?> parent, View view, int position, long id);
 
     public boolean longItemClickAction(AdapterView<?> parent, View view, int position, long id) {
         DialogFragment saveAsNewDialog = RenameSlotDialog.newInstance(new UpdateOnDismissHandler(this), adapter.getItem(position).getId());
@@ -221,8 +249,8 @@ public abstract class SetsListDialog extends DialogFragment implements Observer,
                 WeightFormatter formatter = new WeightFormatter(shouldRound, Unit.newUnitByString(unitType, getActivity()));
 
                 for (SetSlot setSlot : setSlots) {
-                    rowItems.add(new StandardRowItem(setSlot.getId(), setSlot.getName(), setSlot.getReps() + " rep"
-                            + ((setSlot.getReps() != 1) ? "s" : "") + " at " + formatter.format(setSlot.getWeight()) + " " + formatter.getUnit(setSlot.getWeight())));
+                    rowItems.add(new StandardRowItem(setSlot.getId(), setSlot.getName(), formatter.format(setSlot.getWeight()) + " " + formatter.getUnit(setSlot.getWeight()) + " for " + setSlot.getReps() + " rep"
+                            + ((setSlot.getReps() != 1) ? "s" : "")));
                 }
             } else {
                 rowItems = null;

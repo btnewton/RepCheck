@@ -38,6 +38,7 @@ public class SetSlot extends DataObject {
         this();
         setReps(reps);
         setWeight(weight);
+        resetSnapshot();
     }
 
     public SetSlot(int reps, double weight, Date lastUsed) {
