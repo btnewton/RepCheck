@@ -1,12 +1,12 @@
 package com.example.brandt.repcheck.activities.barload;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -61,8 +61,6 @@ public class BarLoadDialog extends DialogFragment {
             return;
         }
 
-        Activity activity = getActivity();
-
         // Load unit and plate style
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         try {
@@ -73,14 +71,15 @@ public class BarLoadDialog extends DialogFragment {
             barWeight = 45;
         }
         String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
-        Unit unit = Unit.newUnitByString(unitType, activity);
+        Unit unit = Unit.newUnitByString(unitType, getActivity());
         weightFormatter = new WeightFormatter(sharedPreferences.getBoolean(getString(R.string.pref_round_values_key), true), unit);
         String plateStyle = sharedPreferences.getString(getString(R.string.pref_plate_style_key), getString(R.string.pref_plate_style_classic));
-        incrementSet = IncrementFactory.Make(activity, plateStyle, unit);
+        incrementSet = IncrementFactory.Make(getActivity(), plateStyle, unit);
     }
 
+    @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(final Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -105,7 +104,7 @@ public class BarLoadDialog extends DialogFragment {
                 TextView remainderTextView = (TextView) aboutView.findViewById(R.id.weight_remainder);
                 remainderTextView.setText(weightFormatter.format(remainder) + ((remainder > 0) ? " " + weightFormatter.getUnit(remainder) : ""));
 
-                StandardRowListAdapter adapter = StandardRowListAdapter.newBarLoadAdapter(getActivity(), getActivity().getLayoutInflater());
+                StandardRowListAdapter adapter = StandardRowListAdapter.newBarLoadAdapter(getActivity(), getLayoutInflater(savedInstanceState));
                 adapter.updateData(barLoad);
 
                 ListView listView = (ListView) aboutView.findViewById(R.id.plate_list);

@@ -181,8 +181,8 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
 
                     final EditText inputField = (EditText) setSlotsView.findViewById(R.id.text_field);
                     inputField.setText(setSlot.getName());
-                    inputField.setSelectAllOnFocus(true);
                     inputField.setInputType(InputType.TYPE_CLASS_TEXT);
+                    inputField.selectAll();
 
                     Button cancelButton = (Button) setSlotsView.findViewById(R.id.negative_btn);
                     cancelButton.setText("CANCEL");

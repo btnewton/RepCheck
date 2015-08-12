@@ -52,6 +52,8 @@ import com.example.brandt.repcheck.util.adapters.detail.IDetailRow;
 import com.example.brandt.repcheck.util.database.DBHandler;
 
 import java.lang.ref.WeakReference;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -70,7 +72,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
     // Models
     public IncrementSet incrementSet;
-    public WeightFormatter formatter;
+    public WeightFormatter weightFormatter;
     public SetSlot setSlot;
     public OneRepMaxFormula formula;
     private static Handler handler;
@@ -121,33 +123,24 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         asyncCalculate.addObserver(this);
 
         // Update preferences
-        loadPreferences(PreferenceManager.getDefaultSharedPreferences(getActivity()));
+        loadPreferences();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                loadPreferences(sharedPreferences);
-            }
-        };
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        sharedPreferences.registerOnSharedPreferenceChangeListener(listener);
+        loadPreferences();
     }
 
-    private void loadPreferences(SharedPreferences sharedPreferences) {
-
+    private void loadPreferences() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         barWeight = Double.parseDouble(sharedPreferences.getString(getString(R.string.pref_bar_weight_key), "45"));
 
         // Get & apply unit type
         String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
         Unit unit = Unit.newUnitByString(unitType, getActivity());
         boolean roundCalculations = sharedPreferences.getBoolean(getString(R.string.pref_round_values_key), true);
-        formatter = new WeightFormatter(roundCalculations, unit);
+        weightFormatter = new WeightFormatter(roundCalculations, unit);
 
         // Reflect formula or default to Brzycki
         try {
@@ -162,7 +155,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
         // Update display
         startCalculateSets();
-        updateIncrement(incrementSet.getDefaultWeightIndex());
+        updateQuickPlateButtons(incrementSet.getDefaultWeightIndex());
     }
 
     @Override
@@ -343,7 +336,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         });
 
         // Update UI
-        updateIncrement(incrementSet.getDefaultWeightIndex());
+        updateQuickPlateButtons(incrementSet.getDefaultWeightIndex());
 
         return view;
     }
@@ -412,7 +405,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
                 int currentReps = i + 1;
                 double currentWeight = formula.getWeightWeightForReps(currentReps);
                 weightHolders.add(new DetailRow(currentReps, Integer.toString(currentReps),
-                        formatter.format(currentWeight) + " " + formatter.getUnit(currentWeight),
+                        weightFormatter.format(currentWeight) + " " + weightFormatter.getUnit(currentWeight),
                         Integer.toString((int) formula.getPercentOfMax(currentWeight)) + "%"));
             }
 
@@ -513,7 +506,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             MaxRepFragment maxRepFragment = mActivity.get();
-            maxRepFragment.updateIncrement(msg.arg1);
+            maxRepFragment.updateQuickPlateButtons(msg.arg1);
         }
     }
 
@@ -557,16 +550,17 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         }
     }
 
-    public void updateIncrement(int index) {
+    public void updateQuickPlateButtons(int index) {
         incrementValue = incrementSet.getIncrements()[index];
-        String incrementText = incrementValue + " " + formatter.getUnit(incrementValue);
+        NumberFormat formatter = new DecimalFormat("#.#");
+        String incrementText = formatter.format(incrementValue) + " " + weightFormatter.getUnit(incrementValue);
 
         try {
             // Update buttons
             subtractButton.setText("-" + incrementText);
             addButton.setText("+" + incrementText);
         } catch (NullPointerException exception) {
-            Log.e("MaxRepFragment", "updateIncrement() threw a NullPointerException:" + exception.getMessage());
+            Log.e("MaxRepFragment", "updateQuickPlateButtons() threw a NullPointerException:" + exception.getMessage());
         }
     }
 }
