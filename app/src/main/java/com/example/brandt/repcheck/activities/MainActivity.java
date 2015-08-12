@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.brandt.repcheck.R;
-import com.example.brandt.repcheck.activities.settings.SettingsActivity;
+import com.example.brandt.repcheck.activities.preferences.SettingsActivity;
 import com.example.brandt.repcheck.util.AdMobHelper;
 import com.google.android.gms.ads.AdView;
 

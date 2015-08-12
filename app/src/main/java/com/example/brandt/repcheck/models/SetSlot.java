@@ -132,6 +132,10 @@ public class SetSlot extends DataObject {
         this.weight = weight;
     }
 
+    public void reloadName(Context context) {
+        name = new SetSlot().find(context, id, this).getName();
+    }
+
     public Date getLastUsed() {
         return lastUsed;
     }

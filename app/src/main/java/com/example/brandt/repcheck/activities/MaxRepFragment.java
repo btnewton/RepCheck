@@ -35,6 +35,7 @@ import com.example.brandt.repcheck.R;
 import com.example.brandt.repcheck.activities.barload.BarLoadDialog;
 import com.example.brandt.repcheck.activities.saveslots.LoadSetDialog;
 import com.example.brandt.repcheck.activities.saveslots.SaveSetDialog;
+import com.example.brandt.repcheck.activities.saveslots.SetsListDialog;
 import com.example.brandt.repcheck.database.schemas.SetSlotTable;
 import com.example.brandt.repcheck.database.seeders.FormulaConfigurationSeeder;
 import com.example.brandt.repcheck.database.seeders.SetSeeder;
@@ -378,6 +379,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             SaveSetDialog saveSetDialog =
                     SaveSetDialog.newInstance(new LoadUpdateHandler(this), setSlot.getReps(), setSlot.getWeight());
                 saveSetDialog.show(getFragmentManager(), getTag());
+                SetsListDialog.setHandler(new UpdateOnDismissHandler(this));
             } else {
                 cannotSaveToast();
             }
@@ -449,6 +451,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
                 LoadSetDialog loadSetDialog =
                         LoadSetDialog.newInstance(new LoadUpdateHandler(this));
                 loadSetDialog.show(getFragmentManager(), getTag());
+                SetsListDialog.setHandler(new UpdateOnDismissHandler(this));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -527,6 +530,28 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         }
     }
 
+    public static class UpdateOnDismissHandler extends Handler {
+        private final WeakReference<MaxRepFragment> mService;
+
+        UpdateOnDismissHandler(MaxRepFragment service) {
+            mService = new WeakReference<>(service);
+        }
+
+        @Override
+        public void handleMessage(Message msg)
+        {
+            MaxRepFragment service = mService.get();
+            if (service != null) {
+                service.reloadSetName();
+            }
+        }
+    }
+
+
+    public void reloadSetName() {
+        setSlot.reloadName(getActivity());
+        setNameTextView.setText(setSlot.getName());
+    }
 
     public double getIncrementValue() {
         return incrementValue;

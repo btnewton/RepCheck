@@ -43,6 +43,7 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
     protected StandardRowListAdapter adapter;
     protected List<IStandardRowItem> rowItems;
     private Handler asyncHandler;
+    private static Handler handler;
     private final static String LOG_KEY = "SetsListDialog";
 
     @NonNull
@@ -150,8 +151,8 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
             super.onCreate(savedInstanceState);
 
             if (getArguments() != null) {
-                int slotId = getArguments().getInt(SLOT_ID_KEY);
-                setSlot = SetSlot.findById(getActivity(), slotId);
+                int setId = getArguments().getInt(SLOT_ID_KEY);
+                setSlot = SetSlot.findById(getActivity(), setId);
             } else {
                 dismiss();
             }
@@ -227,6 +228,10 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
         }
     }
 
+    public static void setHandler(Handler handler) {
+        SetsListDialog.handler = handler;
+    }
+
     static class UpdateOnDismissHandler extends Handler {
         private final WeakReference<SetsListDialog> mService;
 
@@ -275,5 +280,12 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
                 }
             });
         }
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (handler != null)
+            handler.sendEmptyMessage(0);
     }
 }

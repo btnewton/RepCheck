@@ -1,4 +1,4 @@
-package com.example.brandt.repcheck.activities.settings;
+package com.example.brandt.repcheck.activities.preferences;
 
 import android.content.Context;
 import android.preference.PreferenceCategory;
