@@ -71,6 +71,8 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     private static final String STATE_WEIGHT = "stateWeight";
     private static final String STATE_REPS = "stateReps";
 
+    private static final String FRAGMENT_KEY = "MaxRepFragment";
+
     // Models
     public IncrementSet incrementSet;
     public WeightFormatter weightFormatter;
@@ -92,6 +94,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
     private double incrementValue;
     private double barWeight;
+    private Thread calculateThread;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -347,7 +350,11 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
         try {
             weight = Double.parseDouble(weightEditText.getText().toString());
+
+            if (weight < 0)
+                throw new Exception("Invalid weight :" + weight);
         } catch (Exception e) {
+            Log.e(FRAGMENT_KEY, e.getMessage());
             // Pseudo-recursive call
             weightEditText.setText("0");
             weightEditText.selectAll();
@@ -357,6 +364,11 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         if (weight >= 0) {
             setSlot.setWeight(weight);
             updateSetNameStyle();
+
+            if (calculateThread.isAlive()) {
+
+            }
+
             startCalculateSets();
         }
     }
@@ -391,6 +403,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     private class AsyncCalculate extends Observable implements Runnable {
 
         private List<IDetailRow> weightHolders;
+        private boolean stop;
 
         public List<IDetailRow> getWeightHolders() {
             return weightHolders;
@@ -401,15 +414,17 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             formula.update(setSlot.getReps(), setSlot.getWeight());
 
             int maxReps = getResources().getInteger(R.integer.max_reps);
-            weightHolders = new ArrayList<>(maxReps);
+            List<IDetailRow> weightHolders = new ArrayList<>(maxReps);
 
-            for (int i = 0; i < maxReps; i++) {
+            for (int i = 0; i < maxReps && ; i++) {
                 int currentReps = i + 1;
                 double currentWeight = formula.getWeightWeightForReps(currentReps);
                 weightHolders.add(new DetailRow(currentReps, Integer.toString(currentReps),
                         weightFormatter.format(currentWeight) + " " + weightFormatter.getUnit(currentWeight),
                         Integer.toString((int) formula.getPercentOfMax(currentWeight)) + "%"));
             }
+
+            this.weightHolders = weightHolders;
 
             handler.post(new Runnable() {
                 @Override
@@ -471,7 +486,11 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
     @Override
     public void update(Observable observable, Object o) {
-        weightListAdapter.updateData(asyncCalculate.getWeightHolders());
+        if (asyncCalculate.getWeightHolders() != null) {
+            weightListAdapter.updateData(asyncCalculate.getWeightHolders());
+        } else {
+
+        }
     }
 
     @Override
@@ -562,7 +581,8 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     }
 
     public void startCalculateSets() {
-        new Thread(asyncCalculate).start();
+        calculateThread = new Thread(asyncCalculate);
+        calculateThread.start();
     }
 
     public void updateSet() {

@@ -11,8 +11,8 @@
         <item name="colorControlActivated">@color/primary_900</item>
         <item name="colorControlHighlight">@color/accent_500</item>
         <item name="android:textColorHighlight">@color/primary_700</item>
-        <!-- colorAccent is used as the default value for colorControlActivated,
-         which is used to tint widgets -->
+        <!--<item name="android:buttonStyle">@style/button_style</item>-->
+        <!-- colorAccent is used as the default value for colorControlActivated, which is used to tint widgets -->
         <item name="colorAccent">@color/accent_500</item>
     </style>
 
@@ -31,7 +31,10 @@
         <item name="android:layout_width">70dp</item>
         <item name="android:layout_height">70dp</item>
     </style>
-    
+
+    <style name="button_style" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/support_button</item>
+    </style>
     
     <style name="ToolbarStyle" parent="Theme.AppCompat.NoActionBar">
         <!-- android:textColorPrimary is the  color of the title text

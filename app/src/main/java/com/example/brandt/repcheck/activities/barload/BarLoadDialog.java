@@ -86,35 +86,35 @@ public class BarLoadDialog extends DialogFragment {
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
-        final View aboutView = inflater.inflate(R.layout.bar_load, null);
-        builder.setView(aboutView);
+        final View view = inflater.inflate(R.layout.bar_load, null);
+        builder.setView(view);
         final AlertDialog dialog = builder.create();
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
-            public void onShow(DialogInterface dialog) {
+            public void onShow(final DialogInterface dialog) {
 
                 List<IStandardRowItem> barLoad = getBarConstruction();
 
-                TextView totalWeight = (TextView) aboutView.findViewById(R.id.total_weight);
+                TextView totalWeight = (TextView) view.findViewById(R.id.total_weight);
                 totalWeight.setText(weightFormatter.format(weight) + " " + weightFormatter.getUnit(weight));
 
-                TextView barWeightTextView = (TextView) aboutView.findViewById(R.id.bar_weight);
+                TextView barWeightTextView = (TextView) view.findViewById(R.id.bar_weight);
                 barWeightTextView.setText(weightFormatter.format(barWeight) + " " + weightFormatter.getUnit(barWeight));
 
-                TextView remainderTextView = (TextView) aboutView.findViewById(R.id.weight_remainder);
+                TextView remainderTextView = (TextView) view.findViewById(R.id.weight_remainder);
                 remainderTextView.setText(weightFormatter.format(remainder) + ((remainder > 0) ? " " + weightFormatter.getUnit(remainder) : ""));
 
                 StandardRowListAdapter adapter = StandardRowListAdapter.newBarLoadAdapter(getActivity(), getLayoutInflater(savedInstanceState));
                 adapter.updateData(barLoad);
 
-                ListView listView = (ListView) aboutView.findViewById(R.id.plate_list);
+                ListView listView = (ListView) view.findViewById(R.id.plate_list);
                 listView.setAdapter(adapter);
 
-                Button closeButton = (Button) aboutView.findViewById(R.id.close_btn);
+                Button closeButton = (Button) view.findViewById(R.id.close_btn);
                 closeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        dismiss();
+                        dialog.dismiss();
                     }
                 });
             }
