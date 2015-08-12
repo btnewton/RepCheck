@@ -416,7 +416,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             int maxReps = getResources().getInteger(R.integer.max_reps);
             List<IDetailRow> weightHolders = new ArrayList<>(maxReps);
 
-            for (int i = 0; i < maxReps && ; i++) {
+            for (int i = 0; i < maxReps; i++) {
                 int currentReps = i + 1;
                 double currentWeight = formula.getWeightWeightForReps(currentReps);
                 weightHolders.add(new DetailRow(currentReps, Integer.toString(currentReps),

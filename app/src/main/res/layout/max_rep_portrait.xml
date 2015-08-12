@@ -15,7 +15,7 @@
         <Button
             android:id="@+id/quick_subtract"
             android:textColor="@color/accent_500"
-            android:background="@drawable/support_button"
+            style="@style/button_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

@@ -9,6 +9,7 @@
         <item name="android:textColor">@color/primary_text</item>
         <item name="colorControlNormal">@color/primary_800</item>
         <item name="colorControlActivated">@color/primary_900</item>
+        <item name="android:colorButtonNormal">@color/primary_700</item>
         <item name="colorControlHighlight">@color/accent_500</item>
         <item name="android:textColorHighlight">@color/accent_500</item>
         <!-- colorAccent is used as the default value for colorControlActivated,
@@ -23,4 +24,7 @@
         <item name="android:textColorSecondary">@color/abc_secondary_text_material_light</item>
     </style>
 
+    <!-- Leave blank to preserve Material theme -->
+    <style name="button_style" parent="Base.Widget.AppCompat.Button">
+    </style>
 </resources>

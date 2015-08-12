@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Universal Styles -->
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/primary_800</item>
-        <item name="colorPrimaryDark">@color/primary_900</item>
-        <item name="android:windowBackground">@color/primary_400</item>
-        <item name="android:textColor">@color/primary_text</item>
-        <item name="colorControlNormal">@color/primary_800</item>
-        <item name="colorControlActivated">@color/primary_900</item>
-        <item name="colorControlHighlight">@color/accent_500</item>
-        <item name="android:textColorHighlight">@color/primary_700</item>
-        <!--<item name="android:buttonStyle">@style/button_style</item>-->
-        <!-- colorAccent is used as the default value for colorControlActivated, which is used to tint widgets -->
-        <item name="colorAccent">@color/accent_500</item>
-    </style>
 
     <style name="base_floatingActionButton" parent="Theme.AppCompat.NoActionBar">
         <item name="android:background">@drawable/circle</item>
@@ -30,28 +16,6 @@
         <item name="android:padding">@dimen/small</item>
         <item name="android:layout_width">70dp</item>
         <item name="android:layout_height">70dp</item>
-    </style>
-
-    <style name="button_style" parent="@android:style/Widget.Button">
-        <item name="android:background">@drawable/support_button</item>
-    </style>
-    
-    <style name="ToolbarStyle" parent="Theme.AppCompat.NoActionBar">
-        <!-- android:textColorPrimary is the  color of the title text
-             in the Toolbar, in the Theme.AppCompat theme:  -->
-        <item name="android:textColorPrimary">@color/accent_500</item>
-        <item name="android:popupBackground">@color/primary_400</item>
-        <!-- android:actionMenuTextColor is the color of the text of
-              action (menu) items in the Toolbar, at least in the
-              Theme.AppCompat theme.
-              For some reason, they already get the textColorPrimary
-              when running on API 21, but not on older versions of
-              Android, so this is only necessary to support older
-              Android versions.-->
-        <item name="actionMenuTextColor">@color/abc_primary_text_material_light</item>
-        <!-- android:textColorSecondary is the color of the menu
-             overflow icon (three vertical dots) -->
-        <item name="android:textColorSecondary">@color/accent_500</item>
     </style>
 
     <style name="UndoBar">
