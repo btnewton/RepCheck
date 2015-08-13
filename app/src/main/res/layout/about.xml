@@ -20,14 +20,14 @@
         android:layout_height="100dp" />
 
     <TextView
-        android:text="Version 1.0.0"
+        android:id="@+id/version"
         android:gravity="center"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 
     <TextView
         android:layout_marginTop="30dp"
-        android:text="Project Manager &amp; Developer"
+        android:text="Creator, Designer &amp; Developer"
         android:textSize="18sp"
         android:layout_marginLeft="@dimen/standard"
         android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
         android:textSize="14sp"
         android:layout_marginTop="@dimen/tiny"
         android:layout_marginLeft="@dimen/standard"
-        android:text="Designed and developed the back end and interface"
+        android:text="Created, designed and developed Rep Check"
         android:textStyle="italic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -86,16 +86,7 @@
             android:textSize="14sp"
             android:layout_marginTop="@dimen/tiny"
             android:layout_marginLeft="@dimen/standard"
-            android:text="Developed Rep Check logos"
-            android:textStyle="italic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:textSize="14sp"
-            android:layout_marginTop="@dimen/tiny"
-            android:layout_marginLeft="@dimen/standard"
-            android:text="Contributed to user experience design &amp; overall style"
+            android:text="Created Rep Check logos and contributed to UX"
             android:textStyle="italic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

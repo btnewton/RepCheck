@@ -5,11 +5,14 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.brandt.repcheck.R;
@@ -34,6 +37,15 @@ public class AboutDialog extends DialogFragment {
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
+
+                try {
+                    PackageInfo pInfo = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
+                    TextView versionTextView = (TextView) aboutView.findViewById(R.id.version);
+                    versionTextView.setText("Version " + pInfo.versionName);
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+
                 ImageView brandtEmailLink = (ImageView) aboutView.findViewById(R.id.brandt_email_link);
                 brandtEmailLink.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -41,7 +53,7 @@ public class AboutDialog extends DialogFragment {
                         makeEmailIntent("");
                     }
                 });
-                ImageView brandtWebsiteLink= (ImageView) aboutView.findViewById(R.id.brandt_website_link);
+                ImageView brandtWebsiteLink = (ImageView) aboutView.findViewById(R.id.brandt_website_link);
                 brandtWebsiteLink.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
