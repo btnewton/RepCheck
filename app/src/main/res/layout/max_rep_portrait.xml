@@ -34,6 +34,7 @@
         <Button
             android:id="@+id/quick_add"
             android:textColor="@color/accent_500"
+            style="@style/button_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

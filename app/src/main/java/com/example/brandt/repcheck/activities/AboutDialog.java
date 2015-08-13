@@ -50,7 +50,7 @@ public class AboutDialog extends DialogFragment {
                 brandtEmailLink.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        makeEmailIntent("");
+                        makeEmailIntent(getString(R.string.brandt_email));
                     }
                 });
                 ImageView brandtWebsiteLink = (ImageView) aboutView.findViewById(R.id.brandt_website_link);
@@ -88,13 +88,12 @@ public class AboutDialog extends DialogFragment {
     private void makeEmailIntent(String email) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setData(Uri.parse("mailto:"));
-        emailIntent.setType("text/plain");
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
+        emailIntent.setType("message/rfc822");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {email});
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Rep Check");
 
         try {
             startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-            dismiss();
         }
         catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(getActivity(), "Could not find email client.", Toast.LENGTH_SHORT).show();
