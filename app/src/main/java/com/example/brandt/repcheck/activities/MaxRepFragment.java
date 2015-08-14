@@ -3,8 +3,6 @@ package com.example.brandt.repcheck.activities;
 import android.animation.Animator;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
