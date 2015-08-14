@@ -72,7 +72,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     private static final String STATE_REPS = "stateReps";
 
     private static final String FRAGMENT_KEY = "MaxRepFragment";
-
+    private int fabYTranslationLength;
     // Models
     public IncrementSet incrementSet;
     public WeightFormatter weightFormatter;
@@ -122,6 +122,8 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             setSlot = SetSlot.first(getActivity());
         }
 
+        fabYTranslationLength = (int) (getResources().getDimension(R.dimen.undobar_height) + getResources().getDimension(R.dimen.standard));
+
         handler = new Handler();
         asyncCalculate = new AsyncCalculate();
         asyncCalculate.addObserver(this);
@@ -165,7 +167,6 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             view = inflater.inflate(R.layout.max_rep_portrait, container, false);
@@ -262,7 +263,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             public void onClick(View v) {
 
                 if (setSlot.getWeight() > 0 && setSlot.hasChanged()) {
-                    floatingActionButton.animate().translationY(-170).setDuration(getActivity().getResources().getInteger(android.R.integer.config_shortAnimTime)).setListener(new Animator.AnimatorListener() {
+                    floatingActionButton.animate().translationY(-fabYTranslationLength).setDuration(getActivity().getResources().getInteger(android.R.integer.config_shortAnimTime)).setListener(new Animator.AnimatorListener() {
                         @Override
                         public void onAnimationStart(Animator animation) {
 

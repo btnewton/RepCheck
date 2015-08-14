@@ -7,10 +7,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -75,6 +78,13 @@ public class BarLoadDialog extends DialogFragment {
         weightFormatter = new WeightFormatter(sharedPreferences.getBoolean(getString(R.string.pref_round_values_key), true), unit);
         String plateStyle = sharedPreferences.getString(getString(R.string.pref_plate_style_key), getString(R.string.pref_plate_style_classic));
         incrementSet = IncrementFactory.Make(getActivity(), plateStyle, unit);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @NonNull
