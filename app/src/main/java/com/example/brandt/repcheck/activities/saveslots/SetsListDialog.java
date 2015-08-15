@@ -1,6 +1,5 @@
 package com.example.brandt.repcheck.activities.saveslots;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -15,7 +14,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -56,14 +54,13 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
         adapter = StandardRowListAdapter.newSaveSlotAdapter(getActivity(), getActivity().getLayoutInflater());
         rowItems = new ArrayList<>();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         final View setSlotsView = inflater.inflate(R.layout.list_dialog, null);
-        builder.setView(setSlotsView);
-        final AlertDialog dialog = builder.create();
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(setSlotsView);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
@@ -221,8 +218,6 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
                         }
                     });
 
-                    inputField.setInputType(InputType.TYPE_CLASS_TEXT);
-                    inputField.selectAll();
                     inputField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                         @Override
                         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -233,10 +228,7 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
                             return false;
                         }
                     });
-                    // Show soft keyboard automatically
-                    inputField.requestFocus();
-                    getDialog().getWindow().setSoftInputMode(
-                            WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
                 }
             });
 
