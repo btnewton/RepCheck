@@ -9,14 +9,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -156,34 +156,25 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
             if (getArguments() != null) {
                 int setId = getArguments().getInt(SLOT_ID_KEY);
                 setSlot = SetSlot.findById(getActivity(), setId);
-            } else {
+            }
+
+            if (setSlot == null){
                 dismiss();
             }
-        }
-
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-            return super.onCreateView(inflater, container, savedInstanceState);
         }
 
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-            if (setSlot == null) {
-                getDialog().dismiss();
-            }
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
             // Get the layout inflater
-            LayoutInflater inflater = getActivity().getLayoutInflater();
+            LayoutInflater inflater = getLayoutInflater(savedInstanceState);
 
             final View setSlotsView = inflater.inflate(R.layout.edittext_dialog, null);
-            builder.setView(setSlotsView);
-            final AlertDialog dialog = builder.create();
+
+            final Dialog dialog = new Dialog(getActivity());
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(setSlotsView);
+
             dialog.setOnShowListener(new DialogInterface.OnShowListener() {
                 @Override
                 public void onShow(final DialogInterface dialog) {
@@ -203,7 +194,7 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
                             dismiss();
                         }
                     });
-                    Button renameButton = (Button) setSlotsView.findViewById(R.id.positive_btn);
+                    final Button renameButton = (Button) setSlotsView.findViewById(R.id.positive_btn);
                     renameButton.setText("RENAME");
                     renameButton.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -229,10 +220,25 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
                             }
                         }
                     });
+
+                    inputField.setInputType(InputType.TYPE_CLASS_TEXT);
+                    inputField.selectAll();
+                    inputField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                            if (EditorInfo.IME_ACTION_DONE == actionId) {
+                                renameButton.callOnClick();
+                                return true;
+                            }
+                            return false;
+                        }
+                    });
+                    // Show soft keyboard automatically
+                    inputField.requestFocus();
+                    getDialog().getWindow().setSoftInputMode(
+                            WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                 }
             });
-
-            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
             return dialog;
         }

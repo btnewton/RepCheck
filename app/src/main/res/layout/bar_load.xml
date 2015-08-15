@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/AppTheme"
     android:background="@color/primary_400"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <TextView
         android:paddingTop="24dp"
@@ -13,7 +14,7 @@
         android:text="Bar Load"
         android:textStyle="bold"
         android:textSize="22sp"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <LinearLayout
@@ -21,7 +22,7 @@
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="@dimen/tiny"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
             android:text="Total Weight: "
@@ -33,7 +34,7 @@
             android:textSize="16sp"
             android:text="135"
             android:gravity="right"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout
@@ -41,7 +42,7 @@
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="@dimen/tiny"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
             android:text="Bar Weight: "
@@ -53,7 +54,7 @@
             android:textSize="16sp"
             android:text="45 lb"
             android:gravity="right"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
@@ -62,7 +63,7 @@
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginBottom="@dimen/standard"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
             android:text="Remainder: "
@@ -76,7 +77,7 @@
             android:text="0 lb"
             android:id="@+id/weight_remainder"
             android:gravity="right"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
 

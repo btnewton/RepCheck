@@ -1,18 +1,15 @@
 package com.example.brandt.repcheck.activities.barload;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ListView;
@@ -80,25 +77,21 @@ public class BarLoadDialog extends DialogFragment {
         incrementSet = IncrementFactory.Make(getActivity(), plateStyle, unit);
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
         final View view = inflater.inflate(R.layout.bar_load, null);
-        builder.setView(view);
-        final AlertDialog dialog = builder.create();
+//        builder.setView(view);
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(view );
+
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(final DialogInterface dialog) {
