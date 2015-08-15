@@ -2,6 +2,7 @@ package com.example.brandt.repcheck.util;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -33,6 +34,10 @@ public class UndoBarController {
         mBarView = undoBarView;
         mBarAnimator = mBarView.animate();
         mUndoListener = undoListener;
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mBarView.setElevation(undoBarView.getResources().getDimension(R.dimen.fab_elevation));
+        }
 
         mMessageView = (TextView) mBarView.findViewById(R.id.undobar_message);
         mBarView.findViewById(R.id.undobar_button)
