@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -178,6 +179,12 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
         setNameTextView = (TextView) view.findViewById(R.id.set_name);
         setNameTextView.setText(setSlot.getName());
+        setNameTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSaveSetDialog();
+            }
+        });
 
         // Weight input
         weightEditText = (EditText) view.findViewById(R.id.detail);
@@ -209,10 +216,9 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         });
         // Dismiss keyboard when enter is pressed
         weightEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                if (EditorInfo.IME_ACTION_DONE == actionId) {
                     InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
                     View focus = getActivity().getCurrentFocus();
@@ -220,9 +226,8 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
                     if (focus != null) {
                         in.hideSoftInputFromWindow(focus.getWindowToken(),
                                 InputMethodManager.HIDE_NOT_ALWAYS);
-                        // Must return true here to consume event
-                        return true;
                     }
+                    return true;
                 }
                 return false;
             }
@@ -389,16 +394,20 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
         if (v.getId() == R.id.fab) {
             if (setSlot.getWeight() > 0) {
-            SaveSetDialog saveSetDialog =
-                    SaveSetDialog.newInstance(new LoadUpdateHandler(this), setSlot.getReps(), setSlot.getWeight());
-                saveSetDialog.show(getFragmentManager(), getTag());
-                SetsListDialog.setHandler(new UpdateOnDismissHandler(this));
+                showSaveSetDialog();
             } else {
                 cannotSaveToast();
             }
         }
 
         return true;
+    }
+
+    public void showSaveSetDialog() {
+        SaveSetDialog saveSetDialog =
+                SaveSetDialog.newInstance(new LoadUpdateHandler(this), setSlot.getReps(), setSlot.getWeight());
+        saveSetDialog.show(getFragmentManager(), getTag());
+        SetsListDialog.setHandler(new UpdateOnDismissHandler(this));
     }
 
     private class AsyncCalculate extends Observable implements Runnable {

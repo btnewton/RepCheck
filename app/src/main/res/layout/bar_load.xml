@@ -83,17 +83,17 @@
 
     <View
         android:background="@color/disabled_text"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="1dp"/>
 
     <ListView
         android:id="@+id/plate_list"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/close_btn"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="48dp"
         android:padding="0dp"
         android:textColor="@color/primary_900"
