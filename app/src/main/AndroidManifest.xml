@@ -20,7 +20,7 @@
       </intent-filter>
     </activity>
     <activity
-        android:name=".activities.preferences.SettingsActivity"
+        android:name=".activities.preferences.RepCheckPreferenceActivity"
         android:label="@string/title_activity_settings"
         android:parentActivityName="com.brandtnewtonsoftware.repcheck.activities.MainActivity">
       <!-- Parent activity meta-data to support 4.0 and lower -->

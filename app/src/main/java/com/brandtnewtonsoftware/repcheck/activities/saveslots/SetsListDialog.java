@@ -3,7 +3,6 @@ package com.brandtnewtonsoftware.repcheck.activities.saveslots;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -95,7 +94,6 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
                 });
             }
         });
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         return dialog;
     }

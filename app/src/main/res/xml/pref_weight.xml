@@ -3,7 +3,7 @@
     <ListPreference
         android:key="@string/pref_units_key"
         android:title="@string/pref_units_label"
-        android:defaultValue="@string/pref_units_imperial"
+        android:defaultValue="@string/pref_units_default"
         android:entries="@array/units"
         android:entryValues="@array/units" />
 
@@ -11,19 +11,19 @@
         android:key="@string/pref_round_values_key"
         android:title="@string/pref_round_values_label"
         android:summary="@string/pref_round_values_summary"
-        android:defaultValue="true" />
+        android:defaultValue="@bool/pref_round_values_default" />
 
     <ListPreference
         android:key="@string/pref_plate_style_key"
         android:title="@string/pref_plate_style_label"
-        android:defaultValue="@string/pref_plate_style_classic"
+        android:defaultValue="@string/pref_plate_style_default"
         android:entries="@array/plate_styles"
         android:entryValues="@array/plate_styles" />
 
     <EditTextPreference
         android:key="@string/pref_bar_weight_key"
         android:title="@string/pref_bar_weight_label"
-        android:defaultValue="@string/pref_default_bar_weight"
+        android:defaultValue="@string/pref_bar_weight_default"
         android:selectAllOnFocus="true"
         android:inputType="numberDecimal"
         android:singleLine="true"
@@ -32,7 +32,7 @@
     <ListPreference
         android:title="@string/pref_formula_label"
         android:key="@string/pref_formula_key"
-        android:defaultValue="@string/brzycki_formula"
+        android:defaultValue="@string/pref_formula_default"
         android:entries="@array/one_rep_max_formula_option_labels"
         android:entryValues="@array/one_rep_max_formula_option_values"
         />

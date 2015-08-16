@@ -2,6 +2,7 @@ package com.brandtnewtonsoftware.repcheck.util;
 
 import android.app.Activity;
 import android.provider.Settings;
+import android.util.Log;
 
 import com.brandtnewtonsoftware.repcheck.R;
 import com.google.android.gms.ads.AdRequest;
@@ -17,13 +18,15 @@ import java.security.NoSuchAlgorithmException;
 public class AdMobHelper {
 
     private static String[] testDeviceIDs = new String[] {
-            AdRequest.DEVICE_ID_EMULATOR
+            AdRequest.DEVICE_ID_EMULATOR,
+            "7550DC10428CB7A4DDB3C1C3957BBE37"
     };
 
 
     public static AdView CreateAdRequest(Activity activity) {
         String android_id = Settings.Secure.getString(activity.getContentResolver(), Settings.Secure.ANDROID_ID);
         String deviceId = MD5_Hash(android_id).toUpperCase();
+        Log.i("AdMobHelper", "Device id: " + deviceId);
 
         AdView mAdView = (AdView) activity.findViewById(R.id.adView);
 
@@ -31,7 +34,7 @@ public class AdMobHelper {
         for (String testDeviceID : testDeviceIDs) {
             adRequest.addTestDevice(testDeviceID);
         }
-        adRequest.addTestDevice(deviceId);
+
         mAdView.loadAd(adRequest.build());
 
         return mAdView;

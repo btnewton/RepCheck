@@ -3,7 +3,6 @@ package com.brandtnewtonsoftware.repcheck.activities.barload;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -116,7 +115,6 @@ public class BarLoadDialog extends DialogFragment {
                 });
             }
         });
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         return dialog;
     }

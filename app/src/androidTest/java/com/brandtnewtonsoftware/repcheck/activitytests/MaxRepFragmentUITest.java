@@ -1,4 +1,4 @@
-package com.brandtnewtonsoftware.brandt.repcheck.activitytests;
+package com.brandtnewtonsoftware.repcheck.activitytests;
 
 import android.os.SystemClock;
 import android.support.v4.app.Fragment;

@@ -1,4 +1,4 @@
-package com.brandtnewtonsoftware.brandt.repcheck.activitytests;
+package com.brandtnewtonsoftware.repcheck.activitytests;
 
 import android.test.ActivityInstrumentationTestCase2;
 

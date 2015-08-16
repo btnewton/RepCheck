@@ -89,7 +89,6 @@ public class SetQuickPlateDialog extends DialogFragment {
                 });
             }
         });
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         return dialog;
     }

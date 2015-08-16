@@ -99,9 +99,6 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-
-
-
         if (savedInstanceState != null) {
             // Restore value of members from saved state
             int setID = savedInstanceState.getInt(SET_ID);

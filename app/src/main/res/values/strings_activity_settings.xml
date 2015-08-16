@@ -8,6 +8,7 @@
     <string name="pref_units_key">units</string>
     <string name="pref_units_metric">Metric</string>
     <string name="pref_units_imperial">Imperial</string>
+    <string name="pref_units_default">@string/pref_units_imperial</string>
 
     <string name="pref_round_values_label">Round Values</string>
     <string name="pref_round_values_key">round_values</string>
@@ -17,10 +18,12 @@
     <string name="pref_plate_style_key">plate_style</string>
     <string name="pref_plate_style_classic">Classic</string>
     <string name="pref_plate_style_olympic">Olympic</string>
+    <string name="pref_plate_style_default">@string/pref_plate_style_classic</string>
+
 
     <string name="pref_bar_weight_label">Bar Weight</string>
     <string name="pref_bar_weight_key">bar_weight</string>
-    <string name="pref_default_bar_weight">45</string>
+    <string name="pref_bar_weight_default">45</string>
 
     <string name="pref_formula_label">Select Formula</string>
     <string name="pref_formula_key">formula</string>
@@ -48,6 +51,8 @@
     <string name="mayhew_formula_value">MayhewEtAlFormula</string>
     <string name="oconner_formula_value">OConnerEtAlFormula</string>
     <string name="wathen_formula_value">WathenFormula</string>
+    <string name="pref_formula_default">@string/brzycki_formula_value</string>
+
 
     <string name="pref_reset_label">Reset</string>
     <string name="pref_reset_button">reset</string>

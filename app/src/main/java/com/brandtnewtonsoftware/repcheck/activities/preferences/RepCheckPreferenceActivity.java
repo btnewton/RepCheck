@@ -57,9 +57,6 @@ public class RepCheckPreferenceActivity extends PreferenceActivity {
      */
     private void setupSimplePreferencesScreen() {
 
-        // In the simplified UI, fragments are not used at all and we instead
-        // use the older PreferenceActivity APIs.
-
         addPreferencesFromResource(R.xml.pref_weight);
 
 
@@ -110,8 +107,13 @@ public class RepCheckPreferenceActivity extends PreferenceActivity {
             public boolean onPreferenceClick(Preference preference) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.clear();
+                editor.putString(getString(R.string.pref_units_key), getString(R.string.pref_units_default));
+                editor.putBoolean(getString(R.string.pref_round_values_key), getResources().getBoolean(R.bool.pref_round_values_default));
+                editor.putString(getString(R.string.pref_plate_style_key), getString(R.string.pref_plate_style_default));
+                editor.putString(getString(R.string.pref_bar_weight_key), getString(R.string.pref_bar_weight_default));
+                editor.putString(getString(R.string.pref_formula_key), getString(R.string.pref_formula_default));
                 editor.commit();
+                recreate();
                 return true;
             }
         });
