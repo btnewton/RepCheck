@@ -17,8 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.brandtnewtonsoftware.repcheck.R;
-import com.brandtnewtonsoftware.repcheck.activities.AboutDialog;
-import com.brandtnewtonsoftware.repcheck.activities.ConfirmDialog;
+import com.brandtnewtonsoftware.repcheck.util.ConfirmDialog;
 
 import java.lang.ref.WeakReference;
 

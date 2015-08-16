@@ -75,6 +75,8 @@
 
     <!-- Other Settings -->
     <string name="pref_show_disclaimer">disclaimer_flag</string>
+    <string name="pref_app_start_counter">app_start_counter</string>
+    <string name="pref_prompt_rate_dialog">prompt_rate_flag</string>
 
 
     <!-- Developer Settings -->

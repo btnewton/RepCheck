@@ -1,4 +1,4 @@
-package com.brandtnewtonsoftware.repcheck.activities;
+package com.brandtnewtonsoftware.repcheck.util;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -16,31 +16,20 @@ import com.brandtnewtonsoftware.repcheck.R;
 /**
  * Created by Brandt on 8/16/2015.
  */
-public abstract class ConfirmDialog extends DialogFragment {
+public abstract class MessageDialog  extends DialogFragment {
 
-    private static final String TITLE_KEY = "title_value";
-    private static final String BODY_KEY = "body_value";
-    private static final String NEGATIVE_KEY = "negative_value";
-    private static final String POSITIVE_KEY = "positive_value";
-    private static final String LOG_KEY = "ConfirmDialog";
+    private static final String LOG_KEY = "MessageDialog";
 
     public static Handler responseHandler;
 
     protected abstract String getTitle();
     protected abstract String getBody();
 
-    protected String getNegative() {
-        return "CANCEL";
-    }
-    protected String getPositive() {
-        return "CONFIRM";
+    protected String getButtonText() {
+        return "CLOSE";
     }
 
-    protected void onCancel() {
-        responseHandler.sendEmptyMessage(0);
-    }
-
-    protected void onConfirm() {
+    protected void onClose() {
         responseHandler.sendEmptyMessage(1);
     }
 
@@ -48,10 +37,11 @@ public abstract class ConfirmDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        final View confirmView = getActivity().getLayoutInflater().inflate(R.layout.confirm_dialog, null);
+        final View confirmView = getActivity().getLayoutInflater().inflate(R.layout.message_dialog, null);
 
         AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(confirmView)
+                .setCancelable(false)
                 .create();
 
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -63,21 +53,12 @@ public abstract class ConfirmDialog extends DialogFragment {
                 final TextView body = (TextView) confirmView.findViewById(R.id.body);
                 body.setText(getBody());
 
-                Button cancelButton = (Button) confirmView.findViewById(R.id.negative_btn);
-                cancelButton.setText(getNegative());
-                cancelButton.setOnClickListener(new View.OnClickListener() {
+                final Button closeButton = (Button) confirmView.findViewById(R.id.close_btn);
+                closeButton.setText(getButtonText());
+                closeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onCancel();
-                        dismiss();
-                    }
-                });
-                final Button positiveButton = (Button) confirmView.findViewById(R.id.positive_btn);
-                positiveButton.setText(getPositive());
-                positiveButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onConfirm();
+                        onClose();
                         dismiss();
                     }
                 });

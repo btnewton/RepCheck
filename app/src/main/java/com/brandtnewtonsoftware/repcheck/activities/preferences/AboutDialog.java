@@ -1,4 +1,4 @@
-package com.brandtnewtonsoftware.repcheck.activities;
+package com.brandtnewtonsoftware.repcheck.activities.preferences;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
