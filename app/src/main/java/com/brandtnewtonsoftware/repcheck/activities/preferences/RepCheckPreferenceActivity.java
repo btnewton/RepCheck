@@ -1,12 +1,14 @@
 package com.brandtnewtonsoftware.repcheck.activities.preferences;
 
+import android.app.DialogFragment;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -16,6 +18,9 @@ import android.view.View;
 
 import com.brandtnewtonsoftware.repcheck.R;
 import com.brandtnewtonsoftware.repcheck.activities.AboutDialog;
+import com.brandtnewtonsoftware.repcheck.activities.ConfirmDialog;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Created by brandt on 7/22/15.
@@ -99,24 +104,68 @@ public class RepCheckPreferenceActivity extends PreferenceActivity {
             }
         });
 
-        final Context context = this;
+        final RepCheckPreferenceActivity activity = this;
 
         Preference resetButton = (Preference)findPreference(getString(R.string.pref_reset_button));
         resetButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString(getString(R.string.pref_units_key), getString(R.string.pref_units_default));
-                editor.putBoolean(getString(R.string.pref_round_values_key), getResources().getBoolean(R.bool.pref_round_values_default));
-                editor.putString(getString(R.string.pref_plate_style_key), getString(R.string.pref_plate_style_default));
-                editor.putString(getString(R.string.pref_bar_weight_key), getString(R.string.pref_bar_weight_default));
-                editor.putString(getString(R.string.pref_formula_key), getString(R.string.pref_formula_default));
-                editor.commit();
-                recreate();
+                DialogFragment saveAsNewDialog = ConfirmResetDialog.newInstance(new ResetResponseHandler(activity));
+                saveAsNewDialog.show(activity.getFragmentManager(), "RenameSetDialog");
                 return true;
             }
         });
+    }
+
+    public static class ConfirmResetDialog extends ConfirmDialog {
+
+        public static ConfirmResetDialog newInstance(Handler updateHandler) {
+            ConfirmResetDialog dialog = new ConfirmResetDialog();
+            ConfirmResetDialog.responseHandler = updateHandler;
+
+            return dialog;
+        }
+        @Override
+        protected String getTitle() {
+            return "Reset Settings";
+        }
+        @Override
+        protected String getBody() {
+            return "Do you want to reset your settings?";
+        }
+        @Override
+        protected String getPositive() {
+            return "RESET";
+        }
+    }
+
+    public void reset() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(getString(R.string.pref_units_key), getString(R.string.pref_units_default));
+        editor.putBoolean(getString(R.string.pref_round_values_key), getResources().getBoolean(R.bool.pref_round_values_default));
+        editor.putString(getString(R.string.pref_plate_style_key), getString(R.string.pref_plate_style_default));
+        editor.putString(getString(R.string.pref_bar_weight_key), getString(R.string.pref_bar_weight_default));
+        editor.putString(getString(R.string.pref_formula_key), getString(R.string.pref_formula_default));
+        editor.commit();
+        recreate();
+    }
+
+    static class ResetResponseHandler extends Handler {
+        private final WeakReference<RepCheckPreferenceActivity> mService;
+
+        ResetResponseHandler(RepCheckPreferenceActivity service) {
+            mService = new WeakReference<>(service);
+        }
+
+        @Override
+        public void handleMessage(Message msg)
+        {
+            RepCheckPreferenceActivity service = mService.get();
+            if (service != null && msg.what != 0) {
+                service.reset();
+            }
+        }
     }
 
     /**
