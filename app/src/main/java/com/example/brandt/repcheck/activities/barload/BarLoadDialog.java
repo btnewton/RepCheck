@@ -98,13 +98,13 @@ public class BarLoadDialog extends DialogFragment {
                 List<IStandardRowItem> barLoad = getBarConstruction();
 
                 TextView totalWeight = (TextView) view.findViewById(R.id.total_weight);
-                totalWeight.setText(weightFormatter.format(weight) + " " + weightFormatter.getUnit(weight));
+                totalWeight.setText(weightFormatter.format(weight) + " " + weightFormatter.displayUnit(weight));
 
                 TextView barWeightTextView = (TextView) view.findViewById(R.id.bar_weight);
-                barWeightTextView.setText(weightFormatter.format(barWeight) + " " + weightFormatter.getUnit(barWeight));
+                barWeightTextView.setText(weightFormatter.format(barWeight) + " " + weightFormatter.displayUnit(barWeight));
 
                 TextView remainderTextView = (TextView) view.findViewById(R.id.weight_remainder);
-                remainderTextView.setText(weightFormatter.format(remainder) + ((remainder > 0) ? " " + weightFormatter.getUnit(remainder) : ""));
+                remainderTextView.setText(weightFormatter.format(remainder) + ((remainder > 0) ? " " + weightFormatter.displayUnit(remainder) : ""));
 
                 StandardRowListAdapter adapter = StandardRowListAdapter.newBarLoadAdapter(getActivity(), getLayoutInflater(savedInstanceState));
                 adapter.updateData(barLoad);
@@ -127,7 +127,7 @@ public class BarLoadDialog extends DialogFragment {
 
     private List<IStandardRowItem> getBarConstruction() {
 
-        double[] increments = incrementSet.getIncrements();
+        double[] increments = incrementSet.getIncrements(weightFormatter.getUnit());
         List<IStandardRowItem> weightHolders = new ArrayList<>(increments.length + 1);
 
         double weight = this.weight - barWeight;

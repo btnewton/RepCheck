@@ -34,7 +34,7 @@ public class FormulaWrapper extends Observable {
             int currentReps = i + 1;
             double currentWeight = oneRepMaxFormula.getWeightWeightForReps(currentReps);
             weightHolders.add(new DetailRow(currentReps, Integer.toString(currentReps),
-                            formatter.format(currentWeight) + " " + formatter.getUnit(currentWeight),
+                            formatter.format(currentWeight) + " " + formatter.displayUnit(currentWeight),
                     Integer.toString((int)oneRepMaxFormula.getPercentOfMax(currentWeight)) + "%"));
         }
         setChanged();

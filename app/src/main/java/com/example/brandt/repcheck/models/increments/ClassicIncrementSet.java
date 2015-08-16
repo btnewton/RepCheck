@@ -16,13 +16,28 @@ public class ClassicIncrementSet extends IncrementSet {
             45
     };
 
+    private double[] metricSet = new double[] {
+            1.25,
+            2.5,
+            5,
+            10,
+            15,
+            20,
+            25
+    };
+
     public ClassicIncrementSet(Unit unit) {
         super(unit);
     }
 
     @Override
-    public double[] getIncrements() {
+    protected double[] getImperialIncrements() {
         return imperialSet;
+    }
+
+    @Override
+    protected double[] getMetricIncrements() {
+        return metricSet;
     }
 
     @Override

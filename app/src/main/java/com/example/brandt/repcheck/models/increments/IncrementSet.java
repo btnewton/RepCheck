@@ -2,6 +2,8 @@ package com.example.brandt.repcheck.models.increments;
 
 import com.example.brandt.repcheck.models.Unit;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 /**
@@ -15,14 +17,23 @@ public abstract class IncrementSet {
         this.unit = unit;
     }
 
-    public abstract double[] getIncrements();
+    public double[] getIncrements(Unit unit) {
+        if (unit.equals(Unit.MetricUnit())) {
+            return getMetricIncrements();
+        } else {
+            return getImperialIncrements();
+        }
+    }
+
+    protected abstract double[] getImperialIncrements();
+    protected abstract double[] getMetricIncrements();
 
     public ArrayList<String> getIncrementsAsStringArray() {
-        double[] increments = getIncrements();
+        double[] increments = getIncrements(unit);
         ArrayList<String>  formattedIncrements = new ArrayList<>(increments.length);
-
+        NumberFormat formatter = new DecimalFormat("#.#");
         for (double increment : increments) {
-            formattedIncrements.add(increment + " " + unit.displayUnit(increment));
+            formattedIncrements.add(formatter.format(increment) + " " + unit.displayUnit(increment));
         }
 
         return formattedIncrements;

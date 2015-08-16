@@ -1,7 +1,6 @@
 package com.example.brandt.repcheck.activities;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -11,6 +10,7 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -47,8 +47,6 @@ public class SetQuickPlateDialog extends DialogFragment {
         String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
         Unit unit = Unit.newUnitByString(unitType, activity);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
         final ArrayAdapter<String> arrayAdapter =
                 new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, IncrementFactory.Make(activity, plateStyle, unit).getIncrementsAsStringArray());
 
@@ -56,8 +54,11 @@ public class SetQuickPlateDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         final View setSlotsView = inflater.inflate(R.layout.list_dialog, null);
-        builder.setView(setSlotsView);
-        final AlertDialog dialog = builder.create();
+
+        final AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                .setView(setSlotsView)
+                .create();
+
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {

@@ -25,6 +25,6 @@ public class WeightFormatter {
         return formatter.format(number);
     }
 
-    public String getUnit() { return unit.displayUnit(); }
-    public String getUnit(double number) { return unit.displayUnit(number); }
+    public Unit getUnit() { return unit; }
+    public String displayUnit(double number) { return unit.displayUnit(number); }
 }

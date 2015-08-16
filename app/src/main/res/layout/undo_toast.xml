@@ -1,14 +1,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/undobar"
-    style="@style/UndoBar">
+    style="@style/UndoBar"
+    tools:context=".activities.MainActivity">
     <TextView android:id="@+id/undobar_message" style="@style/UndoBarMessage" />
-    <View
-        android:layout_width="1dp"
-        android:layout_height="fill_parent"
-        android:paddingTop="@dimen/tiny"
-        android:paddingBottom="@dimen/tiny"
-        android:background="@android:color/darker_gray"
-        android:layout_marginTop="@dimen/tiny"
-        android:layout_marginBottom="@dimen/tiny" />
-    <Button android:id="@+id/undobar_button" style="@style/UndoBarButton" />
+    <TextView android:id="@+id/undobar_button"
+        style="@style/UndoBarButton" />
 </LinearLayout>

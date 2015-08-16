@@ -17,13 +17,28 @@ public class OlympicIncrementSet extends IncrementSet {
             55,
     };
 
+    private double[] metricSet = new double[] {
+            1.25,
+            2.5,
+            5,
+            10,
+            15,
+            20,
+            25
+    };
+
     public OlympicIncrementSet(Unit unit) {
         super(unit);
     }
 
     @Override
-    public double[] getIncrements() {
+    protected double[] getImperialIncrements() {
         return olympicSet;
+    }
+
+    @Override
+    protected double[] getMetricIncrements() {
+        return metricSet;
     }
 
     @Override

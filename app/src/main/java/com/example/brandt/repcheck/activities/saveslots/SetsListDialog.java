@@ -9,11 +9,12 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
@@ -59,9 +60,10 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         final View setSlotsView = inflater.inflate(R.layout.list_dialog, null);
-        final Dialog dialog = new Dialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(setSlotsView);
+        AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                .setView(setSlotsView)
+                .create();
+
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
@@ -132,8 +134,9 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
     public static class RenameSetDialog extends DialogFragment {
 
         private static final String SLOT_ID_KEY = "slot_id";
+        private static final String LOG_KEY = "RenameSetDialog";
         public Handler updateHandler;
-        SetSlot setSlot;
+        private SetSlot setSlot;
 
         public static RenameSetDialog newInstance(Handler updateHandler, int slotId) {
             RenameSetDialog dialog = new RenameSetDialog();
@@ -157,6 +160,7 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
             }
 
             if (setSlot == null){
+                Log.e(LOG_KEY, "SetSlot was null! Dismissing dialog.");
                 dismiss();
             }
         }
@@ -164,14 +168,12 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Get the layout inflater
-            LayoutInflater inflater = getLayoutInflater(savedInstanceState);
 
-            final View setSlotsView = inflater.inflate(R.layout.edittext_dialog, null);
+            final View setSlotsView = getActivity().getLayoutInflater().inflate(R.layout.edittext_dialog, null);
 
-            final Dialog dialog = new Dialog(getActivity());
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(setSlotsView);
+            AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                    .setView(setSlotsView)
+                    .create();
 
             dialog.setOnShowListener(new DialogInterface.OnShowListener() {
                 @Override
@@ -274,7 +276,7 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
                 WeightFormatter formatter = new WeightFormatter(shouldRound, Unit.newUnitByString(unitType, getActivity()));
 
                 for (SetSlot setSlot : setSlots) {
-                    rowItems.add(new StandardRowItem(setSlot.getId(), setSlot.getName(), formatter.format(setSlot.getWeight()) + " " + formatter.getUnit(setSlot.getWeight()) + " for " + setSlot.getReps() + " rep"
+                    rowItems.add(new StandardRowItem(setSlot.getId(), setSlot.getName(), formatter.format(setSlot.getWeight()) + " " + formatter.displayUnit(setSlot.getWeight()) + " for " + setSlot.getReps() + " rep"
                             + ((setSlot.getReps() != 1) ? "s" : "")));
                 }
             } else {

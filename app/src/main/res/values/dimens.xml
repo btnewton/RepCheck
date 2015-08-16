@@ -9,7 +9,9 @@
     <dimen name="fab_press_translation_z">9dp</dimen>
     <dimen name="toolbar_elevation">7dp</dimen>
 
-    <dimen name="undobar_height">48dp</dimen>
+    <dimen name="undobar_height">42dp</dimen>
+
+    <dimen name="dialog_button_height">48dp</dimen>
 
     <!-- Material dimens -->
     <dimen name="button_inset_horizontal_material">@dimen/control_inset_material</dimen>

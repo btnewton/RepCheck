@@ -430,7 +430,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
                 int currentReps = i + 1;
                 double currentWeight = formula.getWeightWeightForReps(currentReps);
                 weightHolders.add(new DetailRow(currentReps, Integer.toString(currentReps),
-                        weightFormatter.format(currentWeight) + " " + weightFormatter.getUnit(currentWeight),
+                        weightFormatter.format(currentWeight) + " " + weightFormatter.displayUnit(currentWeight),
                         Integer.toString((int) formula.getPercentOfMax(currentWeight)) + "%"));
             }
 
@@ -606,9 +606,9 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     }
 
     public void updateQuickPlateButtons(int index) {
-        incrementValue = incrementSet.getIncrements()[index];
+        incrementValue = incrementSet.getIncrements(weightFormatter.getUnit())[index];
         NumberFormat formatter = new DecimalFormat("#.#");
-        String incrementText = formatter.format(incrementValue) + " " + weightFormatter.getUnit(incrementValue);
+        String incrementText = formatter.format(incrementValue) + " " + weightFormatter.displayUnit(incrementValue);
 
         try {
             // Update buttons

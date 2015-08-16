@@ -45,7 +45,7 @@ public class Unit {
     }
 
     public boolean equals(Unit unit) {
-        return unit.getUnit().equals(unit);
+        return unit.getUnit().equals(this.unit);
     }
 
     public String displayUnit() {

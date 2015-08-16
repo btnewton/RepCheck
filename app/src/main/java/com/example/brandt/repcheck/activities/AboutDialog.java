@@ -9,8 +9,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,15 +25,9 @@ public class AboutDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        // Get the layout inflater
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
-        final View aboutView = inflater.inflate(R.layout.about, null);
-        builder.setView(aboutView);
-        final AlertDialog dialog = builder.create();
+        final View aboutView = getActivity().getLayoutInflater().inflate(R.layout.about, null);
+        final AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                .setView(aboutView).create();
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
@@ -72,6 +66,14 @@ public class AboutDialog extends DialogFragment {
                     @Override
                     public void onClick(View v) {
                         makeEmailIntent(getString(R.string.konnor_email));
+                    }
+                });
+
+                Button closeButton = (Button) aboutView.findViewById(R.id.close_btn);
+                closeButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dismiss();
                     }
                 });
             }

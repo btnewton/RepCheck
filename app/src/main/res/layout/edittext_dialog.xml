@@ -33,7 +33,7 @@
             <Button
                 android:id="@+id/negative_btn"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/dialog_button_height"
                 android:textColor="@color/primary_900"
                 android:text="NEGATIVE"
                 style="?android:attr/borderlessButtonStyle"
@@ -42,7 +42,7 @@
             <Button
                 android:id="@+id/positive_btn"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/dialog_button_height"
                 android:textColor="@color/primary_900"
                 android:text="POSITIVE"
                 style="?android:attr/borderlessButtonStyle"

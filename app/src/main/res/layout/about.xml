@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:background="@color/primary_400"
     android:layout_height="wrap_content"
-    android:layout_width="fill_parent">
+    android:layout_width="match_parent">
+<ScrollView
+    android:layout_weight="1"
+    android:layout_height="0dp"
+    android:layout_width="match_parent">
     <LinearLayout
         android:orientation="vertical"
         android:paddingTop="20dp"
@@ -114,3 +119,14 @@
     </LinearLayout>
 </LinearLayout>
 </ScrollView>
+
+<Button
+android:id="@+id/close_btn"
+android:layout_width="match_parent"
+android:layout_height="@dimen/dialog_button_height"
+android:padding="0dp"
+android:textColor="@color/primary_900"
+android:text="CLOSE"
+style="?android:attr/borderlessButtonStyle"
+    />
+</LinearLayout>
