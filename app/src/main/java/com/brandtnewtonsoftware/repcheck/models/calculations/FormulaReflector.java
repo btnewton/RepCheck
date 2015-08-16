@@ -1,6 +1,6 @@
 package com.brandtnewtonsoftware.repcheck.models.calculations;
 
-import com.brandtnewtonsoftware.repcheck.models.calculations.formulas.OneRepMaxFormula;
+import com.brandtnewtonsoftware.repcheck.models.calculations.formulas.*;
 
 /**
  * Created by Brandt on 8/16/2015.
@@ -13,7 +13,6 @@ public class FormulaReflector {
         OneRepMaxFormula formula;
 
         try {
-            // Reflect formula or default to Brzycki
             formula = (OneRepMaxFormula) Class.forName("com.brandtnewtonsoftware.repcheck.models.calculations.formulas." + formulaName).getConstructor().newInstance();
         } catch (Exception e) {
             throw new Exception(e.getMessage());

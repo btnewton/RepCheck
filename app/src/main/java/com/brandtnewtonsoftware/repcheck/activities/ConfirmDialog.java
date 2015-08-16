@@ -18,7 +18,6 @@ import com.brandtnewtonsoftware.repcheck.R;
  */
 public abstract class ConfirmDialog extends DialogFragment {
 
-
     private static final String TITLE_KEY = "title_value";
     private static final String BODY_KEY = "body_value";
     private static final String NEGATIVE_KEY = "negative_value";

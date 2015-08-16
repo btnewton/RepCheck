@@ -144,7 +144,8 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         try {
             formula = FormulaReflector.reflectOneRepMaxFormula(formulaName);
         } catch (Exception e) {
-            Log.e(LOG_KEY, "Unable to convert \"" + formulaName + "\"! defaulting to Brzycki");
+            Log.e(LOG_KEY, "Unable to convert \"" + formulaName + "\"! defaulting to Brzycki. " + e.getMessage());
+            Log.e(LOG_KEY, BrzyckiFormula.class.getName());
             formula = new BrzyckiFormula();
         }
 
@@ -361,11 +362,6 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         if (weight >= 0) {
             setSlot.setWeight(weight);
             updateSetNameStyle();
-
-            if (calculateThread.isAlive()) {
-
-            }
-
             startCalculateSets();
         }
     }
@@ -592,7 +588,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             weightEditText.setText(Double.toString(setSlot.getWeight()));
             setNameTextView.setText(setSlot.getName());
         } catch (NullPointerException exception) {
-            Log.e("MaxRepFragment", "updateSet() threw a NullPointerException:" + exception.getMessage());
+            Log.e(LOG_KEY, "updateSet() threw a NullPointerException:" + exception.getMessage());
         }
     }
 
@@ -606,7 +602,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             subtractButton.setText("-" + incrementText);
             addButton.setText("+" + incrementText);
         } catch (NullPointerException exception) {
-            Log.e("MaxRepFragment", "updateQuickPlateButtons() threw a NullPointerException:" + exception.getMessage());
+            Log.e(LOG_KEY, "updateQuickPlateButtons() threw a NullPointerException:" + exception.getMessage());
         }
     }
 }

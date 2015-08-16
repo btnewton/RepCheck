@@ -135,12 +135,12 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
 
         private static final String SLOT_ID_KEY = "slot_id";
         private static final String LOG_KEY = "RenameSetDialog";
-        public Handler updateHandler;
+        public static Handler updateHandler;
         private SetSlot setSlot;
 
         public static RenameSetDialog newInstance(Handler updateHandler, int slotId) {
             RenameSetDialog dialog = new RenameSetDialog();
-            dialog.updateHandler = updateHandler;
+            RenameSetDialog.updateHandler = updateHandler;
 
             Bundle args = new Bundle();
             args.putInt(SLOT_ID_KEY, slotId);

@@ -15,3 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keep public class * extends com.brandtnewtonsoftware.repcheck.models.calculations.formulas.OneRepMaxFormula
+-keepclassmembers class * extends com.brandtnewtonsoftware.repcheck.models.calculations.formulas.OneRepMaxFormula {
+    public <init>();
+}
