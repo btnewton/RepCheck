@@ -84,7 +84,7 @@ public class BarLoadDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
 
-        final View view =  getActivity().getLayoutInflater().inflate(R.layout.bar_load, null);
+        final View view = getActivity().getLayoutInflater().inflate(R.layout.bar_load, null);
         AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(view)
                 .create();

@@ -2,14 +2,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <Preference
         android:title="@string/pref_how_to_use_label"
-        android:key="@string/how_to_use_button"
-        android:summary="@string/how_to_use_summary"/>
+        android:key="@string/pref_how_to_use_button"
+        android:summary="@string/pref_how_to_use_summary"/>
     <Preference
         android:title="@string/pref_rate_label"
-        android:key="@string/rate_button"
-        android:summary="@string/rate_summary"/>
+        android:key="@string/pref_rate_button"
+        android:summary="@string/pref_rate_summary"/>
     <Preference
         android:title="@string/pref_about_label"
-        android:key="@string/about_button"
-        android:summary="@string/about_summary"/>
+        android:key="@string/pref_about_button"
+        android:summary="@string/pref_about_summary"/>
 </PreferenceScreen>

@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.brandtnewtonsoftware.repcheck.database.schemas.FormulaConfigurationTable;
 import com.brandtnewtonsoftware.repcheck.database.schemas.SetSlotTable;
 
 import java.sql.Timestamp;
@@ -32,7 +31,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
     private Schema[] tables = new Schema[] {
             new SetSlotTable(),
-            new FormulaConfigurationTable(),
             // ADD NEW TABLES HERE!
     };
 

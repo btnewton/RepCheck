@@ -37,9 +37,6 @@ import com.brandtnewtonsoftware.repcheck.activities.barload.BarLoadDialog;
 import com.brandtnewtonsoftware.repcheck.activities.saveslots.LoadSetDialog;
 import com.brandtnewtonsoftware.repcheck.activities.saveslots.SaveSetDialog;
 import com.brandtnewtonsoftware.repcheck.activities.saveslots.SetsListDialog;
-import com.brandtnewtonsoftware.repcheck.database.schemas.SetSlotTable;
-import com.brandtnewtonsoftware.repcheck.database.seeders.FormulaConfigurationSeeder;
-import com.brandtnewtonsoftware.repcheck.database.seeders.SetSeeder;
 import com.brandtnewtonsoftware.repcheck.models.SetSlot;
 import com.brandtnewtonsoftware.repcheck.models.Unit;
 import com.brandtnewtonsoftware.repcheck.models.WeightFormatter;
@@ -52,7 +49,6 @@ import com.brandtnewtonsoftware.repcheck.util.UndoBarController;
 import com.brandtnewtonsoftware.repcheck.util.adapters.detail.DetailRow;
 import com.brandtnewtonsoftware.repcheck.util.adapters.detail.DetailRowListAdapter;
 import com.brandtnewtonsoftware.repcheck.util.adapters.detail.IDetailRow;
-import com.brandtnewtonsoftware.repcheck.util.database.DBHandler;
 
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
@@ -103,13 +99,8 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        new FormulaConfigurationSeeder().repair(getActivity());
 
-        // Populate table if missing
-        if (SetSlot.getSlotCount(getActivity()) != getResources().getInteger(R.integer.set_slot_count)) {
-            DBHandler.truncateTable(getActivity(), new SetSlotTable());
-            new SetSeeder().seed(getActivity());
-        }
+
 
         if (savedInstanceState != null) {
             // Restore value of members from saved state

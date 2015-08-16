@@ -1,7 +1,9 @@
 package com.brandtnewtonsoftware.repcheck.activities.preferences;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,8 +16,6 @@ import android.view.View;
 
 import com.brandtnewtonsoftware.repcheck.R;
 import com.brandtnewtonsoftware.repcheck.activities.AboutDialog;
-import com.brandtnewtonsoftware.repcheck.database.seeders.SetSeeder;
-import com.brandtnewtonsoftware.repcheck.util.database.DBHandler;
 
 /**
  * Created by brandt on 7/22/15.
@@ -69,12 +69,6 @@ public class RepCheckPreferenceActivity extends PreferenceActivity {
         getPreferenceScreen().addPreference(fakeHeader);
         addPreferencesFromResource(R.xml.pref_about);
 
-        // Add 'developer' preferences, and a corresponding header.
-        fakeHeader = new CustomPreferenceCategory(this);
-        fakeHeader.setTitle(R.string.pref_header_developer);
-        getPreferenceScreen().addPreference(fakeHeader);
-        addPreferencesFromResource(R.xml.pref_developer);
-
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
@@ -83,7 +77,7 @@ public class RepCheckPreferenceActivity extends PreferenceActivity {
         bindPreferenceSummaryToValue(findPreference(getResources().getString(R.string.pref_bar_weight_key)));
         bindPreferenceSummaryToValue(findPreference(getResources().getString(R.string.pref_formula_key)));
 
-        Preference aboutButton = (Preference)findPreference(getString(R.string.about_button));
+        Preference aboutButton = (Preference)findPreference(getString(R.string.pref_about_button));
         aboutButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -93,7 +87,7 @@ public class RepCheckPreferenceActivity extends PreferenceActivity {
             }
         });
 
-        Preference rateButton = (Preference)findPreference(getString(R.string.rate_button));
+        Preference rateButton = (Preference)findPreference(getString(R.string.pref_rate_button));
         rateButton .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -108,42 +102,19 @@ public class RepCheckPreferenceActivity extends PreferenceActivity {
             }
         });
 
-        Preference populateSetsButton = (Preference)findPreference(getString(R.string.populate_sets_button));
-        populateSetsButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        final Context context = this;
+
+        Preference resetButton = (Preference)findPreference(getString(R.string.pref_reset_button));
+        resetButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                populateSets();
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.clear();
+                editor.commit();
                 return true;
             }
         });
-
-        Preference populateAllButton = (Preference)findPreference(getString(R.string.populate_all_button));
-        populateAllButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                truncateTables();
-                populateSets();
-                return true;
-            }
-        });
-
-        Preference truncateAllButton = (Preference)findPreference(getString(R.string.truncate_all_button));
-        truncateAllButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                truncateTables();
-                return true;
-            }
-        });
-    }
-
-    public void truncateTables() {
-        DBHandler dbHandler = DBHandler.getInstance(this);
-        dbHandler.truncateAll();
-    }
-
-    public void populateSets(){
-        new SetSeeder().seed(this);
     }
 
     /**
