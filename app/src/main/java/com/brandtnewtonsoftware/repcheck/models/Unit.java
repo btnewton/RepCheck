@@ -11,7 +11,7 @@ import com.brandtnewtonsoftware.repcheck.R;
  */
 public class Unit {
 
-    private String unit;
+    private final String unit;
     private final static String LOG_TAG = "Unit";
 
     private Unit(String unit) {

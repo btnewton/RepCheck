@@ -11,7 +11,7 @@ import com.brandtnewtonsoftware.repcheck.R;
 /**
  * Created by Brandt on 8/10/2015.
  */
-public class CustomPreferenceCategory extends PreferenceCategory {
+class CustomPreferenceCategory extends PreferenceCategory {
     public CustomPreferenceCategory(Context context) {
         super(context);
     }

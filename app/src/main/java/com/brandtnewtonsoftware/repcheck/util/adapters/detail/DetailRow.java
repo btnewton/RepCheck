@@ -3,11 +3,11 @@ package com.brandtnewtonsoftware.repcheck.util.adapters.detail;
 /**
  * Created by Brandt on 8/4/2015.
  */
-public class DetailRow implements IDetailRow {
-    private int id;
-    private String title;
-    private String text;
-    private String detail;
+public final class DetailRow implements IDetailRow {
+    private final int id;
+    private final String title;
+    private final String text;
+    private final String detail;
 
     public DetailRow(int id, String title, String text, String detail) {
         this.id = id;

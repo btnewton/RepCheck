@@ -14,12 +14,12 @@ import android.widget.TextView;
 import com.brandtnewtonsoftware.repcheck.R;
 
 public class UndoBarController {
-    private View mBarView;
-    private TextView mMessageView;
-    private ViewPropertyAnimator mBarAnimator;
-    private Handler mHideHandler = new Handler();
+    private final View mBarView;
+    private final TextView mMessageView;
+    private final ViewPropertyAnimator mBarAnimator;
+    private final Handler mHideHandler = new Handler();
 
-    private UndoListener mUndoListener;
+    private final UndoListener mUndoListener;
 
     // State objects
     private Parcelable mUndoToken;
@@ -116,7 +116,7 @@ public class UndoBarController {
         }
     }
 
-    private Runnable mHideRunnable = new Runnable() {
+    private final Runnable mHideRunnable = new Runnable() {
         @Override
         public void run() {
             mUndoListener.onUndoTimeout();

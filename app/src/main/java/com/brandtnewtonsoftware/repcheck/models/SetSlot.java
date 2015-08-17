@@ -49,7 +49,7 @@ public class SetSlot extends DataObject {
     private SetSlot(int id, int reps, double weight, String lastUsed) {
         this(reps, weight, DBHandler.convertStringTime(lastUsed));
         this.id = id;
-        setIsNewRecord(false);
+        setNotNewRecord();
     }
 
     public void setName(String name) {

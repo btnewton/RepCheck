@@ -11,7 +11,7 @@ import com.google.android.gms.ads.AdView;
 /**
  * Created by brandt on 8/1/15.
  */
-public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
+public final class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     private MainActivity mMainActivity;
     private Toolbar mToolbar;

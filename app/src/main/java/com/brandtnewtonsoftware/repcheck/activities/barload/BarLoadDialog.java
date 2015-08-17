@@ -119,7 +119,7 @@ public class BarLoadDialog extends DialogFragment {
         return dialog;
     }
 
-    public List<IStandardRowItem> getBarConstruction() {
+    private List<IStandardRowItem> getBarConstruction() {
 
         double[] increments = incrementSet.getIncrements(weightFormatter.getUnit());
         List<IStandardRowItem> weightHolders = new ArrayList<>(increments.length + 1);

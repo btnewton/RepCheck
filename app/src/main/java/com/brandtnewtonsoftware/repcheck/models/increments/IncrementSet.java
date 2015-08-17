@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public abstract class IncrementSet {
 
-    protected Unit unit;
+    protected final Unit unit;
 
     public IncrementSet(Unit unit) {
         this.unit = unit;

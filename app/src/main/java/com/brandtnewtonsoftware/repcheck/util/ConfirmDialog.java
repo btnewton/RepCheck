@@ -37,14 +37,14 @@ public abstract class ConfirmDialog extends DialogFragment {
         if (responseHandler != null)
             responseHandler.sendEmptyMessage(0);
         else
-            Log.e(LOG_KEY, "Response Hanlder was null!");
+            Log.e(LOG_KEY, "Response Handler was null!");
     }
 
     protected void onConfirm() {
         if (responseHandler != null)
             responseHandler.sendEmptyMessage(1);
         else
-            Log.e(LOG_KEY, "Response Hanlder was null!");
+            Log.e(LOG_KEY, "Response Handler was null!");
     }
 
     @NonNull

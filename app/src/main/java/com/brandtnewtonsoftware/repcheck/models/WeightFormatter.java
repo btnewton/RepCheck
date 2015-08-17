@@ -6,10 +6,10 @@ import java.text.NumberFormat;
 /**
  * Created by Brandt on 8/7/2015.
  */
-public class WeightFormatter {
+public final class WeightFormatter {
 
-    private NumberFormat formatter;
-    private Unit unit;
+    private final NumberFormat formatter;
+    private final Unit unit;
 
     public WeightFormatter(boolean shouldRound, Unit unit) {
         if (shouldRound) {

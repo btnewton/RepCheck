@@ -3,11 +3,11 @@ package com.brandtnewtonsoftware.repcheck.util.adapters.standard;
 /**
  * Created by Brandt on 8/2/2015.
  */
-public class StandardRowItem implements IStandardRowItem {
+public final class StandardRowItem implements IStandardRowItem {
 
-    private int id;
-    private String title;
-    private String text;
+    private final int id;
+    private final String title;
+    private final String text;
 
     public StandardRowItem(int id, String title, String text) {
         this.id = id;

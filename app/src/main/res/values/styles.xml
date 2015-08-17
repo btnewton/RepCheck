@@ -6,7 +6,7 @@
         <!-- android:textColorPrimary is the  color of the title text
              in the Toolbar, in the Theme.AppCompat theme:  -->
         <item name="android:textColorPrimary">@color/accent_500</item>
-
+        <item name="android:textColor">@color/accent_500</item>
         <item name="android:popupBackground">@color/primary_400</item>
         <!-- android:actionMenuTextColor is the color of the text of
               action (menu) items in the Toolbar, at least in the

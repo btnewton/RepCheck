@@ -5,7 +5,7 @@ import com.brandtnewtonsoftware.repcheck.models.Unit;
 /**
  * Created by Brandt on 7/23/2015.
  */
-public class ClassicIncrementSet extends IncrementSet {
+public final class ClassicIncrementSet extends IncrementSet {
 
     private double[] imperialSet = new double[] {
             2.5,

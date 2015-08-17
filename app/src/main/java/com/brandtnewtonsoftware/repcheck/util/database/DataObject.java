@@ -46,8 +46,8 @@ public abstract class DataObject {
         return id;
     }
 
-    protected void setIsNewRecord(boolean isNewRecord) {
-        this.isNewRecord = isNewRecord;
+    protected void setNotNewRecord() {
+        this.isNewRecord = false;
     }
 
     public boolean saveChanges(Context context) {
@@ -67,7 +67,6 @@ public abstract class DataObject {
             return DBHandler.getWritable(context).
                     update(getTableName(), getContentValues(), whereClause, whereArgs) > 0;
         }
-
     }
 
     public int getCount(Context context) {

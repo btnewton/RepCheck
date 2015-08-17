@@ -1,13 +1,13 @@
 package com.brandtnewtonsoftware.repcheck.models.calculations;
 
-import com.brandtnewtonsoftware.repcheck.models.calculations.formulas.*;
+import com.brandtnewtonsoftware.repcheck.models.calculations.formulas.OneRepMaxFormula;
 
 /**
  * Created by Brandt on 8/16/2015.
  */
 public class FormulaReflector {
 
-    private static final String LOG_KEY = "FormulaReflector";
+    public static final String LOG_KEY = "FormulaReflector";
 
     public static OneRepMaxFormula reflectOneRepMaxFormula(String formulaName) throws Exception {
         OneRepMaxFormula formula;

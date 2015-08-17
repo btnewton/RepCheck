@@ -15,7 +15,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Created by Brandt on 7/23/2015.
  */
-public class AdMobHelper {
+public final class AdMobHelper {
 
     private static String[] testDeviceIDs = new String[] {
             AdRequest.DEVICE_ID_EMULATOR,
@@ -40,7 +40,7 @@ public class AdMobHelper {
         return mAdView;
     }
 
-    public static String MD5_Hash(String s) {
+    private static String MD5_Hash(String s) {
         MessageDigest m = null;
 
         try {

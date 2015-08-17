@@ -17,10 +17,10 @@ import java.util.List;
  */
 public class StandardRowListAdapter extends BaseAdapter {
 
-    Context mContext;
-    LayoutInflater mInflater;
+    final Context mContext;
+    final LayoutInflater mInflater;
     List<IStandardRowItem> standardRowItems;
-    int layout;
+    final int layout;
 
     public static StandardRowListAdapter newStandardAdapter(Context context, LayoutInflater layoutInflater) {
         return new StandardRowListAdapter(context, layoutInflater, R.layout.row_standard);

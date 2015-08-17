@@ -20,7 +20,7 @@ import java.util.TimeZone;
 /**
  * Created by brandt on 7/22/15.
  */
-public class DBHandler extends SQLiteOpenHelper {
+public final class DBHandler extends SQLiteOpenHelper {
 
     // Increase to make app call onUpgrade
     private static final int DATABASE_VERSION = 4;
@@ -140,22 +140,22 @@ public class DBHandler extends SQLiteOpenHelper {
         if (timeMillis < MINUTE) {
             return "just now";
         } else if (timeMillis < HOUR) {
-            int minutes = (int) timeMillis / MINUTE;
+            int minutes = timeMillis / MINUTE;
             return minutes + " minute" + ((minutes == 1) ? "" : "s") + " ago";
         } else if (timeMillis < DAY) {
-            int hours = (int) timeMillis / HOUR;
+            int hours = timeMillis / HOUR;
             return hours + " hour" + ((hours == 1) ? "" : "s") + " ago";
         } else if (timeMillis < WEEK) {
-            int days = (int) timeMillis / DAY;
+            int days = timeMillis / DAY;
             return days + " day" + ((days == 1) ? "" : "s") + " ago";
         } else if (timeMillis < MONTH) {
-            int weeks = (int) timeMillis / WEEK;
+            int weeks = timeMillis / WEEK;
             return weeks + " week" + ((weeks == 1) ? "" : "s") + " ago";
         } else if (timeMillis < YEAR) {
-            int months = (int) timeMillis / MONTH;
+            int months = timeMillis / MONTH;
             return months + " month" + ((months == 1) ? "" : "s") + " ago";
         } else {
-            int years = (int) timeMillis / YEAR;
+            int years = timeMillis / YEAR;
             return years + " year" + ((years == 1) ? "" : "s") + " ago";
         }
     }

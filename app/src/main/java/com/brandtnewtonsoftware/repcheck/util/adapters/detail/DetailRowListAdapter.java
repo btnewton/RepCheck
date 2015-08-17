@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Brandt on 8/4/2015.
  */
-public class DetailRowListAdapter extends BaseAdapter {
+public final class DetailRowListAdapter extends BaseAdapter {
 
     Context mContext;
     LayoutInflater mInflater;

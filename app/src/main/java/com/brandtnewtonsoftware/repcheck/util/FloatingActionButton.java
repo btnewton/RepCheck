@@ -17,7 +17,7 @@ import com.brandtnewtonsoftware.repcheck.activities.MaxRepFragment;
  * A Floating Action Button is a {@link android.widget.Checkable} view distinguished by a circled
  * icon floating above the UI, with special motion behaviors.
  */
-public class FloatingActionButton extends FrameLayout implements Checkable {
+public final class FloatingActionButton extends FrameLayout implements Checkable {
 
     public void setOnClickListener(MaxRepFragment maxRepFragment) {
 
@@ -88,7 +88,7 @@ public class FloatingActionButton extends FrameLayout implements Checkable {
 
     /**
      * Sets the checked/unchecked state of the FAB.
-     * @param checked
+     * @param checked   buttons check state
      */
     public void setChecked(boolean checked) {
         // If trying to set the current state, ignore.
