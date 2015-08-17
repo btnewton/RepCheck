@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -55,7 +54,7 @@ public class SetQuickPlateDialog extends DialogFragment {
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        final View setSlotsView = inflater.inflate(R.layout.list_dialog, null);
+        final View setSlotsView = inflater.inflate(R.layout.dialog_list, null);
 
         final AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(setSlotsView)

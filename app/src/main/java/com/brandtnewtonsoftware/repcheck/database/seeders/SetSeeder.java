@@ -5,8 +5,6 @@ import android.content.Context;
 import com.brandtnewtonsoftware.repcheck.models.SetSlot;
 import com.brandtnewtonsoftware.repcheck.util.database.Seeder;
 
-import java.util.Date;
-
 /**
  * Created by brandt on 7/25/15.
  */
@@ -14,7 +12,7 @@ public class SetSeeder extends Seeder {
 
     @Override
     public void seed(Context context) {
-        int now = new Date().getSeconds();
+        int now = (int) (System.currentTimeMillis() * 1000);
 
         SetSlot set1 = new SetSlot(5, 135);
         set1.setName("Bench press");

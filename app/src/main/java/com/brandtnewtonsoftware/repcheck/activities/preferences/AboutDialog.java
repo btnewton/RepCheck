@@ -25,7 +25,7 @@ public class AboutDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        final View aboutView = getActivity().getLayoutInflater().inflate(R.layout.about, null);
+        final View aboutView = getActivity().getLayoutInflater().inflate(R.layout.dialog_about, null, false);
         final AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(aboutView).create();
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {

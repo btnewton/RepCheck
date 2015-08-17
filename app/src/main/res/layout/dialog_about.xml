@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/primary_400"
     android:layout_height="wrap_content"
@@ -13,9 +14,10 @@
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
     <ImageView
+        android:contentDescription="@string/app_name"
         android:src="@drawable/rep_check_brand_outline"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
@@ -36,7 +38,8 @@
         android:textSize="18sp"
         android:layout_marginLeft="@dimen/standard"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:textSize="14sp"
@@ -45,12 +48,13 @@
         android:text="Created, designed and developed Rep Check"
         android:textStyle="italic"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:textSize="18sp"
         android:layout_margin="@dimen/standard"
-        android:text="Brandt Newton"
+        android:text="@string/brandt_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -63,20 +67,17 @@
 
         <ImageView
             android:id="@+id/brandt_website_link"
-            style="@style/smallFloatingActionButton"
-            android:src="@drawable/ic_globe"
-            android:layout_marginRight="@dimen/small" />
-        <ImageView
-            android:id="@+id/brandt_resume_link"
-            style="@style/smallFloatingActionButton"
-            android:src="@drawable/ic_document"
+            style="@style/website_btn"
             android:layout_marginRight="@dimen/small" />
 
         <ImageView
+            android:id="@+id/brandt_resume_link"
+            style="@style/resume_btn"
+            android:layout_marginRight="@dimen/small"/>
+
+        <ImageView
             android:id="@+id/brandt_email_link"
-            style="@style/smallFloatingActionButton"
-            android:src="@drawable/ic_mail"
-            android:layout_marginRight="@dimen/small" />
+            style="@style/email_btn" />
     </LinearLayout>
 
         <TextView
@@ -85,7 +86,8 @@
             android:textSize="18sp"
             android:layout_marginLeft="@dimen/standard"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:textSize="14sp"
@@ -94,12 +96,13 @@
             android:text="Created Rep Check logos and contributed to UX"
             android:textStyle="italic"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:textSize="18sp"
             android:layout_margin="@dimen/standard"
-            android:text="Konnor Newton"
+            android:text="@string/konnor_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -112,9 +115,7 @@
 
         <ImageView
             android:id="@+id/konnor_email_link"
-            style="@style/smallFloatingActionButton"
-            android:src="@drawable/ic_mail"
-            android:layout_marginRight="@dimen/small" />
+            style="@style/email_btn" />
 
     </LinearLayout>
 </LinearLayout>

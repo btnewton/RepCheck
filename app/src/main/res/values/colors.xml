@@ -4,14 +4,11 @@
     <color name="primary_700">#616161</color>
     <color name="primary_800">#424242</color>
     <color name="primary_900">#212121</color>
-    <color name="accent_100">#FFECB3</color>
     <color name="accent_500">#FFC107</color>
     <color name="accent_500t">#b4ffc107</color>
-    <color name="accent_700">#FFA000</color>
 
     <!-- Text-->
     <color name="primary_text">#dd000000</color>
-    <color name="secondary_text">#89000000</color>
     <!-- For Hints, Disabled text and icons -->
     <color name="disabled_text">#1a000000</color>
 

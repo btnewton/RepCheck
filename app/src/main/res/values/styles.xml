@@ -76,4 +76,30 @@
         <item name="android:textColor">@color/accent_500</item>
         <item name="android:text">@string/undo</item>
     </style>
+
+    <style name="resume_btn" parent="smallFloatingActionButton">
+        <item name="android:src">@drawable/ic_document</item>
+        <item name="android:contentDescription">@string/resume</item>
+    </style>
+
+    <style name="website_btn" parent="smallFloatingActionButton">
+        <item name="android:src">@drawable/ic_globe</item>
+        <item name="android:contentDescription">@string/website</item>
+    </style>
+
+    <style name="email_btn" parent="smallFloatingActionButton">
+        <item name="android:src">@drawable/ic_mail</item>
+        <item name="android:contentDescription">@string/email</item>
+    </style>
+
+    <style name="dialog_title">
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingRight">24dp</item>
+        <item name="android:paddingBottom">20dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>

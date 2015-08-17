@@ -10,7 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -28,7 +28,7 @@ import com.google.android.gms.ads.AdView;
 
 import java.lang.ref.WeakReference;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
     public final static String LOG_KEY = "MainActivity";
     MaxRepFragment maxRepFragment;
     AdView adView;
@@ -37,7 +37,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.frame_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
@@ -82,7 +82,7 @@ public class MainActivity extends ActionBarActivity {
 
         if (showRateDialog && openCount >= getResources().getInteger(R.integer.prompt_rate_count)) {
             RateThisAppDialog dialog = RateThisAppDialog.newInstance(new RateThisAppHandler(this));
-            dialog.show(getFragmentManager(), LOG_KEY);
+            dialog.show(getFragmentManager(), RateThisAppDialog.LOG_KEY);
         }
     }
 

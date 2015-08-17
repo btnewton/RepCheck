@@ -9,20 +9,6 @@
         <item>@string/pref_plate_style_classic</item>
         <item>@string/pref_plate_style_olympic</item>
     </string-array>
-    
-    <string-array name="one_rep_max_formulas">
-        <item>@string/adams_formula</item>
-        <item>@string/berger_formula</item>
-        <item>@string/brown_formula</item>
-        <item>@string/brzycki_formula</item>
-        <item>@string/epley_formula</item>
-        <item>@string/kemmler_formula</item>
-        <item>@string/lander_formula</item>
-        <item>@string/lombardi_formula</item>
-        <item>@string/mayhew_formula</item>
-        <item>@string/oconner_formula</item>
-        <item>@string/wathen_formula</item>
-    </string-array>
 
     <string-array name="one_rep_max_formula_option_labels">
         <item>@string/adams_formula</item>

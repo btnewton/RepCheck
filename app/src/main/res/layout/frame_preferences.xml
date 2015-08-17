@@ -7,7 +7,6 @@
 
     <include layout="@layout/toolbar_upnav"/>
 
-    <!-- The main content view -->
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"

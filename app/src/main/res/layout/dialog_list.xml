@@ -7,14 +7,7 @@
 
     <TextView
         android:id="@+id/title"
-        android:paddingTop="24dp"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:paddingBottom="20dp"
-        android:textStyle="bold"
-        android:textSize="22sp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        style="@style/dialog_title" />
 
     <ListView
         android:id="@+id/list"
@@ -27,7 +20,8 @@
         android:layout_height="48dp"
         android:padding="0dp"
         android:textColor="@color/primary_900"
-        android:text="CANCEL"
+        android:textAllCaps="true"
+        android:text="@android:string/cancel"
         style="?android:attr/borderlessButtonStyle"
         />
 </LinearLayout>

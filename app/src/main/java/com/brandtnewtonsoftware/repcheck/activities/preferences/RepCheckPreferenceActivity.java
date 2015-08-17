@@ -1,5 +1,6 @@
 package com.brandtnewtonsoftware.repcheck.activities.preferences;
 
+import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -37,7 +38,7 @@ public class RepCheckPreferenceActivity extends PreferenceActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.basic_layout);
+        setContentView(R.layout.frame_preferences);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(getResources().getString(R.string.action_settings));
@@ -138,6 +139,7 @@ public class RepCheckPreferenceActivity extends PreferenceActivity {
         }
     }
 
+    @SuppressLint("CommitPrefEdits")
     public void reset() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();

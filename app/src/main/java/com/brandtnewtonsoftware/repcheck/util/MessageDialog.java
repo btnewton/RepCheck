@@ -41,7 +41,7 @@ public abstract class MessageDialog  extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        final View confirmView = getActivity().getLayoutInflater().inflate(R.layout.message_dialog, null);
+        final View confirmView = getActivity().getLayoutInflater().inflate(R.layout.dialog_message, null);
 
         AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(confirmView)

@@ -81,14 +81,6 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"/>
 
-    <ViewStub
-        android:id="@android:id/empty"
-        android:layout_below="@id/rep_input_wrapper"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:layout="@layout/empty_list" />
-
     <LinearLayout
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
@@ -104,7 +96,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-        <include layout="@layout/undo_toast"/>
+        <include layout="@layout/toast_undo"/>
 
     </LinearLayout>
 

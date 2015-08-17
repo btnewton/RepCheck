@@ -87,12 +87,9 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     private Button subtractButton;
     private Button addButton;
     private UndoBarController mUndoBarController;
-    @SuppressWarnings("FieldCanBeLocal")
-    private SharedPreferences.OnSharedPreferenceChangeListener listener;
 
     private double incrementValue;
     private double barWeight;
-    private Thread calculateThread;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -130,12 +127,12 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
     private void loadPreferences() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        barWeight = Double.parseDouble(sharedPreferences.getString(getString(R.string.pref_bar_weight_key), "45"));
+        barWeight = Double.parseDouble(sharedPreferences.getString(getString(R.string.pref_bar_weight_key), getString(R.string.pref_bar_weight_default)));
 
         // Get & apply unit type
         String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
         Unit unit = Unit.newUnitByString(unitType, getActivity());
-        boolean roundCalculations = sharedPreferences.getBoolean(getString(R.string.pref_round_values_key), true);
+        boolean roundCalculations = sharedPreferences.getBoolean(getString(R.string.pref_round_values_key), getResources().getBoolean(R.bool.pref_round_values_default));
         weightFormatter = new WeightFormatter(roundCalculations, unit);
 
         String formulaName = sharedPreferences.getString(getString(R.string.pref_formula_key), getString(R.string.brzycki_formula_value));
@@ -145,7 +142,6 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             formula = FormulaReflector.reflectOneRepMaxFormula(formulaName);
         } catch (Exception e) {
             Log.e(LOG_KEY, "Unable to convert \"" + formulaName + "\"! defaulting to Brzycki. " + e.getMessage());
-            Log.e(LOG_KEY, BrzyckiFormula.class.getName());
             formula = new BrzyckiFormula();
         }
 
@@ -300,7 +296,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         for (int i = 0; i < items.length; i++) {
             items[i] = i + 1 + "  reps";
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.big_spinner_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_large, items);
         repsSpinner = (Spinner) view.findViewById(R.id.rep_spinner);
         repsSpinner.setAdapter(adapter);
         repsSpinner.setSelection(setSlot.getReps() - 1);
@@ -575,8 +571,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     }
 
     public void startCalculateSets() {
-        calculateThread = new Thread(asyncCalculate);
-        calculateThread.start();
+        new Thread(asyncCalculate).start();
     }
 
     public void updateSet() {

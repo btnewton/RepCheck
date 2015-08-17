@@ -1,5 +1,6 @@
 package com.brandtnewtonsoftware.repcheck.util.database;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -115,6 +116,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public static Date convertStringTime(String time) {
+        @SuppressLint("SimpleDateFormat")
         DateFormat format = new SimpleDateFormat("yyyy-MM-d HH:mm:ss");
         try {
             return format.parse(time);

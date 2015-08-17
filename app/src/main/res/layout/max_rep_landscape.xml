@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:baselineAligned="false"
         android:id="@+id/input_wrapper"
         android:layout_margin="@dimen/standard"
         android:layout_width="fill_parent"
@@ -87,14 +88,6 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"/>
 
-    <ViewStub
-        android:id="@android:id/empty"
-        android:layout_below="@id/input_wrapper"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:layout="@layout/empty_list" />
-
     <LinearLayout
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
@@ -110,7 +103,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
-        <include layout="@layout/undo_toast"/>
+        <include layout="@layout/toast_undo"/>
 
     </LinearLayout>
 

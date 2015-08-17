@@ -11,7 +11,7 @@
       android:label="@string/app_name"
       android:theme="@style/AppTheme" >
     <activity
-        android:name="com.brandtnewtonsoftware.repcheck.activities.MainActivity"
+        android:name=".activities.MainActivity"
         android:label="@string/app_name" >
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -21,9 +21,7 @@
     </activity>
     <activity
         android:name=".activities.preferences.RepCheckPreferenceActivity"
-        android:label="@string/title_activity_settings"
-        android:parentActivityName="com.brandtnewtonsoftware.repcheck.activities.MainActivity">
-      <!-- Parent activity meta-data to support 4.0 and lower -->
+        android:label="@string/title_activity_settings">
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
           android:value=".activities.MainActivity" />

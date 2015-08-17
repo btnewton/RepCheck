@@ -59,7 +59,7 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        final View setSlotsView = inflater.inflate(R.layout.list_dialog, null);
+        final View setSlotsView = inflater.inflate(R.layout.dialog_list, null);
         AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(setSlotsView)
                 .create();
@@ -169,7 +169,7 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-            final View setSlotsView = getActivity().getLayoutInflater().inflate(R.layout.edittext_dialog, null);
+            final View setSlotsView = getActivity().getLayoutInflater().inflate(R.layout.dialog_edittext, null);
 
             AlertDialog dialog = new AlertDialog.Builder(getActivity())
                     .setView(setSlotsView)
