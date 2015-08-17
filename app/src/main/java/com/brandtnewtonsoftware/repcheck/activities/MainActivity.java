@@ -1,7 +1,9 @@
 package com.brandtnewtonsoftware.repcheck.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -19,14 +22,14 @@ import com.brandtnewtonsoftware.repcheck.database.schemas.SetSlotTable;
 import com.brandtnewtonsoftware.repcheck.database.seeders.SetSeeder;
 import com.brandtnewtonsoftware.repcheck.models.SetSlot;
 import com.brandtnewtonsoftware.repcheck.util.AdMobHelper;
-import com.brandtnewtonsoftware.repcheck.util.MessageDialog;
+import com.brandtnewtonsoftware.repcheck.util.ConfirmDialog;
 import com.brandtnewtonsoftware.repcheck.util.database.DBHandler;
 import com.google.android.gms.ads.AdView;
 
 import java.lang.ref.WeakReference;
 
 public class MainActivity extends ActionBarActivity {
-
+    public final static String LOG_KEY = "MainActivity";
     MaxRepFragment maxRepFragment;
     AdView adView;
 
@@ -54,13 +57,13 @@ public class MainActivity extends ActionBarActivity {
 
         if (savedInstanceState != null) {
             //Restore the fragment's instance
-            maxRepFragment = (MaxRepFragment) getSupportFragmentManager().getFragment(savedInstanceState, "MaxRepFragment");
+            maxRepFragment = (MaxRepFragment) getSupportFragmentManager().getFragment(savedInstanceState, MaxRepFragment.LOG_KEY);
         } else {
             maxRepFragment = new MaxRepFragment();
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content, maxRepFragment, "MaxRepFragment").commit();
+        fragmentManager.beginTransaction().replace(R.id.content, maxRepFragment, MaxRepFragment.LOG_KEY).commit();
 
         loadAppPreferences();
     }
@@ -69,62 +72,74 @@ public class MainActivity extends ActionBarActivity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         int openCount = sharedPreferences.getInt(getString(R.string.pref_app_start_counter), 0);
-        editor.putInt(getString(R.string.pref_app_start_counter), openCount++);
+        openCount++;
+        editor.putInt(getString(R.string.pref_app_start_counter), openCount);
+        editor.apply();
 
-        boolean showDisclaimer = sharedPreferences.getBoolean(getString(R.string.pref_show_disclaimer), true);
+        Log.i(LOG_KEY, "Start count: " + openCount);
 
-        if (showDisclaimer) {
-            ConfirmDisclaimerDialog confirmDisclaimerDialog =
-                    ConfirmDisclaimerDialog.newInstance(new DisclaimerResponse(this));
-            confirmDisclaimerDialog.show(getFragmentManager(), "ConfirmDisclaimerDialog");
-        } else {
-            boolean showRateDialog = sharedPreferences.getBoolean(getString(R.string.pref_prompt_rate_dialog), true);
+        boolean showRateDialog = sharedPreferences.getBoolean(getString(R.string.pref_prompt_rate_dialog), true);
 
-            if (showRateDialog && openCount >= getResources().getInteger(R.integer.prompt_rate_count)) {
-                // TODO open dialog
-            }
+        if (showRateDialog && openCount >= getResources().getInteger(R.integer.prompt_rate_count)) {
+            RateThisAppDialog dialog = RateThisAppDialog.newInstance(new RateThisAppHandler(this));
+            dialog.show(getFragmentManager(), LOG_KEY);
         }
     }
 
-    public static class ConfirmDisclaimerDialog extends MessageDialog {
+    public static class RateThisAppDialog extends ConfirmDialog {
 
-        public static ConfirmDisclaimerDialog newInstance(Handler updateHandler) {
-            ConfirmDisclaimerDialog dialog = new ConfirmDisclaimerDialog();
-            ConfirmDisclaimerDialog.responseHandler = updateHandler;
+        public static final String LOG_KEY = "RateThisAppDialog";
 
+        public static RateThisAppDialog newInstance(Handler updateHandler) {
+            RateThisAppDialog dialog = new RateThisAppDialog();
+            RateThisAppDialog.responseHandler = updateHandler;
             return dialog;
         }
+
         @Override
         protected String getTitle() {
-            return "Disclaimer";
-        }
-        @Override
-        protected String getBody() {
-            return "This app is for informational purposes only. " +
-                    "Its recommendations are expressly not to be considered medical counsel. " +
-                    "Always consult a doctor or health care professional before beginning any new training program. " +
-                    "Always take proper safety precautions when exercising. \n" +
-                    "The creators of this app make no warranties or guarantees of any kind with respect " +
-                    "to this app and its contents.";
+            return "Rate Rep Check?";
         }
 
         @Override
-        protected String getButtonText() {
-            return "GOT IT";
+        protected String getBody() {
+            return "Thanks for using Rep Check! Please consider rating the app to show your support or suggest improvements.";
+        }
+
+        @Override
+        protected String getNegative() {
+            return "No Thanks";
+        }
+
+        @Override
+        protected String getPositive() {
+            return "Rate";
         }
     }
 
-    public void unflagDisclaimer() {
+    public void launchPlayStore() {
+        Uri uri = Uri.parse("market://details?id=" + getPackageName());
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        try {
+            startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+        } finally {
+            turnOffShowRateDialog();
+        }
+    }
+
+    public void turnOffShowRateDialog() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(getString(R.string.pref_show_disclaimer), false);
+        editor.putBoolean(getString(R.string.pref_prompt_rate_dialog), false);
         editor.apply();
     }
 
-    static class DisclaimerResponse extends Handler {
+    static class RateThisAppHandler extends Handler {
         private final WeakReference<MainActivity> mService;
 
-        DisclaimerResponse(MainActivity service) {
+        RateThisAppHandler(MainActivity service) {
             mService = new WeakReference<>(service);
         }
 
@@ -132,8 +147,13 @@ public class MainActivity extends ActionBarActivity {
         public void handleMessage(Message msg)
         {
             MainActivity service = mService.get();
-            if (service != null && msg.what != 0) {
-                service.unflagDisclaimer();
+
+            if (service != null) {
+                if (msg.what != 0) {
+                    service.launchPlayStore();
+                } else {
+                    service.turnOffShowRateDialog();
+                }
             }
         }
     }
@@ -161,7 +181,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         //Save the fragment's instance
-        getSupportFragmentManager().putFragment(outState, "MaxRepFragment", maxRepFragment);
+        getSupportFragmentManager().putFragment(outState, MaxRepFragment.LOG_KEY, maxRepFragment);
     }
 
     @Override

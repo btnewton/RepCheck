@@ -69,7 +69,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     private static final String STATE_WEIGHT = "stateWeight";
     private static final String STATE_REPS = "stateReps";
 
-    private static final String LOG_KEY = "MaxRepFragment";
+    public static final String LOG_KEY = "MaxRepFragment";
     private int fabYTranslationLength;
     // Models
     public IncrementSet incrementSet;
@@ -400,7 +400,6 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     private class AsyncCalculate extends Observable implements Runnable {
 
         private List<IDetailRow> weightHolders;
-        private boolean stop;
 
         public List<IDetailRow> getWeightHolders() {
             return weightHolders;
@@ -485,8 +484,6 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     public void update(Observable observable, Object o) {
         if (asyncCalculate.getWeightHolders() != null) {
             weightListAdapter.updateData(asyncCalculate.getWeightHolders());
-        } else {
-
         }
     }
 

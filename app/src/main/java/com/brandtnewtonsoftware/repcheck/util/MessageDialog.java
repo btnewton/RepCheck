@@ -21,12 +21,16 @@ public abstract class MessageDialog  extends DialogFragment {
     private static final String LOG_KEY = "MessageDialog";
 
     public static Handler responseHandler;
-
+    protected boolean canClose = false;
     protected abstract String getTitle();
     protected abstract String getBody();
 
     protected String getButtonText() {
         return "CLOSE";
+    }
+
+    protected String getCannotDismissMessage() {
+        return "Please accept the conditions";
     }
 
     protected void onClose() {
@@ -41,7 +45,6 @@ public abstract class MessageDialog  extends DialogFragment {
 
         AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setView(confirmView)
-                .setCancelable(false)
                 .create();
 
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
@@ -59,6 +62,7 @@ public abstract class MessageDialog  extends DialogFragment {
                     @Override
                     public void onClick(View v) {
                         onClose();
+                        canClose = true;
                         dismiss();
                     }
                 });

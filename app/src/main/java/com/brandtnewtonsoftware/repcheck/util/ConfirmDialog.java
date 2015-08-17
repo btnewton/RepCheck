@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,11 +34,17 @@ public abstract class ConfirmDialog extends DialogFragment {
     }
 
     protected void onCancel() {
-        responseHandler.sendEmptyMessage(0);
+        if (responseHandler != null)
+            responseHandler.sendEmptyMessage(0);
+        else
+            Log.e(LOG_KEY, "Response Hanlder was null!");
     }
 
     protected void onConfirm() {
-        responseHandler.sendEmptyMessage(1);
+        if (responseHandler != null)
+            responseHandler.sendEmptyMessage(1);
+        else
+            Log.e(LOG_KEY, "Response Hanlder was null!");
     }
 
     @NonNull
