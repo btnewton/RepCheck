@@ -126,31 +126,35 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     }
 
     private void loadPreferences() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        barWeight = Double.parseDouble(sharedPreferences.getString(getString(R.string.pref_bar_weight_key), getString(R.string.pref_bar_weight_default)));
-
-        // Get & apply unit type
-        String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
-        Unit unit = Unit.newUnitByString(unitType, getActivity());
-        boolean roundCalculations = sharedPreferences.getBoolean(getString(R.string.pref_round_values_key), getResources().getBoolean(R.bool.pref_round_values_default));
-        weightFormatter = new WeightFormatter(roundCalculations, unit);
-
-        String formulaName = sharedPreferences.getString(getString(R.string.pref_formula_key), getString(R.string.brzycki_formula_value));
-
-        // Reflect formula or default to Brzycki
         try {
-            formula = FormulaReflector.reflectOneRepMaxFormula(formulaName);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            barWeight = Double.parseDouble(sharedPreferences.getString(getString(R.string.pref_bar_weight_key), getString(R.string.pref_bar_weight_default)));
+
+            // Get & apply unit type
+            String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
+            Unit unit = Unit.newUnitByString(unitType, getActivity());
+            boolean roundCalculations = sharedPreferences.getBoolean(getString(R.string.pref_round_values_key), getResources().getBoolean(R.bool.pref_round_values_default));
+            weightFormatter = new WeightFormatter(roundCalculations, unit);
+
+            String formulaName = sharedPreferences.getString(getString(R.string.pref_formula_key), getString(R.string.brzycki_formula_value));
+
+            // Reflect formula or default to Brzycki
+            try {
+                formula = FormulaReflector.reflectOneRepMaxFormula(formulaName);
+            } catch (Exception e) {
+                Log.e(LOG_KEY, "Unable to convert \"" + formulaName + "\"! defaulting to Brzycki. " + e.getMessage());
+                formula = new BrzyckiFormula();
+            }
+
+            String plateStyle = sharedPreferences.getString(getString(R.string.pref_plate_style_key), getString(R.string.pref_plate_style_classic));
+            incrementSet = IncrementFactory.Make(getActivity(), plateStyle, unit);
+
+            // Update display
+            startCalculateSets();
+            updateQuickPlateButtons(incrementSet.getDefaultWeightIndex());
         } catch (Exception e) {
-            Log.e(LOG_KEY, "Unable to convert \"" + formulaName + "\"! defaulting to Brzycki. " + e.getMessage());
-            formula = new BrzyckiFormula();
+            Log.e(LOG_KEY, "Exception thrown while loading preferences: " + e.getMessage());
         }
-
-        String plateStyle = sharedPreferences.getString(getString(R.string.pref_plate_style_key), getString(R.string.pref_plate_style_classic));
-        incrementSet = IncrementFactory.Make(getActivity(), plateStyle, unit);
-
-        // Update display
-        startCalculateSets();
-        updateQuickPlateButtons(incrementSet.getDefaultWeightIndex());
     }
 
     @Override

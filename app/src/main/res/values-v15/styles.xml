@@ -18,6 +18,7 @@
 
     <style name="button_style" parent="@android:style/Widget.Button">
         <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:background">@drawable/support_button</item>
     </style>
 </resources>

@@ -4,5 +4,5 @@
     <integer name="set_slot_count">6</integer>
     <integer name="max_set_name_length">16</integer>
     <integer name="undobar_hide_delay">5000</integer>
-    <integer name="prompt_rate_count">3</integer>
+    <integer name="prompt_rate_count">20</integer>
 </resources>

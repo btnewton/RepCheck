@@ -5,7 +5,7 @@
     <color name="primary_800">#424242</color>
     <color name="primary_900">#212121</color>
     <color name="accent_500">#FFC107</color>
-    <color name="accent_500t">#b4ffc107</color>
+    <color name="accent_500t">#b7b18505</color>
 
     <!-- Text-->
     <color name="primary_text">#dd000000</color>

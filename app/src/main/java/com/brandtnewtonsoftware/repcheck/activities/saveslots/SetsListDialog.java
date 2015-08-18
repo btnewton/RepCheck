@@ -94,7 +94,6 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
                 });
             }
         });
-
         return dialog;
     }
 
@@ -105,6 +104,7 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
     }
 
     public void refreshData() {
+        Log.i(LOG_KEY, "Refreshing Data!");
         AsyncSelect asyncSelect = new AsyncSelect();
         asyncSelect.addObserver(this);
         new Thread(asyncSelect).start();
@@ -112,6 +112,8 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
 
     @Override
     public void update(Observable observable, Object o) {
+        Log.i(LOG_KEY, "Obersable updated!");
+
         if (rowItems == null) {
             Toast toast = Toast.makeText(getActivity(), "No saved sets.",  Toast.LENGTH_SHORT);
             toast.show();
@@ -153,6 +155,8 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+            setRetainInstance(true);
 
             if (getArguments() != null) {
                 int setId = getArguments().getInt(SLOT_ID_KEY);
@@ -209,7 +213,10 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
                                 if (setSlot.nameUnique(getActivity())) {
                                     setSlot.saveChanges(getActivity());
                                     dialog.dismiss();
-                                    updateHandler.sendEmptyMessage(0);
+                                    if (updateHandler != null)
+                                        updateHandler.sendEmptyMessage(0);
+                                    else
+                                        Log.e(LOG_KEY, "UpdateHandler was null!");
                                 } else {
                                     Toast toast = Toast.makeText(getActivity(), "Name taken.", Toast.LENGTH_SHORT);
                                     toast.show();
