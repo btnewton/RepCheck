@@ -4,13 +4,16 @@ import android.animation.Animator;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -451,7 +454,10 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         super.onCreateOptionsMenu(menu, inflater);
         MenuItem item = menu.add(Menu.NONE, R.id.action_load, 10, R.string.action_load);
         item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
-        item.setIcon(R.drawable.ic_storage);
+
+        Drawable loadIcon = ContextCompat.getDrawable(getActivity(), R.drawable.ic_storage);
+        loadIcon.mutate().setColorFilter(getResources().getColor(R.color.accent_500), PorterDuff.Mode.SRC_IN);
+        item.setIcon(loadIcon);
     }
 
     @Override

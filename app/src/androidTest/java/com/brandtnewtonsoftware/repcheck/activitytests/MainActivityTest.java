@@ -28,7 +28,7 @@ public final class MainActivityTest extends ActivityInstrumentationTestCase2<Mai
         mToolbar =
                 (Toolbar) mMainActivity
                         .findViewById(R.id.toolbar);
-        mAdView = (AdView) mMainActivity.findViewById(R.id.adView);
+//        mAdView = (AdView) mMainActivity.findViewById(R.id.adView);
     }
 
     @Override

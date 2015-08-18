@@ -5,6 +5,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -32,7 +33,7 @@ public class RepCheckPreferenceActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        final Drawable upArrow = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         if (upArrow != null)
             upArrow.setColorFilter(getResources().getColor(R.color.accent_500), PorterDuff.Mode.SRC_ATOP);
         toolbar.setNavigationIcon(upArrow);

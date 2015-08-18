@@ -3,6 +3,8 @@ package com.brandtnewtonsoftware.repcheck.activities;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,7 +23,6 @@ import com.brandtnewtonsoftware.repcheck.activities.preferences.RepCheckPreferen
 import com.brandtnewtonsoftware.repcheck.database.schemas.SetSlotTable;
 import com.brandtnewtonsoftware.repcheck.database.seeders.SetSeeder;
 import com.brandtnewtonsoftware.repcheck.models.SetSlot;
-import com.brandtnewtonsoftware.repcheck.util.AdMobHelper;
 import com.brandtnewtonsoftware.repcheck.util.ConfirmDialog;
 import com.brandtnewtonsoftware.repcheck.util.database.DBHandler;
 import com.google.android.gms.ads.AdView;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        adView = AdMobHelper.CreateAdRequest(this);
+//        adView = AdMobHelper.CreateAdRequest(this);
 
         // Populate table if missing
         if (SetSlot.getSlotCount(this) != getResources().getInteger(R.integer.set_slot_count)) {
@@ -161,6 +162,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        MenuItem settingsIcon = menu.findItem(R.id.action_settings);
+        Drawable newIcon = settingsIcon.getIcon();
+        newIcon.mutate().setColorFilter(getResources().getColor(R.color.accent_500), PorterDuff.Mode.SRC_IN);
+        settingsIcon.setIcon(newIcon);
         return true;
     }
 
@@ -186,19 +192,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        adView.pause();
+//        adView.pause();
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        adView.resume();
+//        adView.resume();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        adView.pause();
+//        adView.pause();
     }
 }
