@@ -46,7 +46,7 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
     protected StandardRowListAdapter adapter;
     protected List<IStandardRowItem> rowItems;
     private Handler asyncHandler;
-    private static Handler handler;
+    private static Handler nameUpdateHandler;
     private final static String LOG_KEY = "SetsListDialog";
 
     @NonNull
@@ -137,12 +137,12 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
 
         private static final String SLOT_ID_KEY = "slot_id";
         private static final String LOG_KEY = "RenameSetDialog";
-        public static Handler updateHandler;
+        public static Handler setListUpdateHandler;
         private SetSlot setSlot;
 
         public static RenameSetDialog newInstance(Handler updateHandler, int slotId) {
             RenameSetDialog dialog = new RenameSetDialog();
-            RenameSetDialog.updateHandler = updateHandler;
+            RenameSetDialog.setListUpdateHandler = updateHandler;
 
             Bundle args = new Bundle();
             args.putInt(SLOT_ID_KEY, slotId);
@@ -213,8 +213,8 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
                                 if (setSlot.nameUnique(getActivity())) {
                                     setSlot.saveChanges(getActivity());
                                     dialog.dismiss();
-                                    if (updateHandler != null)
-                                        updateHandler.sendEmptyMessage(0);
+                                    if (setListUpdateHandler != null)
+                                        setListUpdateHandler.sendEmptyMessage(0);
                                     else
                                         Log.e(LOG_KEY, "UpdateHandler was null!");
                                 } else {
@@ -246,8 +246,8 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
         }
     }
 
-    public static void setHandler(Handler handler) {
-        SetsListDialog.handler = handler;
+    public static void setNameChangeHandler(Handler handler) {
+        SetsListDialog.nameUpdateHandler = handler;
     }
 
     static class UpdateOnDismissHandler extends Handler {
@@ -263,6 +263,7 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
             SetsListDialog service = mService.get();
             if (service != null) {
                 service.refreshData();
+                SetsListDialog.nameUpdateHandler.sendEmptyMessage(0);
             }
         }
     }
@@ -298,12 +299,5 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
                 }
             });
         }
-    }
-
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        super.onDismiss(dialog);
-        if (handler != null)
-            handler.sendEmptyMessage(0);
     }
 }

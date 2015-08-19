@@ -106,9 +106,12 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             updateSet();
 
             // Update set with current information
-            setSlot.setWeight(savedInstanceState.getInt(STATE_WEIGHT));
+            setSlot.setWeight(savedInstanceState.getDouble(STATE_WEIGHT));
             setSlot.setReps(savedInstanceState.getInt(STATE_REPS));
-        } else {
+        }
+
+        if (setSlot == null){
+            Log.i(LOG_KEY, "No Set found. Selecting first.");
             setSlot = SetSlot.first(getActivity());
         }
 
@@ -397,7 +400,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         SaveSetDialog saveSetDialog =
                 SaveSetDialog.newInstance(new LoadUpdateHandler(this), setSlot.getReps(), setSlot.getWeight());
         saveSetDialog.show(getFragmentManager(), getTag());
-        SetsListDialog.setHandler(new UpdateOnDismissHandler(this));
+        SetsListDialog.setNameChangeHandler(new UpdateSetNameHandler(this));
     }
 
     private class AsyncCalculate extends Observable implements Runnable {
@@ -468,7 +471,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
                 LoadSetDialog loadSetDialog =
                         LoadSetDialog.newInstance(new LoadUpdateHandler(this));
                 loadSetDialog.show(getFragmentManager(), getTag());
-                SetsListDialog.setHandler(new UpdateOnDismissHandler(this));
+                SetsListDialog.setNameChangeHandler(new UpdateSetNameHandler(this));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -549,10 +552,10 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         }
     }
 
-    public static class UpdateOnDismissHandler extends Handler {
+    public static class UpdateSetNameHandler extends Handler {
         private final WeakReference<MaxRepFragment> mService;
 
-        UpdateOnDismissHandler(MaxRepFragment service) {
+        UpdateSetNameHandler(MaxRepFragment service) {
             mService = new WeakReference<>(service);
         }
 

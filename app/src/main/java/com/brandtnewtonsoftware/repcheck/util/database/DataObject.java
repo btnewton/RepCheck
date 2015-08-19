@@ -3,6 +3,7 @@ package com.brandtnewtonsoftware.repcheck.util.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.brandtnewtonsoftware.repcheck.util.database.QueryParams.QueryParams;
 
@@ -12,6 +13,7 @@ import java.lang.reflect.Array;
  * Created by Brandt on 7/24/2015.
  */
 public abstract class DataObject {
+    public static final String LOG_KEY = "DataObject";
     protected int id;
     private boolean isNewRecord;
     private Schema table;
@@ -79,6 +81,7 @@ public abstract class DataObject {
     }
 
     public <T extends DataObject> T find(Context context, int id, T returnType) {
+        Log.i(LOG_KEY, "Finding Object with id " + id);
         Cursor cursor = DBHandler.getReadable(context).query(getTableName(),
                 getColumns(),
                 primaryKey + "=?",

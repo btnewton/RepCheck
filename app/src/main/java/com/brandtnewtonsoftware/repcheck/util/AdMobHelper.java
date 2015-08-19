@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.provider.Settings;
 import android.util.Log;
 
+import com.brandtnewtonsoftware.repcheck.R;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -27,17 +28,16 @@ public final class AdMobHelper {
         String deviceId = MD5_Hash(android_id).toUpperCase();
         Log.i("AdMobHelper", "Device id: " + deviceId);
 
-//        AdView mAdView = (AdView) activity.findViewById(R.id.adView);
-//
-//        AdRequest.Builder adRequest = new AdRequest.Builder();
-//        for (String testDeviceID : testDeviceIDs) {
-//            adRequest.addTestDevice(testDeviceID);
-//        }
-//
-//        mAdView.loadAd(adRequest.build());
-//
-//        return mAdView;
-        return null;
+        AdView mAdView = (AdView) activity.findViewById(R.id.adView);
+
+        AdRequest.Builder adRequest = new AdRequest.Builder();
+        for (String testDeviceID : testDeviceIDs) {
+            adRequest.addTestDevice(testDeviceID);
+        }
+
+        mAdView.loadAd(adRequest.build());
+
+        return mAdView;
     }
 
     private static String MD5_Hash(String s) {

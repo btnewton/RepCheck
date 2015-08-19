@@ -11,25 +11,17 @@ android {
         versionCode 1
         versionName "1.0"
     }
-    signingConfigs {
-        release {
-            storeFile file("myreleasekey.keystore")
-            storePassword "password"
-            keyAlias "MyReleaseKey"
-            keyPassword "password"
-        }
-    }
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
             testCoverageEnabled true
-            minifyEnabled true
+//            minifyEnabled true
 //            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 //            zipAlignEnabled true
         }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
