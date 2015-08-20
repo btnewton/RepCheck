@@ -137,7 +137,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             barWeight = Double.parseDouble(sharedPreferences.getString(getString(R.string.pref_bar_weight_key), getString(R.string.pref_bar_weight_default)));
 
             // Get & apply unit type
-            String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
+            String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_default));
             Unit unit = Unit.newUnitByString(unitType, getActivity());
             boolean roundCalculations = sharedPreferences.getBoolean(getString(R.string.pref_round_values_key), getResources().getBoolean(R.bool.pref_round_values_default));
             weightFormatter = new WeightFormatter(roundCalculations, unit);
