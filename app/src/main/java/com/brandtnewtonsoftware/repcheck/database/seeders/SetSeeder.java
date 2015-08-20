@@ -24,7 +24,7 @@ public class SetSeeder extends Seeder {
 
         for (int i = 0; i < setCount; i++) {
             SetSlot set = new SetSlot(random.nextInt(maxReps - 1) + 1, random.nextInt(150) + 50);
-            set.setName("Set " + i + 1);
+            set.setName("Set " + (i + 1));
             set.saveChanges(context);
         }
     }
