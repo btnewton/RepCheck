@@ -229,7 +229,8 @@ public class MainActivity extends AppCompatActivity implements TutorialEventList
         adView.resume();
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.getBoolean(getString(R.string.pref_prompt_tutorial_flag), true)) {
+//        if (sharedPreferences.getBoolean(getString(R.string.pref_prompt_tutorial_flag), true)) {
+        if (true) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(getString(R.string.pref_prompt_tutorial_flag), false);
             editor.apply();

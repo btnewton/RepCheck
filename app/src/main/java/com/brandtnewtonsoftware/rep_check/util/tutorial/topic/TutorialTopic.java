@@ -14,12 +14,14 @@ import com.brandtnewtonsoftware.rep_check.R;
  * Created by Brandt on 8/23/2015.
  */
 public abstract class TutorialTopic extends Fragment{
+    public static final String LOG_TAG = "TutorialTopic";
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.tutorial_topic, container, false);
         TextView body = (TextView) view.findViewById(R.id.topic_body);
+
         body.setText(getBody());
         return view;
     }

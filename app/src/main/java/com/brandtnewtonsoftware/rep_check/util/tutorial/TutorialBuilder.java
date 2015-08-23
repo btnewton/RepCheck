@@ -6,39 +6,42 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewManager;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.brandtnewtonsoftware.rep_check.R;
+import com.brandtnewtonsoftware.rep_check.util.ClickableViewPager;
 import com.brandtnewtonsoftware.rep_check.util.tutorial.topic.ConclusionTopic;
+import com.brandtnewtonsoftware.rep_check.util.tutorial.topic.InfoTopic;
 import com.brandtnewtonsoftware.rep_check.util.tutorial.topic.TutorialTopic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Brandt on 8/23/2015.
  */
-public class TutorialBuilder {
+public class TutorialBuilder implements ViewPager.OnPageChangeListener, View.OnClickListener {
 
-    List<TutorialEventListener> listeners;
+    List<TutorialEventListener> listeners = new ArrayList<>();
     TextView topicTitle;
     Activity activity;
+    TopicsPagerAdapter pagerAdapter;
     View pointer;
-    private ViewPager viewPager;
-    private PagerAdapter pagerAdapter;
+    ProgressBar progressBar;
+    private ClickableViewPager viewPager;
 
-    List<TutorialTopic> topics;
+    List<TutorialTopic> topics = new ArrayList<>();
 
     public TutorialBuilder() {
-        topics.add(new ConclusionTopic());
-        topics.add(new ConclusionTopic());
-        topics.add(new ConclusionTopic());
-        topics.add(new ConclusionTopic());
+        topics.add(new InfoTopic());
+        topics.add(new InfoTopic());
+        topics.add(new InfoTopic());
     }
 
     public TutorialBuilder setTopics(List<TutorialTopic> topics) {
@@ -64,9 +67,17 @@ public class TutorialBuilder {
         });
 
         topicTitle = (TextView) activity.findViewById(R.id.tutorial_title);
-        viewPager = (ViewPager) activity.findViewById(R.id.tutorial_viewpager);
+
+        viewPager = (ClickableViewPager) activity.findViewById(R.id.tutorial_viewpager);
         pagerAdapter = new TopicsPagerAdapter(activity.getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
+        viewPager.addOnPageChangeListener(this);
+        viewPager.setOnClickListener(this);
+        progressBar = (ProgressBar) activity.findViewById(R.id.tutorial_progress);
+
+        topicTitle.setText(((TutorialTopic)pagerAdapter.getItem(viewPager.getCurrentItem())).getTitle());
+
+        onTutorialStart();
 
         return this;
     }
@@ -77,7 +88,7 @@ public class TutorialBuilder {
     public void closeButtonAction() {
         final View tutorialDialog = activity.findViewById(R.id.tutorial_dialog);
         int tutorialDialogDPHeight = tutorialDialog.getHeight();
-        tutorialDialog.animate().translationY(tutorialDialogDPHeight).setDuration(activity.getResources().getInteger(android.R.integer.config_mediumAnimTime)).setListener(new Animator.AnimatorListener() {
+        tutorialDialog.animate().translationY(tutorialDialogDPHeight).setDuration(activity.getResources().getInteger(android.R.integer.config_shortAnimTime)).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
 
@@ -101,6 +112,31 @@ public class TutorialBuilder {
         });
     }
 
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        int scrollProgress = 0;
+        scrollProgress = (int) ((100 * positionOffset) / pagerAdapter.getCount());
+        progressBar.setProgress(scrollProgress + 100 * (position + 1) / pagerAdapter.getCount());
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        topicTitle.setText(((TutorialTopic)pagerAdapter.getItem(position)).getTitle());
+        onTopicChanged();
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.tutorial_viewpager) {
+            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+        }
+    }
+
     private class TopicsPagerAdapter extends FragmentStatePagerAdapter {
 
         public TopicsPagerAdapter(FragmentManager fm) {
@@ -109,12 +145,15 @@ public class TutorialBuilder {
 
         @Override
         public Fragment getItem(int position) {
-            return topics.get(position);
+            if (position < topics.size())
+                return topics.get(position);
+            else
+                return new ConclusionTopic();
         }
 
         @Override
         public int getCount() {
-            return topics.size();
+            return topics.size() + 1;
         }
     }
 

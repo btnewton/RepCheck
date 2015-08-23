@@ -9,7 +9,6 @@
     <TextView
         android:id="@+id/tutorial_title"
         android:textSize="@dimen/larger_text"
-        android:text="Tutorial Heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -22,9 +21,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <android.support.v4.view.ViewPager
+    <com.brandtnewtonsoftware.rep_check.util.ClickableViewPager
         android:id="@+id/tutorial_viewpager"
         android:layout_below="@id/tutorial_title"
         android:layout_width="match_parent"
         android:layout_height="120dp" />
+
+    <ProgressBar
+        android:id="@+id/tutorial_progress"
+        android:progressDrawable="@drawable/tutorial_progressbar"
+        android:layout_below="@id/tutorial_viewpager"
+        android:layout_height="2dp"
+        android:layout_width="match_parent"
+        style="@android:style/Widget.ProgressBar.Horizontal" />
 </RelativeLayout>
