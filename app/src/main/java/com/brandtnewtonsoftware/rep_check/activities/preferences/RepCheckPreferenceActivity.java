@@ -51,9 +51,6 @@ public class RepCheckPreferenceActivity extends AppCompatActivity {
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content, new RepCheckPreferenceFragment(), RepCheckPreferenceFragment.LOG_KEY).commit();
-
     }
-
-
 }
 

@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
 
 import com.brandtnewtonsoftware.rep_check.R;
 import com.brandtnewtonsoftware.rep_check.activities.preferences.RepCheckPreferenceActivity;
@@ -26,11 +27,13 @@ import com.brandtnewtonsoftware.rep_check.models.SetSlot;
 import com.brandtnewtonsoftware.rep_check.util.AdMobHelper;
 import com.brandtnewtonsoftware.rep_check.util.ConfirmDialog;
 import com.brandtnewtonsoftware.rep_check.util.database.DBHandler;
+import com.brandtnewtonsoftware.rep_check.util.tutorial.TutorialBuilder;
+import com.brandtnewtonsoftware.rep_check.util.tutorial.TutorialEventListener;
 import com.google.android.gms.ads.AdView;
 
 import java.lang.ref.WeakReference;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TutorialEventListener {
     public final static String LOG_KEY = "MainActivity";
     MaxRepFragment maxRepFragment;
     AdView adView;
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
             maxRepFragment = new MaxRepFragment();
         }
 
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content, maxRepFragment, MaxRepFragment.LOG_KEY).commit();
 
@@ -87,6 +91,28 @@ public class MainActivity extends AppCompatActivity {
             dialog.show(getFragmentManager(), RateThisAppDialog.LOG_KEY);
         }
     }
+
+    //region Tutorial Listeners
+    @Override
+    public void onTutorialStart() {
+        adView.pause();
+    }
+
+    @Override
+    public void onTutorialComplete() {
+        adView.resume();
+    }
+
+    @Override
+    public void onTutorialQuit(int topic) {
+        adView.resume();
+    }
+
+    @Override
+    public void onTopicChanged(int topic) {
+
+    }
+    //endregion
 
     public static class RateThisAppDialog extends ConfirmDialog {
 
@@ -201,6 +227,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         adView.resume();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (sharedPreferences.getBoolean(getString(R.string.pref_prompt_tutorial_flag), true)) {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(getString(R.string.pref_prompt_tutorial_flag), false);
+            editor.apply();
+
+            TutorialBuilder tutorialBuilder = new TutorialBuilder().start(this, (RelativeLayout) findViewById(R.id.container));
+            tutorialBuilder.addListener(this);
+        }
     }
 
     @Override

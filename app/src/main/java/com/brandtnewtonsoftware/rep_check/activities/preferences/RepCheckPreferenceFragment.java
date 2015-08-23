@@ -59,6 +59,20 @@ public class RepCheckPreferenceFragment extends PreferenceFragment {
         bindPreferenceSummaryToValue(findPreference(getResources().getString(R.string.pref_bar_weight_key)));
         bindPreferenceSummaryToValue(findPreference(getResources().getString(R.string.pref_formula_key)));
 
+        Preference tutorialButton = (Preference)findPreference(getString(R.string.pref_tutorial_button));
+        tutorialButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
+
+                editor.putBoolean(getString(R.string.pref_prompt_tutorial_flag), true);
+                editor.apply();
+                getActivity().finish();
+
+                return true;
+            }
+        });
+
         Preference aboutButton = (Preference)findPreference(getString(R.string.pref_about_button));
         aboutButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override

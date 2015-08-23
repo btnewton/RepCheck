@@ -26,13 +26,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.brandtnewtonsoftware.rep_check.activities.MainActivity" />
         </activity>
-        <activity
-            android:name=".activities.TutorialActivity"
-            android:label="@string/title_activity_tutorial" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.brandtnewtonsoftware.rep_check.activities.MainActivity" />
-        </activity>
     </application>
 
 </manifest>

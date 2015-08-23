@@ -61,6 +61,10 @@
     <!-- Documentation-->
     <string name="pref_header_about">About</string>
 
+    <string name="pref_tutorial_label">Tutorial</string>
+    <string name="pref_tutorial_button">tutorial</string>
+    <string name="pref_tutorial_summary">Learn how to use Rep Check</string>
+
     <string name="pref_rate_label">Rate Rep Check</string>
     <string name="pref_rate_button">rate_app</string>
     <string name="pref_rate_summary">Share your experiences or thoughts on how to make this app better</string>
@@ -73,4 +77,5 @@
     <string name="pref_show_disclaimer">disclaimer_flag</string>
     <string name="pref_app_start_counter">app_start_counter</string>
     <string name="pref_prompt_rate_dialog">prompt_rate_flag</string>
+    <string name="pref_prompt_tutorial_flag">prompt_tutorial_flag</string>
 </resources>
