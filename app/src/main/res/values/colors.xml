@@ -2,6 +2,7 @@
 <resources>
     <color name="primary_400">#BDBDBD</color>
     <color name="primary_700">#616161</color>
+    <color name="primary_700_alpha">#d9616161</color>
     <color name="primary_800">#424242</color>
     <color name="primary_900">#212121</color>
     <color name="accent_500">#FFC107</color>

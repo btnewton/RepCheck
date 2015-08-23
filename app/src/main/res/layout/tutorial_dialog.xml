@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tutorial_dialog"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/primary_700_alpha"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tutorial_title"
+        android:textSize="@dimen/larger_text"
+        android:text="Tutorial Heading"
+        android:layout_marginTop="@dimen/standard"
+        android:layout_marginLeft="@dimen/standard"
+        android:layout_marginRight="@dimen/standard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tutorial_body"
+        android:text="@string/lorem_ipsum_md"
+        android:layout_marginTop="@dimen/tiny"
+        android:layout_marginRight="@dimen/standard"
+        android:layout_marginBottom="@dimen/standard"
+        android:layout_marginLeft="@dimen/standard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
