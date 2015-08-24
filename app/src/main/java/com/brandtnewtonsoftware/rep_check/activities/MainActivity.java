@@ -36,6 +36,7 @@ import java.lang.ref.WeakReference;
 public class MainActivity extends AppCompatActivity implements TutorialEventListener {
     public final static String LOG_KEY = "MainActivity";
     MaxRepFragment maxRepFragment;
+    TutorialBuilder tutorial;
     AdView adView;
 
     @Override
@@ -66,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements TutorialEventList
         } else {
             maxRepFragment = new MaxRepFragment();
         }
-
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content, maxRepFragment, MaxRepFragment.LOG_KEY).commit();
@@ -221,6 +221,8 @@ public class MainActivity extends AppCompatActivity implements TutorialEventList
     protected void onPause() {
         adView.pause();
         super.onPause();
+        if (tutorial != null)
+            tutorial.dispose();
     }
 
     @Override
@@ -235,8 +237,8 @@ public class MainActivity extends AppCompatActivity implements TutorialEventList
             editor.putBoolean(getString(R.string.pref_prompt_tutorial_flag), false);
             editor.apply();
 
-            TutorialBuilder tutorialBuilder = new TutorialBuilder().start(this, (RelativeLayout) findViewById(R.id.container));
-            tutorialBuilder.addListener(this);
+            tutorial = new TutorialBuilder().start(this, (RelativeLayout) findViewById(R.id.container));
+            tutorial.addListener(this);
         }
     }
 

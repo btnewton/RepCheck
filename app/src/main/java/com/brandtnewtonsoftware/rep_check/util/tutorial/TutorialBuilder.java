@@ -75,7 +75,7 @@ public class TutorialBuilder implements ViewPager.OnPageChangeListener, View.OnC
         viewPager.setOnClickListener(this);
         progressBar = (ProgressBar) activity.findViewById(R.id.tutorial_progress);
 
-        topicTitle.setText(((TutorialTopic)pagerAdapter.getItem(viewPager.getCurrentItem())).getTitle());
+        topicTitle.setText(((TutorialTopic) pagerAdapter.getItem(viewPager.getCurrentItem())).getTitle());
 
         onTutorialStart();
 
@@ -96,7 +96,7 @@ public class TutorialBuilder implements ViewPager.OnPageChangeListener, View.OnC
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                ((ViewManager) tutorialDialog.getParent()).removeView(tutorialDialog);
+                dispose();
                 onTutorialQuit();
             }
 
@@ -114,8 +114,7 @@ public class TutorialBuilder implements ViewPager.OnPageChangeListener, View.OnC
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        int scrollProgress = 0;
-        scrollProgress = (int) ((100 * positionOffset) / pagerAdapter.getCount());
+        int scrollProgress = (int) ((100 * positionOffset) / pagerAdapter.getCount());
         progressBar.setProgress(scrollProgress + 100 * (position + 1) / pagerAdapter.getCount());
     }
 
@@ -155,6 +154,12 @@ public class TutorialBuilder implements ViewPager.OnPageChangeListener, View.OnC
         public int getCount() {
             return topics.size() + 1;
         }
+    }
+
+    public void dispose() {
+        final View tutorialDialog = activity.findViewById(R.id.tutorial_dialog);
+        if (tutorialDialog != null)
+            ((ViewManager) tutorialDialog.getParent()).removeView(tutorialDialog);
     }
 
     //region Listeners
