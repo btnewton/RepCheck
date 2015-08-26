@@ -11,7 +11,7 @@ public class ActionTopic extends TutorialTopic {
     }
 
     @Override
-    public CharSequence getBody() {
-        return null;
+    public void onClickAction() {
+
     }
 }

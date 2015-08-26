@@ -1,31 +1,26 @@
 package com.brandtnewtonsoftware.rep_check.util.tutorial.topic;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.brandtnewtonsoftware.rep_check.R;
+import com.brandtnewtonsoftware.rep_check.util.tutorial.TutorialBuilder;
 
 /**
  * Created by Brandt on 8/23/2015.
  */
-public abstract class TutorialTopic extends Fragment{
+public abstract class TutorialTopic extends Fragment {
+    private static TutorialBuilder tutorialBuilder;
+
     public static final String LOG_TAG = "TutorialTopic";
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.tutorial_topic, container, false);
-        TextView body = (TextView) view.findViewById(R.id.topic_body);
+    public abstract CharSequence getTitle();
 
-        body.setText(getBody());
-        return view;
+    public abstract void onClickAction();
+
+    public static void setTutorialBuilder(TutorialBuilder tutorialBuilder) {
+        TutorialTopic.tutorialBuilder = tutorialBuilder;
     }
 
-    public abstract CharSequence getTitle();
-    protected abstract CharSequence getBody();
+    protected void closeTutorial() {
+        tutorialBuilder.closeButtonAction();
+    }
 }

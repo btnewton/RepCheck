@@ -1,18 +1,27 @@
 package com.brandtnewtonsoftware.rep_check.util.tutorial.topic;
 
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.brandtnewtonsoftware.rep_check.R;
+
 /**
  * Created by Brandt on 8/23/2015.
  */
-public class InfoTopic extends TutorialTopic {
+public abstract class InfoTopic extends TutorialTopic {
 
-
+    @Nullable
     @Override
-    public CharSequence getTitle() {
-        return "Welcome to the tutorial!";
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ViewGroup view = (ViewGroup) inflater.inflate(R.layout.tutorial_topic, container, false);
+        TextView body = (TextView) view.findViewById(R.id.topic_body);
+        body.setText(getBody());
+        return view;
     }
 
-    @Override
-    public CharSequence getBody() {
-        return "You can quit the tutorial at any time and start it again from Settings.";
-    }
+    protected abstract CharSequence getBody();
 }

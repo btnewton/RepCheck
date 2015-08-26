@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:padding="@dimen/standard"
+        android:paddingBottom="@dimen/standard"
         android:lineSpacingMultiplier="1.2"
         android:id="@+id/topic_body"
         android:text="@string/lorem_ipsum_md"

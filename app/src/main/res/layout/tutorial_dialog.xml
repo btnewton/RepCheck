@@ -16,6 +16,7 @@
         android:id="@+id/tutorial_close"
         android:tint="@color/accent_500"
         android:layout_marginTop="-6dp"
+        android:layout_marginRight="-8dp"
         android:layout_alignParentRight="true"
         android:src="@drawable/ic_close"
         android:layout_width="wrap_content"
@@ -25,7 +26,10 @@
         android:id="@+id/tutorial_viewpager"
         android:layout_below="@id/tutorial_title"
         android:layout_width="match_parent"
-        android:layout_height="120dp" />
+        android:layout_height="80dp"
+        android:layout_marginTop="@dimen/small"
+        android:layout_marginBottom="@dimen/standard"
+        />
 
     <ProgressBar
         android:id="@+id/tutorial_progress"

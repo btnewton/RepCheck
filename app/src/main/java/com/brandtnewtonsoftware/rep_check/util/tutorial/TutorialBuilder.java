@@ -16,8 +16,6 @@ import android.widget.TextView;
 
 import com.brandtnewtonsoftware.rep_check.R;
 import com.brandtnewtonsoftware.rep_check.util.ClickableViewPager;
-import com.brandtnewtonsoftware.rep_check.util.tutorial.topic.ConclusionTopic;
-import com.brandtnewtonsoftware.rep_check.util.tutorial.topic.InfoTopic;
 import com.brandtnewtonsoftware.rep_check.util.tutorial.topic.TutorialTopic;
 
 import java.util.ArrayList;
@@ -39,9 +37,6 @@ public class TutorialBuilder implements ViewPager.OnPageChangeListener, View.OnC
     List<TutorialTopic> topics = new ArrayList<>();
 
     public TutorialBuilder() {
-        topics.add(new InfoTopic());
-        topics.add(new InfoTopic());
-        topics.add(new InfoTopic());
     }
 
     public TutorialBuilder setTopics(List<TutorialTopic> topics) {
@@ -132,7 +127,7 @@ public class TutorialBuilder implements ViewPager.OnPageChangeListener, View.OnC
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.tutorial_viewpager) {
-            viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+            ((TutorialTopic) pagerAdapter.getItem(viewPager.getCurrentItem())).onClickAction();
         }
     }
 
@@ -144,15 +139,12 @@ public class TutorialBuilder implements ViewPager.OnPageChangeListener, View.OnC
 
         @Override
         public Fragment getItem(int position) {
-            if (position < topics.size())
-                return topics.get(position);
-            else
-                return new ConclusionTopic();
+            return topics.get(position);
         }
 
         @Override
         public int getCount() {
-            return topics.size() + 1;
+            return topics.size();
         }
     }
 

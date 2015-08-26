@@ -21,6 +21,13 @@ import android.widget.RelativeLayout;
 
 import com.brandtnewtonsoftware.rep_check.R;
 import com.brandtnewtonsoftware.rep_check.activities.preferences.RepCheckPreferenceActivity;
+import com.brandtnewtonsoftware.rep_check.activities.tutorial.BarLoad;
+import com.brandtnewtonsoftware.rep_check.activities.tutorial.BasicUsage;
+import com.brandtnewtonsoftware.rep_check.activities.tutorial.ChangingWeight;
+import com.brandtnewtonsoftware.rep_check.activities.tutorial.Conclusion;
+import com.brandtnewtonsoftware.rep_check.activities.tutorial.Introduction;
+import com.brandtnewtonsoftware.rep_check.activities.tutorial.LoadingSets;
+import com.brandtnewtonsoftware.rep_check.activities.tutorial.SavingSets;
 import com.brandtnewtonsoftware.rep_check.database.schemas.SetSlotTable;
 import com.brandtnewtonsoftware.rep_check.database.seeders.SetSeeder;
 import com.brandtnewtonsoftware.rep_check.models.SetSlot;
@@ -29,9 +36,12 @@ import com.brandtnewtonsoftware.rep_check.util.ConfirmDialog;
 import com.brandtnewtonsoftware.rep_check.util.database.DBHandler;
 import com.brandtnewtonsoftware.rep_check.util.tutorial.TutorialBuilder;
 import com.brandtnewtonsoftware.rep_check.util.tutorial.TutorialEventListener;
+import com.brandtnewtonsoftware.rep_check.util.tutorial.topic.TutorialTopic;
 import com.google.android.gms.ads.AdView;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TutorialEventListener {
     public final static String LOG_KEY = "MainActivity";
@@ -232,12 +242,22 @@ public class MainActivity extends AppCompatActivity implements TutorialEventList
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 //        if (sharedPreferences.getBoolean(getString(R.string.pref_prompt_tutorial_flag), true)) {
+        // TODO return shared pref boolean
         if (true) {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean(getString(R.string.pref_prompt_tutorial_flag), false);
             editor.apply();
 
-            tutorial = new TutorialBuilder().start(this, (RelativeLayout) findViewById(R.id.container));
+            List<TutorialTopic> topics = new ArrayList<>();
+            topics.add(new Introduction());
+            topics.add(new BasicUsage());
+            topics.add(new ChangingWeight());
+            topics.add(new BarLoad());
+            topics.add(new SavingSets());
+            topics.add(new LoadingSets());
+            topics.add(new Conclusion());
+
+            tutorial = new TutorialBuilder().setTopics(topics).start(this, (RelativeLayout) findViewById(R.id.container));
             tutorial.addListener(this);
         }
     }
