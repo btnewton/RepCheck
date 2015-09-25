@@ -19,7 +19,7 @@ public final class DetailRowListAdapter extends BaseAdapter {
 
     Context mContext;
     LayoutInflater mInflater;
-    List<IDetailRow> detailRowList;
+    List<ISetRowItem> detailRowList;
     int layout;
 
     public static DetailRowListAdapter newSetListAdapter(Context context, LayoutInflater layoutInflater) {
@@ -39,7 +39,7 @@ public final class DetailRowListAdapter extends BaseAdapter {
     }
 
     @Override
-    public IDetailRow getItem(int position) {
+    public ISetRowItem getItem(int position) {
         return detailRowList.get(position);
     }
 
@@ -75,10 +75,10 @@ public final class DetailRowListAdapter extends BaseAdapter {
         }
 
         // Get the current book's data in JSON form
-        IDetailRow detailRowItem = getItem(position);
-        String title = detailRowItem.getTitle();
-        String text = detailRowItem.getText();
-        String detail = detailRowItem.getDetail();
+        ISetRowItem detailRowItem = getItem(position);
+        String title = detailRowItem.getReps();
+        String text = detailRowItem.getWeight();
+        String detail = detailRowItem.getPercentMax();
 
         // Send these Strings to the TextViews for display
         holder.title.setText(title);
@@ -88,7 +88,7 @@ public final class DetailRowListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void updateData(List<IDetailRow> detailRowList) {
+    public void updateData(List<ISetRowItem> detailRowList) {
         // update the adapter's data set
         this.detailRowList = detailRowList;
         notifyDataSetChanged();

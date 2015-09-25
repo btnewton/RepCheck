@@ -1,30 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:paddingLeft="28dp"
+    android:paddingRight="28dp"
+    android:background="?android:attr/selectableItemBackground"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/title"
-        android:gravity="center"
-        android:layout_margin="@dimen/small"
-        android:layout_weight="1"
+    <LinearLayout
+        android:layout_weight="4"
         android:layout_width="0dp"
-        android:layout_height="fill_parent" />
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/set_reps"
+            android:layout_gravity="center_vertical"
+            android:text="1"
+            android:layout_margin="@dimen/small"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/set_helper_text"
+            android:layout_gravity="center_vertical"
+            android:gravity="left"
+            android:textColor="@color/primary_700_alpha"
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/set_weight"
+            android:text="130 lbs"
+            android:layout_margin="@dimen/small"
+            android:textSize="@dimen/larger_text"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/weight_percent_max"
+        android:text="100%"
         android:layout_margin="@dimen/small"
-        android:textSize="@dimen/larger_text"
-        android:gravity="center"
-        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:gravity="right"
+        android:layout_weight="2"
         android:layout_width="0dp"
-        android:layout_height="fill_parent" />
-
-    <TextView
-        android:id="@+id/detail"
-        android:layout_margin="@dimen/small"
-        android:gravity="center"
-        android:layout_weight="1"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent" />
+        android:layout_height="wrap_content" />
 </LinearLayout>

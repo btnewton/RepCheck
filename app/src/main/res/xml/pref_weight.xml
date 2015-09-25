@@ -13,6 +13,12 @@
         android:summary="@string/pref_round_values_summary"
         android:defaultValue="@bool/pref_round_values_default" />
 
+    <CheckBoxPreference
+        android:key="@string/pref_show_helper_text_key"
+        android:title="@string/pref_show_helper_text_label"
+        android:summary="@string/pref_show_helper_text_summary"
+        android:defaultValue="@bool/pref_show_helper_text_default" />
+
     <ListPreference
         android:key="@string/pref_plate_style_key"
         android:title="@string/pref_plate_style_label"

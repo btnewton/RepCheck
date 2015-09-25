@@ -36,7 +36,7 @@ public class UndoBarController {
         mUndoListener = undoListener;
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mBarView.setElevation(undoBarView.getResources().getDimension(R.dimen.fab_elevation));
+            mBarView.setElevation(undoBarView.getResources().getDimension(R.dimen.design_fab_elevation));
         }
 
         mMessageView = (TextView) mBarView.findViewById(R.id.undobar_message);

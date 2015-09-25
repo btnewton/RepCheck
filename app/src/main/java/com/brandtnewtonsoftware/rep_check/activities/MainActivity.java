@@ -17,37 +17,20 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.RelativeLayout;
 
 import com.brandtnewtonsoftware.rep_check.R;
 import com.brandtnewtonsoftware.rep_check.activities.preferences.RepCheckPreferenceActivity;
-import com.brandtnewtonsoftware.rep_check.activities.tutorial.BarLoad;
-import com.brandtnewtonsoftware.rep_check.activities.tutorial.BasicUsage;
-import com.brandtnewtonsoftware.rep_check.activities.tutorial.ChangingWeight;
-import com.brandtnewtonsoftware.rep_check.activities.tutorial.Conclusion;
-import com.brandtnewtonsoftware.rep_check.activities.tutorial.Introduction;
-import com.brandtnewtonsoftware.rep_check.activities.tutorial.LoadingSets;
-import com.brandtnewtonsoftware.rep_check.activities.tutorial.SavingSets;
 import com.brandtnewtonsoftware.rep_check.database.schemas.SetSlotTable;
 import com.brandtnewtonsoftware.rep_check.database.seeders.SetSeeder;
 import com.brandtnewtonsoftware.rep_check.models.SetSlot;
-import com.brandtnewtonsoftware.rep_check.util.AdMobHelper;
 import com.brandtnewtonsoftware.rep_check.util.ConfirmDialog;
 import com.brandtnewtonsoftware.rep_check.util.database.DBHandler;
-import com.brandtnewtonsoftware.rep_check.util.tutorial.TutorialBuilder;
-import com.brandtnewtonsoftware.rep_check.util.tutorial.TutorialEventListener;
-import com.brandtnewtonsoftware.rep_check.util.tutorial.topic.TutorialTopic;
-import com.google.android.gms.ads.AdView;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TutorialEventListener {
+public class MainActivity extends AppCompatActivity {
     public final static String LOG_KEY = "MainActivity";
     MaxRepFragment maxRepFragment;
-    TutorialBuilder tutorial;
-    AdView adView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +45,6 @@ public class MainActivity extends AppCompatActivity implements TutorialEventList
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        adView = AdMobHelper.CreateAdRequest(this);
 
         // Populate table if missing
         if (SetSlot.getSlotCount(this) != getResources().getInteger(R.integer.set_slot_count)) {
@@ -101,28 +82,6 @@ public class MainActivity extends AppCompatActivity implements TutorialEventList
             dialog.show(getFragmentManager(), RateThisAppDialog.LOG_KEY);
         }
     }
-
-    //region Tutorial Listeners
-    @Override
-    public void onTutorialStart() {
-        adView.pause();
-    }
-
-    @Override
-    public void onTutorialComplete() {
-        adView.resume();
-    }
-
-    @Override
-    public void onTutorialQuit(int topic) {
-        adView.resume();
-    }
-
-    @Override
-    public void onTopicChanged(int topic) {
-
-    }
-    //endregion
 
     public static class RateThisAppDialog extends ConfirmDialog {
 
@@ -225,46 +184,5 @@ public class MainActivity extends AppCompatActivity implements TutorialEventList
         super.onSaveInstanceState(outState);
         //Save the fragment's instance
         getSupportFragmentManager().putFragment(outState, MaxRepFragment.LOG_KEY, maxRepFragment);
-    }
-
-    @Override
-    protected void onPause() {
-        adView.pause();
-        super.onPause();
-        if (tutorial != null)
-            tutorial.dispose();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        adView.resume();
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        if (sharedPreferences.getBoolean(getString(R.string.pref_prompt_tutorial_flag), true)) {
-        // TODO return shared pref boolean
-        if (true) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putBoolean(getString(R.string.pref_prompt_tutorial_flag), false);
-            editor.apply();
-
-            List<TutorialTopic> topics = new ArrayList<>();
-            topics.add(new Introduction());
-            topics.add(new BasicUsage());
-            topics.add(new ChangingWeight());
-            topics.add(new BarLoad());
-            topics.add(new SavingSets());
-            topics.add(new LoadingSets());
-            topics.add(new Conclusion());
-
-            tutorial = new TutorialBuilder().setTopics(topics).start(this, (RelativeLayout) findViewById(R.id.container));
-            tutorial.addListener(this);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        adView.pause();
     }
 }

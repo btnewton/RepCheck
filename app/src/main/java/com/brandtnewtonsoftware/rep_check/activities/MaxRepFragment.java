@@ -14,6 +14,8 @@ import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -30,7 +32,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,9 +50,10 @@ import com.brandtnewtonsoftware.rep_check.models.calculations.formulas.OneRepMax
 import com.brandtnewtonsoftware.rep_check.models.increments.IncrementFactory;
 import com.brandtnewtonsoftware.rep_check.models.increments.IncrementSet;
 import com.brandtnewtonsoftware.rep_check.util.UndoBarController;
-import com.brandtnewtonsoftware.rep_check.util.adapters.detail.DetailRow;
-import com.brandtnewtonsoftware.rep_check.util.adapters.detail.DetailRowListAdapter;
-import com.brandtnewtonsoftware.rep_check.util.adapters.detail.IDetailRow;
+import com.brandtnewtonsoftware.rep_check.util.adapters.DividerItemDecoration;
+import com.brandtnewtonsoftware.rep_check.util.adapters.SetRecyclerView.SetRecyclerViewAdapter;
+import com.brandtnewtonsoftware.rep_check.util.adapters.detail.ISetRowItem;
+import com.brandtnewtonsoftware.rep_check.util.adapters.detail.SetRowItem;
 
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
@@ -82,7 +84,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     private static Handler handler;
     private AsyncCalculate asyncCalculate;
     // UI
-    private DetailRowListAdapter weightListAdapter;
+    private SetRecyclerViewAdapter setRecyclerViewAdapter;
     private View floatingActionButton;
     private TextView setNameTextView;
     private EditText weightEditText;
@@ -131,6 +133,12 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         loadPreferences();
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        loadPreferences();
+    }
+
     private void loadPreferences() {
         try {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -142,6 +150,9 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             boolean roundCalculations = sharedPreferences.getBoolean(getString(R.string.pref_round_values_key), getResources().getBoolean(R.bool.pref_round_values_default));
             weightFormatter = new WeightFormatter(roundCalculations, unit);
 
+            boolean showHelperText = sharedPreferences.getBoolean(getString(R.string.pref_show_helper_text_key), getResources().getBoolean(R.bool.pref_show_helper_text_default));
+            if (setRecyclerViewAdapter != null)
+                setRecyclerViewAdapter.setShowHelperText(showHelperText);
             String formulaName = sharedPreferences.getString(getString(R.string.pref_formula_key), getString(R.string.brzycki_formula_value));
 
             // Reflect formula or default to Brzycki
@@ -311,7 +322,6 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         repsSpinner.setAdapter(adapter);
         repsSpinner.setSelection(setSlot.getReps() - 1);
         repsSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 updateRepsFromInput();
@@ -323,12 +333,12 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             }
         });
 
-        weightListAdapter = DetailRowListAdapter.newSetListAdapter(getActivity(), getActivity().getLayoutInflater());
-
-        ListView listView = (ListView) view.findViewById(R.id.list_view);
-        listView.setEmptyView(view.findViewById(android.R.id.empty));
-        listView.setAdapter(weightListAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL_LIST));
+        setRecyclerViewAdapter = new SetRecyclerViewAdapter(getResources().getBoolean(R.bool.pref_show_helper_text_default));
+        recyclerView.setAdapter(setRecyclerViewAdapter);
+        setRecyclerViewAdapter.setItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 double weight = formula.getWeightWeightForReps(position + 1);
@@ -405,9 +415,9 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
     private class AsyncCalculate extends Observable implements Runnable {
 
-        private List<IDetailRow> weightHolders;
+        private List<ISetRowItem> weightHolders;
 
-        public List<IDetailRow> getWeightHolders() {
+        public List<ISetRowItem> getWeightHolders() {
             return weightHolders;
         }
 
@@ -416,12 +426,12 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             formula.update(setSlot.getReps(), setSlot.getWeight());
 
             int maxReps = getResources().getInteger(R.integer.max_reps);
-            List<IDetailRow> weightHolders = new ArrayList<>(maxReps);
+            List<ISetRowItem> weightHolders = new ArrayList<>(maxReps);
 
             for (int i = 0; i < maxReps; i++) {
                 int currentReps = i + 1;
                 double currentWeight = formula.getWeightWeightForReps(currentReps);
-                weightHolders.add(new DetailRow(currentReps, Integer.toString(currentReps),
+                weightHolders.add(new SetRowItem(currentReps,
                         weightFormatter.format(currentWeight) + " " + weightFormatter.displayUnit(currentWeight),
                         Integer.toString((int) formula.getPercentOfMax(currentWeight)) + "%"));
             }
@@ -492,7 +502,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     @Override
     public void update(Observable observable, Object o) {
         if (asyncCalculate.getWeightHolders() != null) {
-            weightListAdapter.updateData(asyncCalculate.getWeightHolders());
+            setRecyclerViewAdapter.updateData(asyncCalculate.getWeightHolders());
         }
     }
 
