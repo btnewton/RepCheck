@@ -96,15 +96,15 @@ public class BarLoadDialog extends DialogFragment {
 
                 TextView barWeightTextView = (TextView) view.findViewById(R.id.bar_weight);
                 barWeightTextView.setText(weightFormatter.format(barWeight) + " " + weightFormatter.displayUnit(barWeight));
-
-                TextView remainderTextView = (TextView) view.findViewById(R.id.weight_remainder);
-                remainderTextView.setText(weightFormatter.format(remainder) + ((remainder > 0) ? " " + weightFormatter.displayUnit(remainder) : ""));
-
+                
                 adapter = StandardRowListAdapter.newBarLoadAdapter(getActivity(), getLayoutInflater(savedInstanceState));
                 adapter.updateData(getBarConstruction());
 
                 ListView listView = (ListView) view.findViewById(R.id.plate_list);
                 listView.setAdapter(adapter);
+
+                TextView remainderTextView = (TextView) view.findViewById(R.id.weight_remainder);
+                remainderTextView.setText(weightFormatter.format(remainder) + ((remainder > 0) ? " " + weightFormatter.displayUnit(remainder) : ""));
 
                 Button closeButton = (Button) view.findViewById(R.id.close_btn);
                 closeButton.setOnClickListener(new View.OnClickListener() {
