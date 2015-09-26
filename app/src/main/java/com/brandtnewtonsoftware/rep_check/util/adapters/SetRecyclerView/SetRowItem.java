@@ -1,4 +1,4 @@
-package com.brandtnewtonsoftware.rep_check.util.adapters.detail;
+package com.brandtnewtonsoftware.rep_check.util.adapters.SetRecyclerView;
 
 /**
  * Created by Brandt on 8/4/2015.

@@ -56,8 +56,8 @@ import com.brandtnewtonsoftware.rep_check.models.increments.IncrementSet;
 import com.brandtnewtonsoftware.rep_check.util.UndoBarController;
 import com.brandtnewtonsoftware.rep_check.util.adapters.DividerItemDecoration;
 import com.brandtnewtonsoftware.rep_check.util.adapters.SetRecyclerView.SetRecyclerViewAdapter;
-import com.brandtnewtonsoftware.rep_check.util.adapters.detail.ISetRowItem;
-import com.brandtnewtonsoftware.rep_check.util.adapters.detail.SetRowItem;
+import com.brandtnewtonsoftware.rep_check.util.adapters.SetRecyclerView.ISetRowItem;
+import com.brandtnewtonsoftware.rep_check.util.adapters.SetRecyclerView.SetRowItem;
 
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;

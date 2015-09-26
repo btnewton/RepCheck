@@ -11,18 +11,19 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.brandtnewtonsoftware.rep_check.R;
-
 import com.brandtnewtonsoftware.rep_check.models.Unit;
 import com.brandtnewtonsoftware.rep_check.models.increments.IncrementFactory;
+import com.brandtnewtonsoftware.rep_check.util.adapters.DividerItemDecoration;
+import com.brandtnewtonsoftware.rep_check.util.adapters.NestableLinearLayoutManager;
+import com.brandtnewtonsoftware.rep_check.util.adapters.standard.StandardRowAdapter;
 
 /**
  * Created by Brandt on 7/23/2015.
@@ -48,9 +49,16 @@ public class SetQuickPlateDialog extends DialogFragment {
         String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
         Unit unit = Unit.newUnitByString(unitType, activity);
 
-        final ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<>(activity, android.R.layout.simple_list_item_1, IncrementFactory.Make(activity, plateStyle, unit).getIncrementsAsStringArray());
-
+        final StandardRowAdapter adapter = StandardRowAdapter.newSaveSlotAdapter(IncrementFactory.Make(activity, plateStyle, unit).getIncrementsAsStringArray());
+        adapter.setItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Message msg = new Message();
+                msg.arg1 = position;
+                updateHandler.sendMessage(msg);
+                dismiss();
+            }
+        });
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
@@ -67,17 +75,11 @@ public class SetQuickPlateDialog extends DialogFragment {
                 TextView titleTextView = (TextView) setSlotsView.findViewById(R.id.title);
                 titleTextView.setText("Quick Plate Size");
 
-                ListView listView = (ListView) setSlotsView.findViewById(R.id.list);
-                listView.setAdapter(arrayAdapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Message msg = new Message();
-                        msg.arg1 = position;
-                        updateHandler.sendMessage(msg);
-                        dismiss();
-                    }
-                });
+                RecyclerView recyclerView = (RecyclerView) setSlotsView.findViewById(R.id.recycler_view);
+                recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL_LIST));
+                recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new NestableLinearLayoutManager(getContext()));
+
 
                 Button closeButton = (Button) setSlotsView.findViewById(R.id.close_btn);
                 closeButton.setOnClickListener(new View.OnClickListener() {

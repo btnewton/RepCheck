@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
+    android:background="?android:attr/selectableItemBackground"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
-        android:text="Bench Press"
-        android:id="@+id/title"
+        android:id="@+id/row_title"
         android:textSize="18sp"
         android:scrollHorizontally="true"
         android:ellipsize="end"
@@ -18,8 +18,7 @@
         android:layout_gravity="center_vertical" />
 
     <TextView
-        android:text="135 lbs for 5 reps"
-        android:id="@+id/text"
+        android:id="@+id/row_text"
         android:layout_width="0dp"
         android:layout_weight="4"
         android:layout_height="wrap_content"

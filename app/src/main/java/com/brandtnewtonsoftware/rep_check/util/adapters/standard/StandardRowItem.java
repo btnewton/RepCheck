@@ -6,8 +6,12 @@ package com.brandtnewtonsoftware.rep_check.util.adapters.standard;
 public final class StandardRowItem implements IStandardRowItem {
 
     private final int id;
-    private final String title;
     private final String text;
+    private final String title;
+
+    public StandardRowItem(String title, String text) {
+        this(0, title, text);
+    }
 
     public StandardRowItem(int id, String title, String text) {
         this.id = id;

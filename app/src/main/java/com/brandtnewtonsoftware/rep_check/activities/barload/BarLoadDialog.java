@@ -8,10 +8,10 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.brandtnewtonsoftware.rep_check.R;
@@ -19,9 +19,11 @@ import com.brandtnewtonsoftware.rep_check.models.Unit;
 import com.brandtnewtonsoftware.rep_check.models.WeightFormatter;
 import com.brandtnewtonsoftware.rep_check.models.increments.IncrementFactory;
 import com.brandtnewtonsoftware.rep_check.models.increments.IncrementSet;
+import com.brandtnewtonsoftware.rep_check.util.adapters.DividerItemDecoration;
+import com.brandtnewtonsoftware.rep_check.util.adapters.NestableLinearLayoutManager;
 import com.brandtnewtonsoftware.rep_check.util.adapters.standard.IStandardRowItem;
+import com.brandtnewtonsoftware.rep_check.util.adapters.standard.StandardRowAdapter;
 import com.brandtnewtonsoftware.rep_check.util.adapters.standard.StandardRowItem;
-import com.brandtnewtonsoftware.rep_check.util.adapters.standard.StandardRowListAdapter;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -39,7 +41,7 @@ public class BarLoadDialog extends DialogFragment {
     private double barWeight;
     private WeightFormatter weightFormatter;
     private double remainder;
-    private StandardRowListAdapter adapter;
+    private StandardRowAdapter adapter;
 
     public static BarLoadDialog newInstance(double weight) {
         BarLoadDialog fragment = new BarLoadDialog();
@@ -97,11 +99,11 @@ public class BarLoadDialog extends DialogFragment {
                 TextView barWeightTextView = (TextView) view.findViewById(R.id.bar_weight);
                 barWeightTextView.setText(weightFormatter.format(barWeight) + " " + weightFormatter.displayUnit(barWeight));
                 
-                adapter = StandardRowListAdapter.newBarLoadAdapter(getActivity(), getLayoutInflater(savedInstanceState));
-                adapter.updateData(getBarConstruction());
-
-                ListView listView = (ListView) view.findViewById(R.id.plate_list);
-                listView.setAdapter(adapter);
+                adapter = StandardRowAdapter.newBarLoadAdapter(getBarConstruction());
+                RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.plate_list);
+                recyclerView.setLayoutManager(new NestableLinearLayoutManager(getContext()));
+                recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL_LIST));
+                recyclerView.setAdapter(adapter);
 
                 TextView remainderTextView = (TextView) view.findViewById(R.id.weight_remainder);
                 remainderTextView.setText(weightFormatter.format(remainder) + ((remainder > 0) ? " " + weightFormatter.displayUnit(remainder) : ""));
@@ -135,7 +137,7 @@ public class BarLoadDialog extends DialogFragment {
 
             if (plateCount > 0) {
                 weight -= (2 * plateCount) * plateWeight;
-                weightHolders.add(new StandardRowItem(0, formatter.format(plateWeight) + "'s", Integer.toString(2 * plateCount)));
+                weightHolders.add(new StandardRowItem(formatter.format(plateWeight) + "'s", Integer.toString(2 * plateCount)));
             }
         }
 

@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.brandtnewtonsoftware.rep_check.R;
-import com.brandtnewtonsoftware.rep_check.util.adapters.detail.ISetRowItem;
 
 import java.util.List;
 
@@ -50,8 +49,8 @@ public class SetRecyclerViewAdapter extends RecyclerView.Adapter<SetViewHolder> 
         holder.clickListener = this;
     }
 
-    public void updateData(List<ISetRowItem> simpleConsumables) {
-        this.setRowItems = simpleConsumables;
+    public void updateData(List<ISetRowItem> setRowItems) {
+        this.setRowItems = setRowItems;
         notifyDataSetChanged();
     }
 

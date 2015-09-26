@@ -76,10 +76,10 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/plate_list"
         android:layout_width="match_parent"
-        android:layout_height="110dp"/>
+        android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/close_btn"

@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -20,7 +21,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,9 +28,11 @@ import com.brandtnewtonsoftware.rep_check.R;
 import com.brandtnewtonsoftware.rep_check.models.SetSlot;
 import com.brandtnewtonsoftware.rep_check.models.Unit;
 import com.brandtnewtonsoftware.rep_check.models.WeightFormatter;
+import com.brandtnewtonsoftware.rep_check.util.adapters.DividerItemDecoration;
+import com.brandtnewtonsoftware.rep_check.util.adapters.NestableLinearLayoutManager;
 import com.brandtnewtonsoftware.rep_check.util.adapters.standard.IStandardRowItem;
+import com.brandtnewtonsoftware.rep_check.util.adapters.standard.StandardRowAdapter;
 import com.brandtnewtonsoftware.rep_check.util.adapters.standard.StandardRowItem;
-import com.brandtnewtonsoftware.rep_check.util.adapters.standard.StandardRowListAdapter;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -43,7 +45,7 @@ import java.util.Observer;
  */
 public abstract class SetsListDialog extends DialogFragment implements Observer {
 
-    protected StandardRowListAdapter adapter;
+    protected StandardRowAdapter adapter;
     protected List<IStandardRowItem> rowItems;
     private Handler asyncHandler;
     private static Handler nameUpdateHandler;
@@ -53,7 +55,7 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         asyncHandler = new Handler();
-        adapter = StandardRowListAdapter.newSaveSlotAdapter(getActivity(), getActivity().getLayoutInflater());
+        adapter = StandardRowAdapter.newSaveSlotAdapter(null);
         rowItems = new ArrayList<>();
 
         // Get the layout inflater
@@ -70,15 +72,17 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
                 TextView titleTextView = (TextView) setSlotsView.findViewById(R.id.title);
                 titleTextView.setText(getTitle());
 
-                ListView listView = (ListView) setSlotsView.findViewById(R.id.list);
-                listView.setAdapter(adapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                RecyclerView recyclerView = (RecyclerView) setSlotsView.findViewById(R.id.recycler_view);
+                recyclerView.setLayoutManager(new NestableLinearLayoutManager(getContext()));
+                recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL_LIST));
+                recyclerView.setAdapter(adapter);
+                adapter.setItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         onItemClickAction(parent, view, position, id);
                     }
                 });
-                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                adapter.setItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                         return longItemClickAction(parent, view, position, id);
