@@ -54,10 +54,6 @@ public class SetRecyclerViewAdapter extends RecyclerView.Adapter<SetViewHolder> 
         notifyDataSetChanged();
     }
 
-    public ISetRowItem getItem(int position) {
-        return setRowItems.get(position);
-    }
-
     @Override
     public int getItemCount() {
         if (setRowItems != null)

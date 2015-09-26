@@ -20,7 +20,7 @@ public abstract class IncrementSet {
         this.unit = unit;
     }
 
-    public double[] getIncrements(Unit unit) {
+    public double[] getIncrements() {
         if (unit.equals(Unit.MetricUnit())) {
             return getMetricIncrements();
         } else {
@@ -32,7 +32,7 @@ public abstract class IncrementSet {
     protected abstract double[] getMetricIncrements();
 
     public List<IStandardRowItem> getIncrementsAsStringArray() {
-        double[] increments = getIncrements(unit);
+        double[] increments = getIncrements();
         List<IStandardRowItem>  formattedIncrements = new ArrayList<>(increments.length);
         NumberFormat formatter = new DecimalFormat("#.#");
         for (double increment : increments) {

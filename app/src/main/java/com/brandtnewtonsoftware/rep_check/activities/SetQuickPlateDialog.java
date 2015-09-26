@@ -46,7 +46,7 @@ public class SetQuickPlateDialog extends DialogFragment {
         // Load unit and plate style
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String plateStyle = sharedPreferences.getString(getString(R.string.pref_plate_style_key), getString(R.string.pref_plate_style_classic));
-        String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
+        String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_default));
         Unit unit = Unit.newUnitByString(unitType, activity);
 
         final StandardRowAdapter adapter = StandardRowAdapter.newSaveSlotAdapter(IncrementFactory.Make(activity, plateStyle, unit).getIncrementsAsStringArray());
@@ -72,7 +72,7 @@ public class SetQuickPlateDialog extends DialogFragment {
             @Override
             public void onShow(DialogInterface dialog) {
 
-                TextView titleTextView = (TextView) setSlotsView.findViewById(R.id.title);
+                TextView titleTextView = (TextView) setSlotsView.findViewById(R.id.dialog_title);
                 titleTextView.setText("Quick Plate Size");
 
                 RecyclerView recyclerView = (RecyclerView) setSlotsView.findViewById(R.id.recycler_view);

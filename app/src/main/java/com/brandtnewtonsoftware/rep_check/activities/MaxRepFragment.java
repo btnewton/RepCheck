@@ -53,11 +53,14 @@ import com.brandtnewtonsoftware.rep_check.models.calculations.formulas.BrzyckiFo
 import com.brandtnewtonsoftware.rep_check.models.calculations.formulas.OneRepMaxFormula;
 import com.brandtnewtonsoftware.rep_check.models.increments.IncrementFactory;
 import com.brandtnewtonsoftware.rep_check.models.increments.IncrementSet;
+import com.brandtnewtonsoftware.rep_check.util.AnalyticsApplication;
 import com.brandtnewtonsoftware.rep_check.util.UndoBarController;
 import com.brandtnewtonsoftware.rep_check.util.adapters.DividerItemDecoration;
 import com.brandtnewtonsoftware.rep_check.util.adapters.SetRecyclerView.SetRecyclerViewAdapter;
 import com.brandtnewtonsoftware.rep_check.util.adapters.SetRecyclerView.ISetRowItem;
 import com.brandtnewtonsoftware.rep_check.util.adapters.SetRecyclerView.SetRowItem;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
@@ -100,10 +103,16 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     private double incrementValue;
     private double barWeight;
 
+    Tracker tracker;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        // Obtain the shared Tracker instance.
+        AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
+        tracker = application.getDefaultTracker();
 
         if (savedInstanceState != null) {
             // Restore value of members from saved state
@@ -134,6 +143,9 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     @Override
     public void onResume() {
         super.onResume();
+        Log.i(LOG_KEY, "Setting screen name: " + LOG_KEY);
+        tracker.setScreenName(LOG_KEY);
+        tracker.send(new HitBuilders.ScreenViewBuilder().build());
         loadPreferences();
     }
 
@@ -320,6 +332,10 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
                     setSlot.saveChanges(getActivity());
                     setNameTextView.setTypeface(null, Typeface.NORMAL);
+                    tracker.send(new HitBuilders.EventBuilder()
+                            .setCategory("Action")
+                            .setAction("Save")
+                            .build());
                 } else {
                     cannotSaveToast();
                 }
@@ -528,6 +544,10 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
         updateRepsFromInput();
         updateSetNameStyle();
         floatingActionButton.animate().translationY(0);
+        tracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Undo")
+                .build());
     }
 
     @Override
@@ -574,7 +594,16 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
 
             maxRepFragment.loadSet(msg.arg1);
             maxRepFragment.updateSet();
+
+            maxRepFragment.getTracker().send(new HitBuilders.EventBuilder()
+                    .setCategory("Action")
+                    .setAction("Load")
+                    .build());
         }
+    }
+
+    public Tracker getTracker() {
+        return tracker;
     }
 
     public static class UpdateSetNameHandler extends Handler {
@@ -623,7 +652,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     }
 
     public void updateQuickPlateButtons(int index) {
-        incrementValue = incrementSet.getIncrements(weightFormatter.getUnit())[index];
+        incrementValue = incrementSet.getIncrements()[index];
         NumberFormat formatter = new DecimalFormat("#.#");
         String incrementText = formatter.format(incrementValue) + " " + weightFormatter.displayUnit(incrementValue);
 

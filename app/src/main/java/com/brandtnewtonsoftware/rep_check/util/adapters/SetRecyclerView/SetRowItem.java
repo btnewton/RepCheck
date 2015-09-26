@@ -11,7 +11,7 @@ public final class SetRowItem implements ISetRowItem {
 
     public SetRowItem(int reps, String weight, String percentMax) {
         this.reps = Integer.toString(reps);
-        helperText = reps > 1? "reps at" : "rep at";
+        helperText = reps > 1? "reps at" : " rep at";
         this.weight = weight;
         this.percentMax = percentMax;
     }

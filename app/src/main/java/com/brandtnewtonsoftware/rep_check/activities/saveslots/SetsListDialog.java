@@ -69,11 +69,11 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                TextView titleTextView = (TextView) setSlotsView.findViewById(R.id.title);
+                TextView titleTextView = (TextView) setSlotsView.findViewById(R.id.dialog_title);
                 titleTextView.setText(getTitle());
 
                 RecyclerView recyclerView = (RecyclerView) setSlotsView.findViewById(R.id.recycler_view);
-                recyclerView.setLayoutManager(new NestableLinearLayoutManager(getContext()));
+                recyclerView.setLayoutManager(new NestableLinearLayoutManager(getActivity()));
                 recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL_LIST));
                 recyclerView.setAdapter(adapter);
                 adapter.setItemClickListener(new AdapterView.OnItemClickListener() {

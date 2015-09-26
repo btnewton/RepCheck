@@ -26,15 +26,15 @@ public class Unit {
         return new Unit("kg");
     }
 
-    public static Unit newUnitByString(String unit, Context context) {
+    public static Unit newUnitByString(String unitName, Context context) {
         Unit newUnit;
 
-        if (unit.equals(context.getString(R.string.pref_units_metric))) {
+        if (unitName.equals(context.getString(R.string.pref_units_metric))) {
             newUnit = Unit.MetricUnit();
-        } else if (unit.equals(context.getString(R.string.pref_units_imperial))) {
+        } else if (unitName.equals(context.getString(R.string.pref_units_imperial))) {
             newUnit = Unit.ImperialUnit();
         } else {
-            Log.e(LOG_TAG, "Could not match unit: " + unit + " using default.");
+            Log.e(LOG_TAG, "Could not match unit: " + unitName + " using default.");
             newUnit = Unit.ImperialUnit();
         }
 
@@ -45,8 +45,11 @@ public class Unit {
         return unit;
     }
 
+    public boolean equals(String unit) {
+        return this.unit.equals(unit);
+    }
     public boolean equals(Unit unit) {
-        return unit.getUnit().equals(this.unit);
+        return equals(unit.getUnit());
     }
 
     public String displayUnit() {
