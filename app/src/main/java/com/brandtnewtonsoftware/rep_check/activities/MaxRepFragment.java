@@ -3,15 +3,19 @@ package com.brandtnewtonsoftware.rep_check.activities;
 import android.animation.Animator;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -85,7 +89,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
     private AsyncCalculate asyncCalculate;
     // UI
     private SetRecyclerViewAdapter setRecyclerViewAdapter;
-    private View floatingActionButton;
+    private FloatingActionButton floatingActionButton;
     private TextView setNameTextView;
     private EditText weightEditText;
     private Spinner repsSpinner;
@@ -271,7 +275,18 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             }
         });
 
-        floatingActionButton = view.findViewById(R.id.fab);
+        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fab);
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            floatingActionButton.setBackgroundTintList(new ColorStateList(new int[][]{
+                    {android.R.attr.state_enabled},
+                    {android.R.attr.state_pressed},
+            }, new int[]{getResources().getColor(R.color.primary_700), getResources().getColor(R.color.accent_500)}));
+            Drawable mDrawable = getResources().getDrawable(R.drawable.ic_floppy);
+            mDrawable.setColorFilter(new
+                PorterDuffColorFilter(getResources().getColor(R.color.accent_500), PorterDuff.Mode.MULTIPLY));
+            floatingActionButton.setImageDrawable(mDrawable);
+        }
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -7,11 +7,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,34 +45,64 @@ public class AboutDialog extends DialogFragment {
                     e.printStackTrace();
                 }
 
-                ImageView brandtEmailLink = (ImageView) aboutView.findViewById(R.id.brandt_email_link);
+                FloatingActionButton brandtEmailLink = (FloatingActionButton) aboutView.findViewById(R.id.brandt_email_link);
                 brandtEmailLink.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         makeEmailIntent(getString(R.string.brandt_email));
                     }
                 });
-                ImageView brandtWebsiteLink = (ImageView) aboutView.findViewById(R.id.brandt_website_link);
+                FloatingActionButton brandtWebsiteLink = (FloatingActionButton) aboutView.findViewById(R.id.brandt_website_link);
                 brandtWebsiteLink.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         makeWebsiteIntent(getString(R.string.brandt_website));
                     }
                 });
-                ImageView brandtResumeLink = (ImageView) aboutView.findViewById(R.id.brandt_resume_link);
+                FloatingActionButton brandtResumeLink = (FloatingActionButton) aboutView.findViewById(R.id.brandt_resume_link);
                 brandtResumeLink.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         makeWebsiteIntent(getString(R.string.brandt_resume));
                     }
                 });
-                ImageView konnorEmailLink = (ImageView) aboutView.findViewById(R.id.konnor_email_link);
+                FloatingActionButton konnorEmailLink = (FloatingActionButton) aboutView.findViewById(R.id.konnor_email_link);
                 konnorEmailLink.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         makeEmailIntent(getString(R.string.konnor_email));
                     }
                 });
+
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    ColorStateList colorStateList = new ColorStateList(new int[][]{
+                            {android.R.attr.state_enabled},
+                            {android.R.attr.state_pressed},
+                    }, new int[]{getResources().getColor(R.color.primary_700), getResources().getColor(R.color.accent_500)});
+                    Drawable mail = getResources().getDrawable(R.drawable.ic_mail);
+                    mail.setColorFilter(new
+                            PorterDuffColorFilter(getResources().getColor(R.color.accent_500), PorterDuff.Mode.MULTIPLY));
+
+                    Drawable document = getResources().getDrawable(R.drawable.ic_document);
+                    document.setColorFilter(new
+                            PorterDuffColorFilter(getResources().getColor(R.color.accent_500), PorterDuff.Mode.MULTIPLY));
+
+                    Drawable globe = getResources().getDrawable(R.drawable.ic_globe);
+                    globe.setColorFilter(new
+                            PorterDuffColorFilter(getResources().getColor(R.color.accent_500), PorterDuff.Mode.MULTIPLY));
+
+                    brandtEmailLink.setBackgroundTintList(colorStateList);
+                    brandtEmailLink.setImageDrawable(mail);
+
+                    brandtWebsiteLink.setBackgroundTintList(colorStateList);
+                    brandtWebsiteLink.setImageDrawable(globe);
+
+                    brandtResumeLink.setBackgroundTintList(colorStateList);
+                    brandtResumeLink.setImageDrawable(document);
+
+                    konnorEmailLink.setBackgroundTintList(colorStateList);
+                    konnorEmailLink.setImageDrawable(mail);
+                }
 
                 Button closeButton = (Button) aboutView.findViewById(R.id.close_btn);
                 closeButton.setOnClickListener(new View.OnClickListener() {

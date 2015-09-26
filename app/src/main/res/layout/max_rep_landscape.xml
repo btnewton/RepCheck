@@ -94,18 +94,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_behavior="com.brandtnewtonsoftware.rep_check.util.ScrollAwareFABBehavior"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="@dimen/standard"
-            android:src="@drawable/ic_floppy"
-            android:tint="@color/accent_500"
-            android:clickable="true"
-            android:backgroundTint="@color/primary_700"
-            app:borderWidth="0dp"/>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_behavior="com.brandtnewtonsoftware.rep_check.util.ScrollAwareFABBehavior"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="@dimen/standard"
+        android:src="@drawable/ic_floppy"
+        android:tint="@color/primary_900"
+        android:clickable="true"
+        app:borderWidth="0dp"/>
+
     </android.support.design.widget.CoordinatorLayout>
 
     <LinearLayout
