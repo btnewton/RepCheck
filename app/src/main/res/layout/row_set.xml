@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
-    android:layout_width="match_parent"
     android:paddingLeft="28dp"
     android:paddingRight="28dp"
     android:background="?android:attr/selectableItemBackground"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/set_reps"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="center_vertical|left"
         android:layout_margin="@dimen/small"
-        android:layout_weight="1"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
     <LinearLayout
         android:gravity="center"
-        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_width="0dp"
         android:layout_height="wrap_content">
 
         <TextView
@@ -42,9 +42,7 @@
     <TextView
         android:id="@+id/weight_percent_max"
         android:layout_margin="@dimen/small"
-        android:layout_gravity="center_vertical"
-        android:gravity="right"
-        android:layout_weight="1"
-        android:layout_width="0dp"
+        android:layout_gravity="center_vertical|right"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </LinearLayout>
