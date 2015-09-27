@@ -119,7 +119,7 @@ public class BarLoadDialog extends DialogFragment {
 
     private List<IStandardRowItem> getBarConstruction() {
 
-        double[] increments = incrementSet.getIncrements(weightFormatter.getUnit());
+        double[] increments = incrementSet.getIncrements();
         List<IStandardRowItem> weightHolders = new ArrayList<>(increments.length + 1);
 
         double weight = this.weight - barWeight;
@@ -129,7 +129,7 @@ public class BarLoadDialog extends DialogFragment {
         for (int i = 0; i < increments.length; i++) {
             double plateWeight = increments[increments.length - i - 1];
 
-            int plateCount = (int) weight / (int) (2 * plateWeight);
+            int plateCount = (int) (weight / (2 * plateWeight));
 
             if (plateCount > 0) {
                 weight -= (2 * plateCount) * plateWeight;

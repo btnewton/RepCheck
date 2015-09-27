@@ -69,7 +69,7 @@ public class SetQuickPlateDialog extends DialogFragment {
             @Override
             public void onShow(DialogInterface dialog) {
 
-                TextView titleTextView = (TextView) setSlotsView.findViewById(R.id.title);
+                TextView titleTextView = (TextView) setSlotsView.findViewById(R.id.dialog_title);
                 titleTextView.setText("Quick Plate Size");
 
                 RecyclerView recyclerView = (RecyclerView) setSlotsView.findViewById(R.id.recycler_view);

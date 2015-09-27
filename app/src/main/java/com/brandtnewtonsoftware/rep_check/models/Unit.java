@@ -50,8 +50,11 @@ public class Unit {
         return unit;
     }
 
+    public boolean equals(String unit) {
+        return this.unit.equals(unit);
+    }
     public boolean equals(Unit unit) {
-        return unit.getUnit().equals(this.unit);
+        return equals(unit.getUnit());
     }
 
     public String displayUnit() {
