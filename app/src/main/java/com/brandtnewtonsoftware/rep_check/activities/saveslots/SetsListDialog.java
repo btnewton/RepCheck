@@ -2,11 +2,9 @@ package com.brandtnewtonsoftware.rep_check.activities.saveslots;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -26,7 +24,6 @@ import android.widget.Toast;
 
 import com.brandtnewtonsoftware.rep_check.R;
 import com.brandtnewtonsoftware.rep_check.models.SetSlot;
-import com.brandtnewtonsoftware.rep_check.models.Unit;
 import com.brandtnewtonsoftware.rep_check.models.WeightFormatter;
 import com.brandtnewtonsoftware.rep_check.util.adapters.DividerItemDecoration;
 import com.brandtnewtonsoftware.rep_check.util.adapters.NestableLinearLayoutManager;
@@ -281,11 +278,7 @@ public abstract class SetsListDialog extends DialogFragment implements Observer 
             if (setSlots != null) {
                 rowItems.clear();
 
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                String unitType = sharedPreferences.getString(getActivity().getString(R.string.pref_units_key), getActivity().getString(R.string.pref_units_imperial));
-
-                boolean shouldRound = sharedPreferences.getBoolean(getActivity().getString(R.string.pref_round_values_key), true);
-                WeightFormatter formatter = new WeightFormatter(shouldRound, Unit.newUnitByString(unitType, getActivity()));
+                WeightFormatter formatter = new WeightFormatter(getContext());
 
                 for (SetSlot setSlot : setSlots) {
                     rowItems.add(new StandardRowItem(setSlot.getId(), setSlot.getName(), formatter.format(setSlot.getWeight()) + " " + formatter.displayUnit(setSlot.getWeight()) + " for " + setSlot.getReps() + " rep"

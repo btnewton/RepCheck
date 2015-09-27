@@ -15,7 +15,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.brandtnewtonsoftware.rep_check.R;
-import com.brandtnewtonsoftware.rep_check.models.Unit;
 import com.brandtnewtonsoftware.rep_check.models.WeightFormatter;
 import com.brandtnewtonsoftware.rep_check.models.increments.IncrementFactory;
 import com.brandtnewtonsoftware.rep_check.models.increments.IncrementSet;
@@ -74,11 +73,8 @@ public class BarLoadDialog extends DialogFragment {
             editor.apply();
             barWeight = 45;
         }
-        String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_metric));
-        Unit unit = Unit.newUnitByString(unitType, getActivity());
-        weightFormatter = new WeightFormatter(sharedPreferences.getBoolean(getString(R.string.pref_round_values_key), true), unit);
-        String plateStyle = sharedPreferences.getString(getString(R.string.pref_plate_style_key), getString(R.string.pref_plate_style_classic));
-        incrementSet = IncrementFactory.Make(getActivity(), plateStyle, unit);
+        weightFormatter = new WeightFormatter(getContext());
+        incrementSet = IncrementFactory.Make(getContext(), weightFormatter.getUnit());
     }
 
     @NonNull

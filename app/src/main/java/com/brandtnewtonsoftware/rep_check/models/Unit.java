@@ -1,6 +1,8 @@
 package com.brandtnewtonsoftware.rep_check.models;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.brandtnewtonsoftware.rep_check.R;
@@ -26,15 +28,18 @@ public class Unit {
         return new Unit("kg");
     }
 
-    public static Unit newUnitByString(String unit, Context context) {
+    public static Unit newUnitByString(Context context) {
         Unit newUnit;
 
-        if (unit.equals(context.getString(R.string.pref_units_metric))) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String unitType = sharedPreferences.getString(context.getString(R.string.pref_units_key), context.getString(R.string.pref_units_default));
+
+        if (unitType.equals(context.getString(R.string.pref_units_metric))) {
             newUnit = Unit.MetricUnit();
-        } else if (unit.equals(context.getString(R.string.pref_units_imperial))) {
+        } else if (unitType.equals(context.getString(R.string.pref_units_imperial))) {
             newUnit = Unit.ImperialUnit();
         } else {
-            Log.e(LOG_TAG, "Could not match unit: " + unit + " using default.");
+            Log.e(LOG_TAG, "Could not match unit: " + unitType + " using default.");
             newUnit = Unit.ImperialUnit();
         }
 

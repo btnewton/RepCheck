@@ -46,7 +46,6 @@ import com.brandtnewtonsoftware.rep_check.activities.saveslots.LoadSetDialog;
 import com.brandtnewtonsoftware.rep_check.activities.saveslots.SaveSetDialog;
 import com.brandtnewtonsoftware.rep_check.activities.saveslots.SetsListDialog;
 import com.brandtnewtonsoftware.rep_check.models.SetSlot;
-import com.brandtnewtonsoftware.rep_check.models.Unit;
 import com.brandtnewtonsoftware.rep_check.models.WeightFormatter;
 import com.brandtnewtonsoftware.rep_check.models.calculations.FormulaReflector;
 import com.brandtnewtonsoftware.rep_check.models.calculations.formulas.BrzyckiFormula;
@@ -55,8 +54,8 @@ import com.brandtnewtonsoftware.rep_check.models.increments.IncrementFactory;
 import com.brandtnewtonsoftware.rep_check.models.increments.IncrementSet;
 import com.brandtnewtonsoftware.rep_check.util.UndoBarController;
 import com.brandtnewtonsoftware.rep_check.util.adapters.DividerItemDecoration;
-import com.brandtnewtonsoftware.rep_check.util.adapters.SetRecyclerView.SetRecyclerViewAdapter;
 import com.brandtnewtonsoftware.rep_check.util.adapters.SetRecyclerView.ISetRowItem;
+import com.brandtnewtonsoftware.rep_check.util.adapters.SetRecyclerView.SetRecyclerViewAdapter;
 import com.brandtnewtonsoftware.rep_check.util.adapters.SetRecyclerView.SetRowItem;
 
 import java.lang.ref.WeakReference;
@@ -148,11 +147,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
             barWeight = Double.parseDouble(sharedPreferences.getString(getString(R.string.pref_bar_weight_key), getString(R.string.pref_bar_weight_default)));
 
-            // Get & apply unit type
-            String unitType = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_default));
-            Unit unit = Unit.newUnitByString(unitType, getActivity());
-            boolean roundCalculations = sharedPreferences.getBoolean(getString(R.string.pref_round_values_key), getResources().getBoolean(R.bool.pref_round_values_default));
-            weightFormatter = new WeightFormatter(roundCalculations, unit);
+            weightFormatter = new WeightFormatter(getContext());
 
             boolean showHelperText = sharedPreferences.getBoolean(getString(R.string.pref_show_helper_text_key), getResources().getBoolean(R.bool.pref_show_helper_text_default));
             if (setRecyclerViewAdapter != null)
@@ -167,8 +162,7 @@ public class MaxRepFragment extends Fragment implements Observer, UndoBarControl
                 formula = new BrzyckiFormula();
             }
 
-            String plateStyle = sharedPreferences.getString(getString(R.string.pref_plate_style_key), getString(R.string.pref_plate_style_classic));
-            incrementSet = IncrementFactory.Make(getActivity(), plateStyle, unit);
+            incrementSet = IncrementFactory.Make(getContext(), weightFormatter.getUnit());
 
             // Update display
             startCalculateSets();
